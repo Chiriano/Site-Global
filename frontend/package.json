@@ -1,0 +1,11 @@
+{
+  "name": "alpha-convites-frontend",
+  "version": "1.0.0",
+  "description": "Frontend Alpha Convites - Gráfica Online",
+  "scripts": {
+    "dev": "live-server public --port=5500 --no-browser=false"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}

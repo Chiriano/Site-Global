@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alpha Convites | Gráfica Online, Produtos Promocionais Personalizados</title>
+    <!-- Open Sans from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Top Utility Bar -->
+    <div class="top-utility-bar">
+        <div class="container utility-content">
+            <a href="#">Atendimento ao Cliente</a>
+            <div class="utility-right">
+                <span><img src="https://flagcdn.com/16x12/br.png" alt="BR"> pt</span>
+                <span>R$ BRL</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Header -->
+    <header class="main-header">
+        <div class="container header-content">
+            <div class="logo">
+                <a href="#">
+                    <!-- Placeholder close to the logo structure -->
+                    <img src="logo.png" alt="Alpha Convites Logo" onerror="this.onerror=null; this.src='https://placehold.co/200x50/ffffff/E31B23?text=Alpha+Convites';">
+                </a>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="O que você está procurando?">
+                <button type="button"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="cart-btn">
+                <a href="#"><i class="fas fa-shopping-cart"></i> Carrinho <span class="cart-count">0</span></a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav class="main-nav">
+        <div class="container nav-content">
+            <div class="nav-left">
+                <div class="dropdown-container">
+                    <button class="menu-btn" id="all-products-btn">
+                        <i class="fas fa-bars"></i> Todos os produtos
+                    </button>
+                    <!-- Dropdown Mega Menu -->
+                    <div class="mega-menu" id="mega-menu">
+                        <div class="mega-menu-content">
+                            <div class="menu-column">
+                                <h3>Mais Vendidos</h3>
+                                <ul>
+                                    <li><a href="#">Cartões de Visita</a></li>
+                                    <li><a href="#">Flyers</a></li>
+                                    <li><a href="#">Adesivos</a></li>
+                                    <li><a href="#">Carimbos</a></li>
+                                </ul>
+                            </div>
+                            <div class="menu-column">
+                                <h3>Brindes</h3>
+                                <ul>
+                                    <li><a href="#">Canetas</a></li>
+                                    <li><a href="#">Canecas</a></li>
+                                    <li><a href="#">Sacos e Sacolas</a></li>
+                                </ul>
+                            </div>
+                            <div class="menu-column">
+                                <h3>Materiais Promocionais</h3>
+                                <ul>
+                                    <li><a href="#">Banners e Lonas</a></li>
+                                    <li><a href="#">Expositores Roll-up</a></li>
+                                    <li><a href="#">Cartazes</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#">Cartões de Visita</a></li>
+                    <li><a href="#">Flyers</a></li>
+                    <li><a href="#">Adesivos</a></li>
+                    <li><a href="#">Embalagens</a></li>
+                    <li><a href="#">Brindes</a></li>
+                    <li><a href="#">Roupas</a></li>
+                </ul>
+            </div>
+            <div class="nav-right">
+                <a href="#"><i class="fas fa-user"></i> Entrar / Cadastrar</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section container">
+        <div class="hero-main">
+            <img src="https://placehold.co/800x400/f5f5f5/333333?text=Super+Descontos" alt="Banner Principal">
+            <div class="hero-overlay">
+                <h2>Cartões de Visita</h2>
+                <p>A partir de R$ 9,99</p>
+                <a href="#" class="btn btn-secondary">Compre já</a>
+            </div>
+        </div>
+        <div class="hero-side">
+            <div class="hero-side-banner">
+                <img src="https://placehold.co/400x190/f5f5f5/333333?text=Flyers" alt="Banner Menor 1">
+                <div class="hero-overlay">
+                    <h3>Flyers e Folhetos</h3>
+                    <a href="#" class="btn btn-secondary">Ver Mais</a>
+                </div>
+            </div>
+            <div class="hero-side-banner">
+                <img src="https://placehold.co/400x190/f5f5f5/333333?text=Adesivos" alt="Banner Menor 2">
+                <div class="hero-overlay">
+                    <h3>Adesivos Personalizados</h3>
+                    <a href="#" class="btn btn-secondary">Ver Mais</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Grid -->
+    <section class="categories-section container">
+        <h2 class="section-title">Conheça os nossos produtos</h2>
+        <div class="categories-grid">
+            <!-- Produtos carregados dinamicamente via API -->
+        </div>
+    </section>
+
+    <!-- Promo Banner -->
+    <section class="promo-banner container">
+        <div class="promo-content">
+            <h2>Materiais de Marketing de Alta Qualidade</h2>
+            <p>Tudo o que você precisa para impulsionar o seu negócio.</p>
+            <a href="#" class="btn btn-secondary">Ver mais</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container footer-content">
+            <div class="footer-col">
+                <h4>Como Funciona</h4>
+                <ul>
+                    <li><a href="#">Processo de Compra</a></li>
+                    <li><a href="#">Prazos e Entregas</a></li>
+                    <li><a href="#">Qualidade de Impressão</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Sobre Nós</h4>
+                <ul>
+                    <li><a href="#">Quem Somos</a></li>
+                    <li><a href="#">Sustentabilidade</a></li>
+                    <li><a href="#">Carreiras</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Serviço ao Cliente</h4>
+                <ul>
+                    <li><a href="#">Central de Ajuda</a></li>
+                    <li><a href="#">Contato</a></li>
+                    <li><a href="#">Reclamações</a></li>
+                </ul>
+            </div>
+            <div class="footer-col newsletter-col">
+                <h4>Newsletter</h4>
+                <p>Receba ofertas exclusivas.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="O seu e-mail">
+                    <button type="submit" class="btn btn-primary">Inscrever</button>
+                </form>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            <img src="logo.png" alt="Alpha Convites Logo" style="max-height:30px;" onerror="this.style.display='none'">
+            <p>&copy; 2026 Alpha Convites. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="js/scripts.js"></script>
+</body>
+
+</html>
