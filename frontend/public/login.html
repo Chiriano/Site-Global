@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Alpha Convites</title>
+  <meta name="description" content="Acesse sua conta Alpha Convites.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="./css/login.css">
+</head>
+<body>
+  <main class="login-shell" aria-labelledby="login-title">
+    <div class="bg-layer bg-mesh" aria-hidden="true"></div>
+    <div class="bg-layer bg-grid" aria-hidden="true"></div>
+    <div class="bg-layer bg-vignette" aria-hidden="true"></div>
+    <div class="glow glow-left" aria-hidden="true"></div>
+    <div class="glow glow-right" aria-hidden="true"></div>
+
+    <section class="login-card" aria-label="Painel de login">
+      <div class="brand-wrap">
+        <img id="login-logo" src="/assets/logo/logo-dark-2.png" alt="Logo Alpha Convites" class="brand-logo">
+        <span class="brand-fallback" aria-hidden="true">ALPHA CONVITES</span>
+      </div>
+
+      <header class="card-header">
+        <p class="eyebrow">Workspace Access</p>
+        <h1 id="login-title">Entrar na sua conta</h1>
+        <p>Use seu e-mail corporativo para continuar no painel.</p>
+      </header>
+
+      <form id="login-form" novalidate>
+        <div class="field-group">
+          <label for="email">E-mail</label>
+          <div class="field-control">
+            <i class="fa-regular fa-envelope" aria-hidden="true"></i>
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="voce@empresa.com" aria-required="true" required>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="password">Senha</label>
+          <div class="field-control">
+            <i class="fa-solid fa-lock" aria-hidden="true"></i>
+            <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Sua senha" aria-required="true" required>
+          </div>
+        </div>
+
+        <button id="submit-btn" type="submit" class="btn-login" aria-label="Entrar na conta">
+          <span class="btn-text">Entrar</span>
+          <span class="btn-spinner" aria-hidden="true"></span>
+        </button>
+
+        <p id="login-message" class="form-message" role="status" aria-live="polite"></p>
+      </form>
+
+      <footer class="card-footer">
+        <a href="#" class="text-link">Esqueci minha senha</a>
+        <a href="#" class="text-link">Criar conta</a>
+      </footer>
+    </section>
+  </main>
+
+  <script src="./js/login.js"></script>
+</body>
+</html>
+
+

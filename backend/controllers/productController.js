@@ -1,10 +1,65 @@
 const Product = require('../models/Product');
 
+function normalizeProductImageUrl(imageUrl, forceRelative = false) {
+  if (!imageUrl || typeof imageUrl !== 'string') {
+    return null;
+  }
+
+  const cleanValue = imageUrl.trim();
+  if (cleanValue === '') {
+    return null;
+  }
+
+  const productsPrefix = '/uploads/products/';
+
+  if (cleanValue.startsWith('http://') || cleanValue.startsWith('https://')) {
+    if (!forceRelative) {
+      return cleanValue;
+    }
+
+    try {
+      const parsedUrl = new URL(cleanValue);
+      const fileName = parsedUrl.pathname.split('/').pop();
+      return fileName ? `${productsPrefix}${fileName}` : null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  if (cleanValue.startsWith(productsPrefix)) {
+    return cleanValue;
+  }
+
+  if (cleanValue.startsWith('/uploads/')) {
+    const fileName = cleanValue.split('/').pop();
+    return fileName ? `${productsPrefix}${fileName}` : null;
+  }
+
+  if (cleanValue.startsWith('uploads/products/')) {
+    return `/${cleanValue}`;
+  }
+
+  if (cleanValue.includes('/')) {
+    if (!forceRelative) {
+      return cleanValue;
+    }
+
+    const fileName = cleanValue.split('/').pop();
+    return fileName ? `${productsPrefix}${fileName}` : null;
+  }
+
+  return `${productsPrefix}${cleanValue}`;
+}
+
 const productController = {
   async listProducts(req, res) {
     try {
       const products = await Product.getAllProducts();
-      return res.status(200).json(products);
+      const normalizedProducts = products.map((product) => ({
+        ...product,
+        image_url: normalizeProductImageUrl(product.image_url, false),
+      }));
+      return res.status(200).json(normalizedProducts);
     } catch (err) {
       console.error('Erro ao listar produtos:', err);
       return res.status(500).json({ error: 'Erro interno ao buscar produtos' });
@@ -25,7 +80,10 @@ const productController = {
         return res.status(404).json({ error: 'Produto não encontrado' });
       }
 
-      return res.status(200).json(product);
+      return res.status(200).json({
+        ...product,
+        image_url: normalizeProductImageUrl(product.image_url, false),
+      });
     } catch (err) {
       console.error('Erro ao buscar produto:', err);
       return res.status(500).json({ error: 'Erro interno ao buscar produto' });
@@ -48,14 +106,39 @@ const productController = {
         name: name.trim(),
         description: description || null,
         price: Number(price),
-        image_url: image_url || null,
+        image_url: normalizeProductImageUrl(image_url, true),
         category: category || null,
       });
 
-      return res.status(201).json(product);
+      return res.status(201).json({
+        ...product,
+        image_url: normalizeProductImageUrl(product.image_url, false),
+      });
     } catch (err) {
       console.error('Erro ao criar produto:', err);
       return res.status(500).json({ error: 'Erro interno ao criar produto' });
+    }
+  },
+
+  async listProductsByCategory(req, res) {
+    try {
+      const { category } = req.params;
+      const normalizedCategory = String(category || '').trim().replace(/-/g, ' ');
+
+      if (!normalizedCategory) {
+        return res.status(400).json({ error: 'Categoria obrigatoria' });
+      }
+
+      const products = await Product.getProductsByCategory(normalizedCategory);
+      const normalizedProducts = products.map((product) => ({
+        ...product,
+        image_url: normalizeProductImageUrl(product.image_url, false),
+      }));
+
+      return res.status(200).json(normalizedProducts);
+    } catch (err) {
+      console.error('Erro ao listar produtos por categoria:', err);
+      return res.status(500).json({ error: 'Erro interno ao buscar produtos por categoria' });
     }
   },
 };

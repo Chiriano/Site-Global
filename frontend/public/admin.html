@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel Admin | Produtos</title>
+  <style>
+    :root {
+      --bg: #f5f7fa;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --primary: #e31b23;
+      --primary-dark: #bf1017;
+      --border: #e5e7eb;
+      --success: #0f9d58;
+      --error: #d93025;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1 {
+      margin: 0 0 18px;
+      font-size: 28px;
+    }
+    .grid {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: minmax(320px, 420px) 1fr;
+      align-items: start;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    }
+    .card h2 {
+      margin: 0 0 16px;
+      font-size: 20px;
+    }
+    .field {
+      margin-bottom: 12px;
+    }
+    .field label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .field input,
+    .field textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 14px;
+    }
+    .field textarea {
+      min-height: 88px;
+      resize: vertical;
+    }
+    .preview-wrapper {
+      border: 1px dashed #c8ced6;
+      border-radius: 8px;
+      min-height: 120px;
+      display: grid;
+      place-items: center;
+      background: #fafbfd;
+      margin-top: 6px;
+      padding: 10px;
+    }
+    .preview-wrapper img {
+      max-width: 100%;
+      max-height: 180px;
+      object-fit: contain;
+      display: none;
+    }
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .btn {
+      border: 0;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #111827;
+      display: none;
+    }
+    .status {
+      min-height: 20px;
+      margin: 10px 0 2px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .status.success { color: var(--success); }
+    .status.error { color: var(--error); }
+    .status.info { color: #2563eb; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+    }
+    th, td {
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      padding: 10px 8px;
+      font-size: 14px;
+      vertical-align: middle;
+    }
+    th { font-size: 13px; text-transform: uppercase; color: var(--muted); }
+    .table-image {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+    }
+    .no-image {
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .empty-row {
+      text-align: center;
+      color: var(--muted);
+      padding: 22px;
+    }
+    .btn-edit {
+      background: #111827;
+      color: #fff;
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 0;
+      cursor: pointer;
+    }
+    .btn-delete {
+      background: #ef4444;
+      color: #fff;
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 0;
+      cursor: pointer;
+    }
+    @media (max-width: 960px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1>Painel Admin - Produtos</h1>
+
+    <div class="grid">
+      <section class="card">
+        <h2 id="form-title">Cadastrar produto</h2>
+        <form id="product-form">
+          <input type="hidden" id="product-id" name="product-id">
+
+          <div class="field">
+            <label for="name">Nome</label>
+            <input id="name" name="name" type="text" required>
+          </div>
+
+          <div class="field">
+            <label for="description">Descricao</label>
+            <textarea id="description" name="description"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="price">Preco</label>
+            <input id="price" name="price" type="number" min="0" step="0.01" required>
+          </div>
+
+          <div class="field">
+            <label for="category">Categoria</label>
+            <input id="category" name="category" type="text">
+          </div>
+
+          <div class="field">
+            <label for="image">Imagem (jpg, jpeg, png, webp - max 5MB)</label>
+            <input id="image" name="image" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
+            <div class="preview-wrapper">
+              <img id="image-preview" alt="Preview da imagem">
+            </div>
+          </div>
+
+          <div class="actions">
+            <button id="submit-btn" class="btn btn-primary" type="submit">Salvar produto</button>
+            <button id="cancel-edit-btn" class="btn btn-secondary" type="button">Cancelar edicao</button>
+          </div>
+          <div id="status-box" class="status"></div>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>Produtos cadastrados</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Imagem</th>
+              <th>Nome</th>
+              <th>Preco</th>
+              <th>Categoria</th>
+              <th>Editar</th>
+              <th>Deletar</th>
+            </tr>
+          </thead>
+          <tbody id="products-tbody">
+            <tr>
+              <td colspan="6" class="empty-row">Carregando produtos...</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </main>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>
