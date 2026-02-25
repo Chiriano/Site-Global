@@ -1,0 +1,23 @@
+[
+  {
+    "id": "tpl_cartao_frente_verso",
+    "name": "Cartao de Visita Frente e Verso",
+    "width_mm": 90,
+    "height_mm": 50,
+    "bleed_mm": 3,
+    "sides": [
+      "front",
+      "back"
+    ]
+  },
+  {
+    "id": "tpl_flyer_a5",
+    "name": "Flyer A5",
+    "width_mm": 148,
+    "height_mm": 210,
+    "bleed_mm": 3,
+    "sides": [
+      "front"
+    ]
+  }
+]

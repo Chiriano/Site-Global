@@ -1,0 +1,624 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Produto | Alpha Convites</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Top Utility Bar -->
+  <div class="top-utility-bar">
+    <div class="container utility-content">
+      <a href="#">Atendimento ao Cliente</a>
+      <div class="utility-right">
+        <span><img src="https://flagcdn.com/16x12/br.png" alt="BR"> pt</span>
+        <span>R$ BRL</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Header -->
+  <header class="main-header">
+    <div class="container header-content">
+      <div class="logo">
+        <a href="index.html">
+          <img src="assets/logo/logo-dark-ULTRAPRESS.png" alt="Alpha Convites Logo"
+            onerror="this.onerror=null; this.src='https://placehold.co/200x50/ffffff/E31B23?text=Alpha+Convites';">
+        </a>
+      </div>
+      <div class="search-bar">
+        <input type="text" placeholder="O que você está procurando?">
+        <button type="button"><i class="fas fa-search"></i></button>
+      </div>
+      <div class="cart-btn">
+        <a href="cart.html"><i class="fas fa-shopping-cart"></i> Carrinho <span class="cart-count">(0)</span></a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation Bar -->
+  <nav class="main-nav">
+    <div class="container nav-content">
+      <div class="nav-left">
+        <div class="dropdown-container">
+          <button class="menu-btn" id="all-products-btn" type="button">
+            <i class="fas fa-bars"></i> Todas as Categorias
+          </button>
+          <div class="mega-menu" id="mega-menu">
+            <!-- Ícones horizontais no topo -->
+            <div class="catalog-icons-row">
+              <button class="catalog-icon-btn" data-cat="convites" type="button">
+                <div class="catalog-icon-circle">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                </div>
+                <span>Convites</span>
+              </button>
+              <button class="catalog-icon-btn" data-cat="embalagens" type="button">
+                <div class="catalog-icon-circle">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                </div>
+                <span>Embalagens</span>
+              </button>
+            </div>
+            <!-- 3 painéis abaixo -->
+            <div class="catalog-grid">
+              <div class="catalog-col-left"></div>
+              <div class="catalog-col-mid"></div>
+              <div class="catalog-col-promo">
+                <div class="catalog-promo-card">
+                  <div class="catalog-promo-text">
+                    <span class="catalog-promo-label">Linha Premium</span>
+                    <a href="category.html?name=embalagens" class="btn btn-primary catalog-promo-btn">Ver Mais</a>
+                  </div>
+                  <img class="catalog-promo-float" src="assets/icons/embalagens-menu.png" alt="" aria-hidden="true">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ul class="nav-links">
+          <li><a href="category.html?name=convites">Convites</a></li>
+          <li><a href="category.html?name=embalagens">Embalagens</a></li>
+        </ul>
+      </div>
+      <div class="nav-right">
+        <a href="login.html"><i class="fas fa-user"></i> Entrar / Cadastrar</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb-bar">
+    <div class="container">
+      <nav class="breadcrumb" id="breadcrumb" aria-label="breadcrumb">
+        <a href="index.html">Home</a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Product Page -->
+  <main class="container product-page">
+
+    <!-- Gallery -->
+    <div class="product-gallery">
+      <div class="gallery-main-wrap">
+        <button class="gallery-arrow gallery-prev" id="gallery-prev" type="button" aria-label="Anterior">&#8249;</button>
+        <div class="gallery-main">
+          <img id="gallery-main-img" src="" alt="Produto">
+        </div>
+        <button class="gallery-arrow gallery-next" id="gallery-next" type="button" aria-label="Próximo">&#8250;</button>
+      </div>
+      <div class="gallery-thumbs" id="gallery-thumbs"></div>
+
+      <!-- Descrição do produto -->
+      <div class="prod-desc-accordion">
+        <button class="prod-desc-toggle" id="prod-desc-toggle" type="button" aria-expanded="true">
+          <span>Descrição do produto</span>
+          <i class="fas fa-chevron-up prod-desc-icon"></i>
+        </button>
+        <div class="prod-desc-body" id="prod-desc-body"></div>
+      </div>
+
+      <!-- Compartilhar -->
+      <div class="prod-share">
+        <span class="prod-share-label">Compartilhar</span>
+        <div class="prod-share-icons">
+          <a href="#" class="prod-share-btn prod-share-fb"  title="Facebook" id="share-fb">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="#" class="prod-share-btn prod-share-wa"  title="WhatsApp" id="share-wa">
+            <i class="fab fa-whatsapp"></i>
+          </a>
+          <a href="#" class="prod-share-btn prod-share-mail" title="E-mail" id="share-mail">
+            <i class="fas fa-envelope"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Info -->
+    <div class="product-info">
+      <div class="product-head">
+        <div class="product-head-top">
+          <h1 class="product-title" id="product-title">Caixa para Sushi Personalizada</h1>
+          <div class="product-code">Código 01582</div>
+        </div>
+        <p class="product-subtitle" id="product-subtitle">Caixa de papel ideal para pratos da culinária japonesa, como sushi, sashimi e hot roll.</p>
+        <div class="product-alert">
+          <i class="fas fa-triangle-exclamation"></i>
+          O valor pode variar de acordo com as opções selecionadas abaixo.
+        </div>
+      </div>
+
+      <section class="product-options-section">
+        <h2 class="options-title">Selecione as opções</h2>
+        <div class="options-divider"></div>
+
+        <div class="options-group">
+          <div class="options-question">Precisa contratar ou realizar ajuste na arte final?</div>
+          <div class="options-grid" data-option-selector data-option-field="art_adjustment">
+            <input type="hidden" id="art-adjustment-choice" data-option-input value="criar_arte">
+            <button class="option-btn active" type="button" data-option-btn data-value="criar_arte" aria-selected="true">CONTRATAR CRIAÇÃO DE ARTE</button>
+            <button class="option-btn" type="button" data-option-btn data-value="ajuste_arte" aria-selected="false">CONTRATAR AJUSTES NA ARTE</button>
+            <button class="option-btn" type="button" data-option-btn data-value="nao" aria-selected="false">NÃO</button>
+          </div>
+        </div>
+
+        <div class="options-group">
+          <div class="options-question">Selecione a quantidade desejada</div>
+          <div class="options-divider"></div>
+          <div class="qty-grid" id="qty-grid"></div>
+          <input type="hidden" id="qty-choice" value="">
+        </div>
+
+        <div class="options-group gabarito-group">
+          <div class="options-question">Faça o Download do Gabarito</div>
+          <div class="options-divider"></div>
+          <p class="gabarito-hint">Na dúvida quanto às dimensões dos produtos?<br>Faça o download do nosso gabarito clicando nos botões abaixo.</p>
+          <div class="gabarito-list" id="gabarito-list"></div>
+        </div>
+
+        <div class="options-group upload-group">
+          <div class="options-question">Envie seu arquivo</div>
+          <div class="options-divider"></div>
+          <div class="upload-area">
+            <div class="upload-icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="12" y1="18" x2="12" y2="12"/>
+                <polyline points="9 15 12 12 15 15"/>
+              </svg>
+            </div>
+            <div class="upload-controls">
+              <input type="file" id="file-input" accept=".zip,.rar,.jpg,.jpeg,.png,.pdf" multiple style="display:none">
+              <span class="upload-filename" id="upload-filename">Escolha o(s) arquivo(s)</span>
+              <button class="upload-btn" type="button" id="upload-btn">Adicionar</button>
+            </div>
+          </div>
+          <div class="upload-info">
+            <p>Clique no botão <strong>ADICIONAR</strong> para enviar sua arte final e/ou arquivos para impressão.</p>
+            <p>Limite Máximo Total*: 1,99GB</p>
+            <p>Somente arquivos no formato ZIP, RAR, JPG, PNG ou PDF.**</p>
+          </div>
+        </div>
+
+        <!-- Frete -->
+        <div class="options-group frete-group">
+          <div class="options-question">Frete</div>
+          <div class="options-divider"></div>
+          <div class="frete-row">
+            <span class="frete-label">Simule seu frete</span>
+            <input type="text" class="frete-input" id="cep-input" placeholder="Digite aqui o CEP" maxlength="9">
+            <button class="frete-btn" type="button" id="frete-btn">
+              <i class="fas fa-calculator"></i> Simular
+            </button>
+          </div>
+          <p class="frete-result" id="frete-result"></p>
+        </div>
+
+        <!-- Observações -->
+        <div class="options-group obs-group">
+          <div class="options-question">Observações</div>
+          <div class="options-divider"></div>
+          <textarea class="obs-textarea" id="obs-input" placeholder="Digite suas observações aqui..." rows="5"></textarea>
+        </div>
+
+        <!-- Orcamento por email -->
+        <div class="options-group quote-group">
+          <div class="options-question">Gostaria de receber esse orçamento em meu e-mail</div>
+          <div class="options-divider"></div>
+          <div class="quote-fields">
+            <input type="text"  class="quote-input" placeholder="Nome">
+            <input type="email" class="quote-input" placeholder="E-mail">
+            <input type="tel"   class="quote-input" placeholder="N&ordm; de telefone">
+            <input type="text"  class="quote-input" placeholder="Nome do Projeto">
+          </div>
+          <div class="quote-footer">
+            <div class="quote-checks">
+              <label class="quote-check-label">
+                <input type="checkbox"> Receber Novidades, Ofertas Exclusivas e Muito Mais.
+              </label>
+              <label class="quote-check-label">
+                <input type="checkbox"> Ao enviar o formulário acima, você concorda com o nosso <a href="#" class="summary-terms-link">Aviso de Privacidade</a>.
+              </label>
+            </div>
+            <button class="quote-send-btn" type="button">
+              <i class="fas fa-envelope"></i> Enviar
+            </button>
+          </div>
+        </div>
+
+        <!-- Resumo do pedido -->
+        <div class="options-group summary-group">
+          <div class="options-question">Resumo do pedido</div>
+          <div class="options-divider"></div>
+          <p class="summary-sub">Opções escolhidas</p>
+          <table class="summary-table">
+            <thead>
+              <tr>
+                <th>Itens</th>
+                <th>Quantidade</th>
+                <th>Valor</th>
+              </tr>
+            </thead>
+            <tbody id="summary-body">
+              <tr>
+                <td id="summary-product">—</td>
+                <td id="summary-qty">—</td>
+                <td id="summary-price">—</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="summary-total-box">
+            <span class="summary-total-label">Valor Total: </span>
+            <span class="summary-total-value" id="summary-total">R$ 0,00</span>
+          </div>
+          <label class="summary-terms">
+            <input type="checkbox" id="terms-check">
+            Li e Aceito os <a href="#" class="summary-terms-link">Termos de Uso</a> do site.
+          </label>
+          <button class="summary-buy-btn" type="button" id="buy-btn">COMPRAR</button>
+        </div>
+
+      </section>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="container footer-content">
+      <div class="footer-col">
+        <h4>Como Funciona</h4>
+        <ul>
+          <li><a href="#">Processo de Compra</a></li>
+          <li><a href="#">Prazos e Entregas</a></li>
+          <li><a href="#">Qualidade de Impressão</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Sobre Nos</h4>
+        <ul>
+          <li><a href="#">Quem Somos</a></li>
+          <li><a href="#">Sustentabilidade</a></li>
+          <li><a href="#">Carreiras</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Servico ao Cliente</h4>
+        <ul>
+          <li><a href="#">Central de Ajuda</a></li>
+          <li><a href="#">Contato</a></li>
+          <li><a href="#">Reclamacoes</a></li>
+        </ul>
+      </div>
+      <div class="footer-col newsletter-col">
+        <h4>Newsletter</h4>
+        <p>Receba ofertas exclusivas.</p>
+        <form class="newsletter-form">
+          <input type="email" placeholder="O seu e-mail">
+          <button type="submit" class="btn btn-primary">Inscrever</button>
+        </form>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <img src="assets/logo/logo-white-ULTRAPRESS.png" alt="Alpha Convites Logo" style="max-height:30px;"
+        onerror="this.style.display='none'">
+      <p>&copy; 2026 Alpha Convites. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script src="js/cart.js"></script>
+  <script>window.SITE_LOGO_FILE = 'logo-dark-ULTRAPRESS.png';</script>
+  <script src="js/scripts.js"></script>
+  <script src="js/catalog-menu.js"></script>
+  <script>
+    // â”€â”€ Product configs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    const defaultQuantities = [
+      { units: 500,  label: '500 unid.',   price: 100.00 },
+      { units: 1000, label: '1.000 unid.', price: 180.00 },
+      { units: 1500, label: '1.500 unid.', price: 240.00 },
+      { units: 2000, label: '2.000 unid.', price: 280.00 },
+      { units: 2500, label: '2.500 unid.', price: 300.00 },
+      { units: 5000, label: '5.000 unid.', price: 550.00 },
+    ];
+
+    function renderQuantities(quantities) {
+      const grid  = document.getElementById('qty-grid');
+      const input = document.getElementById('qty-choice');
+      if (!grid) return;
+
+      grid.innerHTML = quantities.map((q, i) =>
+        `<button class="qty-btn${i === 0 ? ' active' : ''}" type="button"
+                 data-units="${q.units}" data-price="${q.price}">
+          <span class="qty-units">${q.label}</span>
+          <span class="qty-price">${q.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+        </button>`
+      ).join('');
+
+      if (input && quantities.length) input.value = quantities[0].units;
+
+      grid.querySelectorAll('.qty-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          grid.querySelectorAll('.qty-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          if (input) input.value = btn.dataset.units;
+        });
+      });
+    }
+
+    const defaultDesc = `
+      <div class="desc-chars">
+        <p><strong>Características:</strong></p>
+        <p><strong>Material:</strong> Cartão Duplex / Kraft personalizado</p>
+        <p><strong>Impressão:</strong> Digital 4x0 (frente colorida)</p>
+        <p><strong>Acabamento:</strong> Refile e vinco</p>
+        <p><strong>Prazo de Produção:</strong> De 10 a 15 dias úteis, contados a partir da confirmação do pagamento e da aprovação final da arte ajustada.</p>
+      </div>
+      <div class="desc-obs">
+        <p><strong>Observações:</strong></p>
+        <p><strong>Arquivo pronto para impressão:</strong> A Alpha Press não faz nenhum ajuste no arquivo do cliente.</p>
+        <p><strong>Arquivos aceitos para impressão:</strong> CorelDraw, Illustrator, InDesign, Photoshop e PDF.</p>
+        <p><strong>Ajustes na Arte Final:</strong> A Alpha Press faz correções no arquivo, tais como: sangra, máscaras de hot stamping, verniz e alterações de dados.</p>
+        <p><strong>Prazo para ajustes de arte final:</strong> 3 dias úteis a partir do envio do arquivo. Arquivos enviados até meio-dia contam como dia útil; após meio-dia, o prazo começa a contar a partir do dia seguinte.</p>
+        <p><strong>Contratar arte final:</strong> A Alpha Press faz a criação da peça gráfica após o cliente enviar todas as informações necessárias para a execução, com exceção da criação de identidade visual.</p>
+        <p class="desc-link-highlight"><a href="#">CLIQUE AQUI PARA ENTENDER NOSSOS SERVIÇOS DE AJUSTE E CRIAÇÃO DE ARTE.</a></p>
+        <p><strong>Imagem do produto:</strong> Meramente ilustrativa.</p>
+        <p><strong>Cancelamento:</strong> Por se tratar de um produto customizado, o cancelamento somente poderá ser realizado antes da impressão do material.</p>
+        <p><strong>Responsabilidade:</strong> Após envio ou aprovação do arquivo, a Alpha Press não se responsabiliza por aspectos técnicos de arquivo, design e direitos autorais.</p>
+      </div>`;
+
+    const productConfigs = {
+      sushi: {
+        title:    'Caixa para Sushi Personalizada',
+        subtitle: 'Caixa de papel ideal para pratos da culinária japonesa, como sushi, sashimi e hot roll.',
+        images:   ['assets/produtos/sushi.png', 'assets/produtos/sushi 2.png', 'assets/produtos/sushi 1.png'],
+        group:    'oriental',
+        groupLabel: 'Oriental',
+        sub:      'sushi',
+        subLabel: 'Sushi'
+      },
+      combinado: {
+        title:    'Caixa Combinado Gaveta',
+        subtitle: 'Embalagem gaveta ideal para combinados orientais personalizados.',
+        images:   ['assets/produtos/combinado 1.png', 'assets/produtos/combinado.png', 'assets/produtos/combinado 2.png'],
+        group:    'oriental',
+        groupLabel: 'Oriental',
+        sub:      'combinado',
+        subLabel: 'Combinado'
+      },
+      harumaki: {
+        title:    'Embalagem Harumaki 2un',
+        subtitle: 'Embalagem personalizada para harumaki com 2 unidades.',
+        images:   ['assets/produtos/Harumaki 2.png', 'assets/produtos/Harumaki.png', 'assets/produtos/Harumaki 1.png'],
+        group:    'oriental',
+        groupLabel: 'Oriental',
+        sub:      'harumaki',
+        subLabel: 'Harumaki'
+      },
+      temaki: {
+        title:    'Embalagem para Temaki com berço para Delivery',
+        subtitle: 'Embalagem com berço ideal para delivery de temaki, mantendo o produto seguro.',
+        images:   ['assets/produtos/temaki.png', 'assets/produtos/temaki 1.png', 'assets/produtos/temaki 2.png'],
+        group:    'oriental',
+        groupLabel: 'Oriental',
+        sub:      'temaki',
+        subLabel: 'Temaki'
+      },
+      yakissoba: {
+        title:    'Caixa Box c/ Tampa Personalizada com berço para Delivery',
+        subtitle: 'Caixa box com tampa personalizada para yakissoba e pratos quentes.',
+        images:   ['assets/produtos/yakissoba 1.png', 'assets/produtos/yakissoba.png', 'assets/produtos/yakissoba 2.png'],
+        group:    'oriental',
+        groupLabel: 'Oriental',
+        sub:      'yakissoba',
+        subLabel: 'Yakissoba'
+      }
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const subKey = (params.get('sub') || params.get('subcategory') || 'sushi').toLowerCase();
+      const config = productConfigs[subKey] || productConfigs.sushi;
+
+      // â”€â”€ Breadcrumb â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      const bc = document.getElementById('breadcrumb');
+      if (bc) {
+        bc.innerHTML =
+          `<a href="index.html">Home</a>` +
+          ` &rsaquo; <a href="category.html?category=embalagens&group=${config.group}">${config.groupLabel}</a>` +
+          ` &rsaquo; <a href="category.html?category=embalagens&group=${config.group}&subcategory=${config.sub}">${config.subLabel}</a>` +
+          ` &rsaquo; <span>${config.title}</span>`;
+      }
+
+      // â”€â”€ Title / subtitle â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      const titleEl    = document.getElementById('product-title');
+      const subtitleEl = document.getElementById('product-subtitle');
+      if (titleEl)    titleEl.textContent    = config.title;
+      if (subtitleEl) subtitleEl.textContent = config.subtitle;
+
+      // â”€â”€ Gallery â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      let currentIndex = 0;
+      const images     = config.images;
+      const mainImg    = document.getElementById('gallery-main-img');
+      const thumbsWrap = document.getElementById('gallery-thumbs');
+      const prevBtn    = document.getElementById('gallery-prev');
+      const nextBtn    = document.getElementById('gallery-next');
+
+      function setImage(index) {
+        currentIndex = (index + images.length) % images.length;
+        mainImg.src  = images[currentIndex];
+        thumbsWrap.querySelectorAll('.gallery-thumb').forEach((t, i) => {
+          t.classList.toggle('active', i === currentIndex);
+        });
+      }
+
+      // Build thumbnails
+      thumbsWrap.innerHTML = images.map((src, i) =>
+        `<div class="gallery-thumb${i === 0 ? ' active' : ''}" data-index="${i}">
+          <img src="${src}" alt="Imagem ${i + 1}"
+            onerror="this.src='https://placehold.co/80x80/fafafa/999?text=${i+1}'">
+        </div>`
+      ).join('');
+
+      thumbsWrap.querySelectorAll('.gallery-thumb').forEach(t => {
+        t.addEventListener('click', () => setImage(Number(t.dataset.index)));
+      });
+
+      prevBtn?.addEventListener('click', () => setImage(currentIndex - 1));
+      nextBtn?.addEventListener('click', () => setImage(currentIndex + 1));
+
+      setImage(0);
+
+      // ── Product description accordion ──────────────────────────────────────
+      const descBody   = document.getElementById('prod-desc-body');
+      const descToggle = document.getElementById('prod-desc-toggle');
+      const descIcon   = descToggle?.querySelector('.prod-desc-icon');
+      if (descBody) descBody.innerHTML = config.desc || defaultDesc;
+      descToggle?.addEventListener('click', () => {
+        const open = descBody.style.display !== 'none';
+        descBody.style.display = open ? 'none' : 'block';
+        descToggle.setAttribute('aria-expanded', String(!open));
+        if (descIcon) descIcon.style.transform = open ? 'rotate(180deg)' : 'rotate(0)';
+      });
+
+      // ── Share buttons ───────────────────────────────────────────────────────
+      const pageUrl   = encodeURIComponent(window.location.href);
+      const pageTitle = encodeURIComponent(config.title);
+      const shareFb   = document.getElementById('share-fb');
+      const shareWa   = document.getElementById('share-wa');
+      const shareMail = document.getElementById('share-mail');
+      if (shareFb)   shareFb.href   = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`;
+      if (shareWa)   shareWa.href   = `https://wa.me/?text=${pageTitle}%20${pageUrl}`;
+      if (shareMail) shareMail.href = `mailto:?subject=${pageTitle}&body=${pageUrl}`;
+
+      // ── Quantities ─────────────────────────────────────────────────────────
+      renderQuantities(config.quantities || defaultQuantities);
+
+      // ── Gabarito download ──────────────────────────────────────────────────
+      const gabaritoList = document.getElementById('gabarito-list');
+      if (gabaritoList) {
+        const gabaritoFile = config.gabaritoFile || 'pdf/GABARITO--Caixas-Sushi-PDF.rar';
+        const gabaritoLabel = config.gabaritoLabel || config.title.toUpperCase();
+        gabaritoList.innerHTML = `
+          <a href="${gabaritoFile}" download class="gabarito-item">
+            <i class="fas fa-file-pdf gabarito-pdf-icon" aria-hidden="true"></i>
+            <span class="gabarito-item-name">${gabaritoLabel}</span>
+          </a>`;
+      }
+
+      // ── Option buttons ─────────────────────────────────────────────────────
+      document.querySelectorAll('[data-option-selector]').forEach(group => {
+        const btns  = group.querySelectorAll('[data-option-btn]');
+        const input = group.querySelector('[data-option-input]');
+        btns.forEach(btn => {
+          btn.addEventListener('click', () => {
+            btns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+            btn.classList.add('active');
+            btn.setAttribute('aria-selected', 'true');
+            if (input) input.value = btn.dataset.value;
+          });
+        });
+      });
+
+      // ── File upload ────────────────────────────────────────────────────────
+      const fileInput      = document.getElementById('file-input');
+      const uploadBtn      = document.getElementById('upload-btn');
+      const uploadFilename = document.getElementById('upload-filename');
+
+      uploadBtn?.addEventListener('click', () => fileInput?.click());
+
+      fileInput?.addEventListener('change', () => {
+        if (!fileInput.files.length) return;
+        const names = Array.from(fileInput.files).map(f => f.name).join(', ');
+        uploadFilename.textContent = names;
+        uploadFilename.classList.add('has-file');
+      });
+
+      // ── Order summary (reactive to qty selection) ──────────────────────────
+      const summaryProduct = document.getElementById('summary-product');
+      const summaryQty     = document.getElementById('summary-qty');
+      const summaryPrice   = document.getElementById('summary-price');
+      const summaryTotal   = document.getElementById('summary-total');
+
+      function updateSummary() {
+        const activeBtn = document.querySelector('.qty-btn.active');
+        if (!activeBtn) return;
+        const units = Number(activeBtn.dataset.units);
+        const price = Number(activeBtn.dataset.price);
+        const formatted = price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        if (summaryProduct) summaryProduct.textContent = config.title;
+        if (summaryQty)     summaryQty.textContent     = units.toLocaleString('pt-BR');
+        if (summaryPrice)   summaryPrice.textContent   = formatted;
+        if (summaryTotal)   summaryTotal.textContent   = formatted;
+      }
+
+      // Update on qty click
+      document.getElementById('qty-grid')?.addEventListener('click', () => {
+        setTimeout(updateSummary, 0);
+      });
+
+      // Initial render
+      updateSummary();
+
+      // ── Frete simulation ───────────────────────────────────────────────────
+      const cepInput   = document.getElementById('cep-input');
+      const freteBtn   = document.getElementById('frete-btn');
+      const freteResult = document.getElementById('frete-result');
+
+      cepInput?.addEventListener('input', () => {
+        let v = cepInput.value.replace(/\D/g, '').slice(0, 8);
+        if (v.length > 5) v = v.slice(0, 5) + '-' + v.slice(5);
+        cepInput.value = v;
+      });
+
+      freteBtn?.addEventListener('click', () => {
+        const cep = cepInput.value.replace(/\D/g, '');
+        if (cep.length < 8) {
+          freteResult.textContent = 'Digite um CEP válido com 8 dígitos.';
+          freteResult.style.color = '#c00';
+          return;
+        }
+        freteResult.textContent = 'Consultando...';
+        freteResult.style.color = '#888';
+        setTimeout(() => {
+          freteResult.textContent = 'Frete a calcular — entre em contato para mais informações.';
+          freteResult.style.color = '#555';
+        }, 800);
+      });
+    });
+  </script>
+</body>
+</html>
+
+

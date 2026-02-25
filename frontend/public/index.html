@@ -1,14 +1,12 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alpha Convites | Gráfica Online, Produtos Promocionais Personalizados</title>
-    <!-- Open Sans from Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Alpha Convites | Grafica Online, Produtos Promocionais Personalizados</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
-    <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
@@ -28,13 +26,13 @@
     <header class="main-header">
         <div class="container header-content">
             <div class="logo">
-                <a href="#">
-                    <!-- Placeholder close to the logo structure -->
-                    <img src="assets/logo/logo-dark-2.png" alt="Alpha Convites Logo" onerror="this.onerror=null; this.src='https://placehold.co/200x50/ffffff/E31B23?text=Alpha+Convites';">
+                <a href="index.html">
+                    <img src="assets/logo/logo-dark-ULTRAPRESS.png" alt="Alpha Convites Logo"
+                        onerror="this.onerror=null; this.src='https://placehold.co/200x50/ffffff/E31B23?text=Alpha+Convites';">
                 </a>
             </div>
             <div class="search-bar">
-                <input type="text" placeholder="O que você está procurando?">
+                <input type="text" placeholder="O que voce esta procurando?">
                 <button type="button"><i class="fas fa-search"></i></button>
             </div>
             <div class="cart-btn">
@@ -48,47 +46,45 @@
         <div class="container nav-content">
             <div class="nav-left">
                 <div class="dropdown-container">
-                    <button class="menu-btn" id="all-products-btn">
-                        <i class="fas fa-bars"></i> Todos os produtos
+                    <button class="menu-btn" id="all-products-btn" type="button">
+                        <i class="fas fa-bars"></i> Todas as Categorias
                     </button>
-                    <!-- Dropdown Mega Menu -->
+                    <!-- Mega Menu Premium -->
                     <div class="mega-menu" id="mega-menu">
-                        <div class="mega-menu-content">
-                            <div class="menu-column">
-                                <h3>Mais Vendidos</h3>
-                                <ul>
-                                    <li><a href="category.html?name=cartoes">Cartões de Visita</a></li>
-                                    <li><a href="category.html?name=flyers">Flyers</a></li>
-                                    <li><a href="category.html?name=adesivos">Adesivos</a></li>
-                                    <li><a href="category.html?name=carimbos">Carimbos</a></li>
-                                </ul>
-                            </div>
-                            <div class="menu-column">
-                                <h3>Brindes</h3>
-                                <ul>
-                                    <li><a href="category.html?name=canetas">Canetas</a></li>
-                                    <li><a href="category.html?name=canecas">Canecas</a></li>
-                                    <li><a href="category.html?name=sacos-e-sacolas">Sacos e Sacolas</a></li>
-                                </ul>
-                            </div>
-                            <div class="menu-column">
-                                <h3>Materiais Promocionais</h3>
-                                <ul>
-                                    <li><a href="category.html?name=banners-e-lonas">Banners e Lonas</a></li>
-                                    <li><a href="category.html?name=expositores-roll-up">Expositores Roll-up</a></li>
-                                    <li><a href="category.html?name=cartazes">Cartazes</a></li>
-                                </ul>
+                        <!-- Ícones horizontais no topo -->
+                        <div class="catalog-icons-row">
+                            <button class="catalog-icon-btn" data-cat="convites" type="button">
+                                <div class="catalog-icon-circle">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                                </div>
+                                <span>Convites</span>
+                            </button>
+                            <button class="catalog-icon-btn" data-cat="embalagens" type="button">
+                                <div class="catalog-icon-circle">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                                </div>
+                                <span>Embalagens</span>
+                            </button>
+                        </div>
+                        <!-- 3 painéis abaixo -->
+                        <div class="catalog-grid">
+                            <div class="catalog-col-left"></div>
+                            <div class="catalog-col-mid"></div>
+                            <div class="catalog-col-promo">
+                                <div class="catalog-promo-card">
+                                    <div class="catalog-promo-text">
+                                        <span class="catalog-promo-label">Linha Premium</span>
+                                        <a href="category.html?name=embalagens" class="btn btn-primary catalog-promo-btn">Ver Mais</a>
+                                    </div>
+                                    <img class="catalog-promo-float" src="assets/icons/embalagens-menu.png" alt="" aria-hidden="true">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <ul class="nav-links">
-                    <li><a href="category.html?name=cartoes">Cartões de Visita</a></li>
-                    <li><a href="category.html?name=flyers">Flyers</a></li>
-                    <li><a href="category.html?name=adesivos">Adesivos</a></li>
+                    <li><a href="category.html?name=convites">Convites</a></li>
                     <li><a href="category.html?name=embalagens">Embalagens</a></li>
-                    <li><a href="category.html?name=brindes">Brindes</a></li>
-                    <li><a href="category.html?name=roupas">Roupas</a></li>
                 </ul>
             </div>
             <div class="nav-right">
@@ -100,46 +96,85 @@
     <!-- Hero Section -->
     <section class="hero-section container">
         <div class="hero-main">
-            <img src="https://placehold.co/800x400/f5f5f5/333333?text=Super+Descontos" alt="Banner Principal">
-            <div class="hero-overlay">
-                <h2>Cartões de Visita</h2>
-                <p>A partir de R$ 9,99</p>
-                <a href="#" class="btn btn-secondary">Compre já</a>
-            </div>
+            <img src="assets/banners/banner-home.png" alt="Embalagens Personalizadas"
+                onerror="this.onerror=null; this.src='https://placehold.co/800x400/f5f5f5/333333?text=Embalagens';">
+            <a href="category.html?categoria=embalagens" class="hero-main-cta">
+                <span class="hero-cta-main">Personalize com a sua marca!</span>
+                <span class="hero-cta-sub">Confira nossas embalagens</span>
+            </a>
         </div>
         <div class="hero-side">
             <div class="hero-side-banner">
-                <img src="https://placehold.co/400x190/f5f5f5/333333?text=Flyers" alt="Banner Menor 1">
-                <div class="hero-overlay">
-                    <h3>Flyers e Folhetos</h3>
-                    <a href="#" class="btn btn-secondary">Ver Mais</a>
+                <img src="assets/banners/banner-hom1.png" alt="Banner Convites"
+                    onerror="this.onerror=null; this.src='https://placehold.co/400x190/f5f5f5/333333?text=Convites';">
+                <div class="side-glass-block">
+                    <span class="side-glass-title">Acabamentos Premium</span>
+                    <a href="category.html?categoria=convites" class="side-glass-btn">Ver convite</a>
                 </div>
             </div>
             <div class="hero-side-banner">
-                <img src="https://placehold.co/400x190/f5f5f5/333333?text=Adesivos" alt="Banner Menor 2">
-                <div class="hero-overlay">
-                    <h3>Adesivos Personalizados</h3>
-                    <a href="#" class="btn btn-secondary">Ver Mais</a>
+                <img src="assets/banners/banner-hom.png" alt="Banner Embalagens Orientais"
+                    onerror="this.onerror=null; this.src='https://placehold.co/400x190/f5f5f5/333333?text=Oriental';">
+                <div class="side-glass-block side-glass-dark">
+                    <span class="side-glass-title">Inovação & Criatividade</span>
+                    <a href="category.html?categoria=convites" class="side-glass-btn side-glass-btn-dark">Ver convite</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Categories Grid -->
-    <section class="categories-section container">
-        <h2 class="section-title">Conheça os nossos produtos</h2>
-        <div class="categories-grid">
-            <!-- Produtos carregados dinamicamente via API -->
+    <!-- Home Category Cards: Oriental / Fast Food / Doces -->
+    <section class="home-cats-section container">
+        <h2 class="section-title">Conheca nossas Embalagens</h2>
+        <div class="home-cats-grid">
+
+            <div class="home-cat-card">
+                <a href="category.html?category=embalagens&group=oriental">
+                    <div class="home-cat-img-wrap">
+                        <img src="assets/banners/Oriental.png" alt="Oriental"
+                            onerror="this.src='https://placehold.co/400x260/fce4e4/cc0000?text=Oriental'">
+                    </div>
+                    <div class="home-cat-bar">
+                        <i class="fas fa-box"></i>
+                        <span>Oriental</span>
+                    </div>
+                </a>
+                <a href="category.html?category=embalagens&group=oriental" class="btn btn-primary home-cat-btn">Saber mais</a>
+            </div>
+
+            <div class="home-cat-card">
+                <a href="category.html?category=embalagens&group=fastfood">
+                    <div class="home-cat-img-wrap">
+                        <img src="assets/banners/Fast-Food.png" alt="Fast Food"
+                            onerror="this.src='https://placehold.co/400x260/fce4e4/cc0000?text=Fast+Food'">
+                    </div>
+                    <div class="home-cat-bar">
+                        <i class="fas fa-box"></i>
+                        <span>Fast Food</span>
+                    </div>
+                </a>
+                <a href="category.html?category=embalagens&group=fastfood" class="btn btn-primary home-cat-btn">Saber mais</a>
+            </div>
+
+            <div class="home-cat-card">
+                <a href="category.html?category=embalagens&group=doces">
+                    <div class="home-cat-img-wrap">
+                        <img src="assets/banners/Doces.png" alt="Doces"
+                            onerror="this.src='https://placehold.co/400x260/fce4e4/cc0000?text=Doces'">
+                    </div>
+                    <div class="home-cat-bar">
+                        <i class="fas fa-box"></i>
+                        <span>Doces</span>
+                    </div>
+                </a>
+                <a href="category.html?category=embalagens&group=doces" class="btn btn-primary home-cat-btn">Saber mais</a>
+            </div>
+
         </div>
     </section>
 
     <!-- Promo Banner -->
     <section class="promo-banner container">
-        <div class="promo-content">
-            <h2>Materiais de Marketing de Alta Qualidade</h2>
-            <p>Tudo o que você precisa para impulsionar o seu negócio.</p>
-            <a href="#" class="btn btn-secondary">Ver mais</a>
-        </div>
     </section>
 
     <!-- Footer -->
@@ -150,11 +185,11 @@
                 <ul>
                     <li><a href="#">Processo de Compra</a></li>
                     <li><a href="#">Prazos e Entregas</a></li>
-                    <li><a href="#">Qualidade de Impressão</a></li>
+                    <li><a href="#">Qualidade de Impressao</a></li>
                 </ul>
             </div>
             <div class="footer-col">
-                <h4>Sobre Nós</h4>
+                <h4>Sobre Nos</h4>
                 <ul>
                     <li><a href="#">Quem Somos</a></li>
                     <li><a href="#">Sustentabilidade</a></li>
@@ -162,11 +197,11 @@
                 </ul>
             </div>
             <div class="footer-col">
-                <h4>Serviço ao Cliente</h4>
+                <h4>Servico ao Cliente</h4>
                 <ul>
                     <li><a href="#">Central de Ajuda</a></li>
                     <li><a href="#">Contato</a></li>
-                    <li><a href="#">Reclamações</a></li>
+                    <li><a href="#">Reclamacoes</a></li>
                 </ul>
             </div>
             <div class="footer-col newsletter-col">
@@ -184,13 +219,18 @@
             </div>
         </div>
         <div class="container footer-bottom">
-            <img src="assets/logo/logo-white-2.png" alt="Alpha Convites Logo" style="max-height:30px;" onerror="this.style.display='none'">
+            <img src="assets/logo/logo-white-ULTRAPRESS.png" alt="Alpha Convites Logo" style="max-height:30px;"
+                onerror="this.style.display='none'">
             <p>&copy; 2026 Alpha Convites. Todos os direitos reservados.</p>
         </div>
     </footer>
 
     <script src="js/cart.js"></script>
+    <script>window.SITE_LOGO_FILE = 'logo-dark-ULTRAPRESS.png';</script>
     <script src="js/scripts.js"></script>
+    <script src="js/catalog-menu.js"></script>
 </body>
 
 </html>
+
+

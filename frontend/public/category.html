@@ -1,104 +1,16 @@
-<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Categoria | Alpha Convites</title>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    .category-main {
-      padding-top: 20px;
-      padding-bottom: 50px;
-    }
-    .category-banner-wrap {
-      margin-bottom: 18px;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #f3f4f6;
-      border: 1px solid #e5e7eb;
-    }
-    .category-banner {
-      width: 100%;
-      height: 260px;
-      object-fit: cover;
-      display: block;
-    }
-    .category-top-info {
-      margin-bottom: 16px;
-    }
-    .category-top-info h1 {
-      margin: 0 0 6px;
-      font-size: 28px;
-      color: #1f2937;
-    }
-    .category-top-info p {
-      margin: 0;
-      color: #6b7280;
-      font-size: 15px;
-      font-weight: 600;
-    }
-    .category-layout {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: 20px;
-      align-items: start;
-    }
-    .category-sidebar {
-      background: #fff;
-      border: 1px solid #e5e7eb;
-      border-radius: 10px;
-      padding: 16px;
-      position: sticky;
-      top: 15px;
-    }
-    .filter-block {
-      margin-bottom: 16px;
-    }
-    .filter-block:last-child {
-      margin-bottom: 0;
-    }
-    .filter-title {
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      color: #6b7280;
-      margin-bottom: 8px;
-      font-weight: 700;
-    }
-    .filter-control {
-      width: 100%;
-      height: 38px;
-      border: 1px solid #d1d5db;
-      border-radius: 6px;
-      padding: 0 10px;
-      font-size: 14px;
-      background: #fff;
-    }
-    .category-products {
-      min-height: 200px;
-    }
-    .category-actions {
-      display: flex;
-      gap: 8px;
-      justify-content: center;
-      margin-top: 8px;
-    }
-    @media (max-width: 980px) {
-      .category-layout {
-        grid-template-columns: 1fr;
-      }
-      .category-sidebar {
-        position: static;
-      }
-      .category-banner {
-        height: 190px;
-      }
-    }
-  </style>
 </head>
-<body>
+<body class="catalog-page">
+
+  <!-- Top Utility Bar -->
   <div class="top-utility-bar">
     <div class="container utility-content">
       <a href="#">Atendimento ao Cliente</a>
@@ -109,15 +21,17 @@
     </div>
   </div>
 
+  <!-- Main Header -->
   <header class="main-header">
     <div class="container header-content">
       <div class="logo">
         <a href="index.html">
-          <img src="assets/logo/logo-dark-2.png" alt="Alpha Convites Logo">
+          <img src="assets/logo/logo-dark-2.png" alt="Alpha Convites Logo"
+            onerror="this.onerror=null; this.src='https://placehold.co/200x50/ffffff/E31B23?text=Alpha+Convites';">
         </a>
       </div>
       <div class="search-bar">
-        <input type="text" placeholder="O que você está procurando?">
+        <input type="text" placeholder="O que voce esta procurando?">
         <button type="button"><i class="fas fa-search"></i></button>
       </div>
       <div class="cart-btn">
@@ -126,17 +40,50 @@
     </div>
   </header>
 
+  <!-- Navigation Bar -->
   <nav class="main-nav">
     <div class="container nav-content">
       <div class="nav-left">
-        <a class="menu-btn" href="category.html"><i class="fas fa-bars"></i> Todos os produtos</a>
+        <div class="dropdown-container">
+          <button class="menu-btn" id="all-products-btn" type="button">
+            <i class="fas fa-bars"></i> Todas as Categorias
+          </button>
+          <!-- Mega Menu Premium -->
+          <div class="mega-menu" id="mega-menu">
+            <!-- Ãcones horizontais no topo -->
+            <div class="catalog-icons-row">
+              <button class="catalog-icon-btn" data-cat="convites" type="button">
+                <div class="catalog-icon-circle">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                </div>
+                <span>Convites</span>
+              </button>
+              <button class="catalog-icon-btn" data-cat="embalagens" type="button">
+                <div class="catalog-icon-circle">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                </div>
+                <span>Embalagens</span>
+              </button>
+            </div>
+            <!-- 3 painÃ©is abaixo -->
+            <div class="catalog-grid">
+              <div class="catalog-col-left"></div>
+              <div class="catalog-col-mid"></div>
+              <div class="catalog-col-promo">
+                <div class="catalog-promo-card">
+                  <div class="catalog-promo-text">
+                    <span class="catalog-promo-label">Linha Premium</span>
+                    <a href="category.html?name=embalagens" class="btn btn-primary catalog-promo-btn">Ver Mais</a>
+                  </div>
+                  <img class="catalog-promo-float" src="assets/icons/embalagens-menu.png" alt="" aria-hidden="true">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <ul class="nav-links">
           <li><a href="category.html?name=convites">Convites</a></li>
-          <li><a href="category.html?name=cartoes">Cartões</a></li>
-          <li><a href="category.html?name=flyers">Flyers</a></li>
           <li><a href="category.html?name=embalagens">Embalagens</a></li>
-          <li><a href="category.html?name=brindes">Brindes</a></li>
-          <li><a href="category.html?name=roupas">Roupas</a></li>
         </ul>
       </div>
       <div class="nav-right">
@@ -145,66 +92,112 @@
     </div>
   </nav>
 
-  <main class="container category-main">
-    <div class="category-banner-wrap">
-      <img id="category-banner" class="category-banner" src="https://placehold.co/1600x300/f5f5f5/333333?text=Categoria" alt="Banner da categoria">
+  <!-- Breadcrumb -->
+  <div class="breadcrumb-bar">
+    <div class="container">
+      <nav class="breadcrumb" id="breadcrumb" aria-label="breadcrumb">
+        <a href="index.html">Home</a>
+      </nav>
     </div>
+  </div>
 
-    <div class="category-top-info">
-      <h1 id="category-title">Categoria</h1>
-      <p id="category-result-text">Exibindo 0 produtos em Categoria</p>
-    </div>
+  <!-- Category Banner -->
+  <div class="container category-banner-wrap">
+    <img id="category-banner" class="category-banner" src="assets/banners/banner-embalagens.png" alt="Banner da categoria"
+      onerror="this.onerror=null; this.src='https://placehold.co/1200x260/f5f5f5/333333?text=Embalagens';">
+  </div>
 
-    <div class="category-layout">
-      <aside class="category-sidebar">
-        <div class="filter-block">
-          <div class="filter-title">Categoria</div>
-          <div id="sidebar-category">-</div>
+  <!-- Category Main -->
+  <main class="container category-layout">
+
+    <!-- Sidebar -->
+    <aside class="category-sidebar">
+      <h3 class="sidebar-title">Filtros</h3>
+
+      <div class="sidebar-section sidebar-section-price">
+        <label class="sidebar-label">Faixa de Preco</label>
+        <div class="price-row">
+          <div class="money-field">
+            <span class="money-prefix">R$</span>
+            <input type="number" id="min-price" class="sidebar-input" placeholder="0" min="0">
+          </div>
+          <div class="money-field">
+            <span class="money-prefix">R$</span>
+            <input type="number" id="max-price" class="sidebar-input" placeholder="9999" min="0">
+          </div>
         </div>
+      </div>
 
-        <div class="filter-block">
-          <div class="filter-title">Produtos Encontrados</div>
-          <div id="sidebar-count">0</div>
-        </div>
-
-        <div class="filter-block">
-          <div class="filter-title">Preço</div>
-          <select class="filter-control" id="filter-price">
-            <option value="">Todas as faixas</option>
-            <option value="ate50">Até R$ 50</option>
-            <option value="50a100">R$ 50 a R$ 100</option>
-            <option value="acima100">Acima de R$ 100</option>
-          </select>
-        </div>
-
-        <div class="filter-block">
-          <div class="filter-title">Ordenação</div>
-          <select class="filter-control" id="filter-sort">
-            <option value="relevancia">Mais relevantes</option>
-            <option value="menor-preco">Menor preço</option>
-            <option value="maior-preco">Maior preço</option>
-            <option value="nome">Nome A-Z</option>
-          </select>
-        </div>
-
-        <div class="filter-block">
-          <div class="filter-title">Disponibilidade</div>
-          <select class="filter-control" id="filter-stock">
+      <div class="sidebar-section">
+        <label class="sidebar-label">Categoria / Tipo</label>
+        <div class="select-wrap">
+          <select id="subcategory-select" class="sidebar-select">
             <option value="">Todos</option>
-            <option value="disponivel">Disponível</option>
-            <option value="esgotado">Esgotado</option>
           </select>
         </div>
-      </aside>
+      </div>
+    </aside>
 
-      <section class="category-products">
-        <div class="categories-grid" id="category-grid"></div>
-      </section>
-    </div>
+    <!-- Product Grid -->
+    <section class="category-content">
+      <h1 class="category-page-title" id="page-title">Embalagens</h1>
+      <p class="category-result-text" id="category-result-text"></p>
+      <div class="produtos" id="products-grid"></div>
+    </section>
+
   </main>
 
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="container footer-content">
+      <div class="footer-col">
+        <h4>Como Funciona</h4>
+        <ul>
+          <li><a href="#">Processo de Compra</a></li>
+          <li><a href="#">Prazos e Entregas</a></li>
+          <li><a href="#">Qualidade de Impressao</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Sobre Nos</h4>
+        <ul>
+          <li><a href="#">Quem Somos</a></li>
+          <li><a href="#">Sustentabilidade</a></li>
+          <li><a href="#">Carreiras</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Servico ao Cliente</h4>
+        <ul>
+          <li><a href="#">Central de Ajuda</a></li>
+          <li><a href="#">Contato</a></li>
+          <li><a href="#">Reclamacoes</a></li>
+        </ul>
+      </div>
+      <div class="footer-col newsletter-col">
+        <h4>Newsletter</h4>
+        <p>Receba ofertas exclusivas.</p>
+        <form class="newsletter-form">
+          <input type="email" placeholder="O seu e-mail">
+          <button type="submit" class="btn btn-primary">Inscrever</button>
+        </form>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <img src="assets/logo/logo-white-2.png" alt="Alpha Convites Logo" style="max-height:30px;"
+        onerror="this.style.display='none'">
+      <p>&copy; 2026 Alpha Convites. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
   <script src="js/cart.js"></script>
+  <script src="js/scripts.js"></script>
+  <script src="js/catalog-menu.js"></script>
   <script src="js/category-page.js"></script>
 </body>
 </html>
-

@@ -1,0 +1,126 @@
+[
+  {
+    "id": "eds_mm0hz95i_471b0398",
+    "product_id": 1,
+    "template_id": "tpl_cartao_frente_verso",
+    "width_mm": 90,
+    "height_mm": 50,
+    "bleed_mm": 3,
+    "sides": [
+      "front",
+      "back"
+    ],
+    "layers": [],
+    "metadata": {},
+    "created_at": "2026-02-24T11:03:39.798Z",
+    "updated_at": "2026-02-24T11:03:39.798Z"
+  },
+  {
+    "id": "eds_mm0j0o40_24a25db4",
+    "product_id": 1,
+    "template_id": "tpl_cartao_frente_verso",
+    "width_mm": 90,
+    "height_mm": 50,
+    "bleed_mm": 3,
+    "sides": [
+      "front",
+      "back"
+    ],
+    "layers": [],
+    "metadata": {
+      "product_name": "Cartões de Visita"
+    },
+    "created_at": "2026-02-24T11:32:45.456Z",
+    "updated_at": "2026-02-24T11:32:45.456Z"
+  },
+  {
+    "id": "eds_mm0j4v9d_2c416eef",
+    "product_id": 1,
+    "template_id": "tpl_cartao_frente_verso",
+    "width_mm": 90,
+    "height_mm": 50,
+    "bleed_mm": 3,
+    "sides": [
+      "front",
+      "back"
+    ],
+    "layers": [],
+    "metadata": {
+      "product_name": "Cartões de Visita"
+    },
+    "created_at": "2026-02-24T11:36:01.345Z",
+    "updated_at": "2026-02-24T11:36:01.345Z"
+  },
+  {
+    "id": "eds_mm0j4xmh_0dd276dd",
+    "product_id": 1,
+    "template_id": "tpl_cartao_frente_verso",
+    "width_mm": 90,
+    "height_mm": 50,
+    "bleed_mm": 3,
+    "sides": [
+      "front",
+      "back"
+    ],
+    "layers": [],
+    "metadata": {
+      "product_name": "Cartões de Visita"
+    },
+    "created_at": "2026-02-24T11:36:04.409Z",
+    "updated_at": "2026-02-24T11:36:04.409Z"
+  },
+  {
+    "id": "eds_mm0j51u4_55fa2295",
+    "product_id": 1,
+    "template_id": "tpl_cartao_frente_verso",
+    "width_mm": 90,
+    "height_mm": 50,
+    "bleed_mm": 3,
+    "sides": [
+      "front",
+      "back"
+    ],
+    "layers": [],
+    "metadata": {
+      "product_name": "Cartões de Visita"
+    },
+    "created_at": "2026-02-24T11:36:09.868Z",
+    "updated_at": "2026-02-24T11:36:09.868Z"
+  },
+  {
+    "id": "eds_mm0j576w_c577b4e6",
+    "product_id": 1,
+    "template_id": "tpl_cartao_frente_verso",
+    "width_mm": 90,
+    "height_mm": 50,
+    "bleed_mm": 3,
+    "sides": [
+      "front",
+      "back"
+    ],
+    "layers": [],
+    "metadata": {
+      "product_name": "Cartões de Visita"
+    },
+    "created_at": "2026-02-24T11:36:16.808Z",
+    "updated_at": "2026-02-24T11:36:16.808Z"
+  },
+  {
+    "id": "eds_mm0j5bad_13893af4",
+    "product_id": 5,
+    "template_id": "tpl_cartao_frente_verso",
+    "width_mm": 90,
+    "height_mm": 50,
+    "bleed_mm": 3,
+    "sides": [
+      "front",
+      "back"
+    ],
+    "layers": [],
+    "metadata": {
+      "product_name": "Brindes"
+    },
+    "created_at": "2026-02-24T11:36:22.117Z",
+    "updated_at": "2026-02-24T11:36:22.117Z"
+  }
+]

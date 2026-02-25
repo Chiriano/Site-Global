@@ -104,7 +104,7 @@ function configureSiteLogo() {
         brandBox.style.paddingTop = '8px';
 
         const brandImg = document.createElement('img');
-        brandImg.src = './assets/logo/logo-white-2.png';
+        brandImg.src = './assets/logo/logo-white-ULTRAPRESS.png';
         brandImg.alt = 'Alpha Convites Logo';
         brandImg.style.width = '190px';
         brandImg.style.height = 'auto';
@@ -233,26 +233,10 @@ async function loadProducts() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const allProductsBtn = document.getElementById('all-products-btn');
-    const megaMenu = document.getElementById('mega-menu');
-
-    if (allProductsBtn && megaMenu) {
-        allProductsBtn.addEventListener('click', (event) => {
-            event.stopPropagation();
-            megaMenu.classList.toggle('active');
-        });
-
-        document.addEventListener('click', (event) => {
-            if (!allProductsBtn.contains(event.target) && !megaMenu.contains(event.target)) {
-                megaMenu.classList.remove('active');
-            }
-        });
-
-        megaMenu.addEventListener('click', (event) => event.stopPropagation());
-    }
-
     configureSiteLogo();
     configureCartHeaderLink();
     updateCartCount();
-    loadProducts();
+    if (document.querySelector('.categories-grid')) {
+        loadProducts();
+    }
 });
