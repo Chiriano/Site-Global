@@ -22,7 +22,7 @@
   </div>
 
   <!-- Main Header -->
-  <header class="main-header">
+  <header class="main-header" id="main-header">
     <div class="container header-content">
       <div class="logo">
         <a href="index.html">
@@ -30,12 +30,29 @@
             onerror="this.onerror=null; this.src='https://placehold.co/200x50/ffffff/E31B23?text=Alpha+Convites';">
         </a>
       </div>
-      <div class="search-bar">
+      <div class="search-bar" id="desktop-search">
         <input type="text" placeholder="O que voce esta procurando?">
         <button type="button"><i class="fas fa-search"></i></button>
       </div>
       <div class="cart-btn">
         <a href="cart.html"><i class="fas fa-shopping-cart"></i> Carrinho <span class="cart-count">(0)</span></a>
+      </div>
+      <div class="mobile-header-icons">
+        <button class="mob-icon-btn" id="mobile-search-toggle" aria-label="Buscar">
+          <i class="fas fa-search"></i>
+        </button>
+        <a href="cart.html" class="mob-icon-btn mob-cart-icon" aria-label="Carrinho">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="mob-cart-badge cart-count">0</span>
+        </a>
+      </div>
+    </div>
+    <div class="mobile-search-bar" id="mobile-search-bar">
+      <div class="container">
+        <div class="mobile-search-inner">
+          <input type="text" placeholder="O que você está procurando?" class="mobile-search-input">
+          <button class="mobile-search-close" id="mobile-search-close"><i class="fas fa-times"></i></button>
+        </div>
       </div>
     </div>
   </header>
@@ -107,34 +124,81 @@
       onerror="this.onerror=null; this.src='https://placehold.co/1200x260/f5f5f5/333333?text=Embalagens';">
   </div>
 
+  <!-- Mobile: botão para abrir filtros -->
+  <div class="container">
+    <button class="mobile-filter-toggle" id="mobile-filter-toggle">
+      <i class="fas fa-sliders-h"></i> Filtros
+    </button>
+  </div>
+
   <!-- Category Main -->
   <main class="container category-layout">
 
     <!-- Sidebar -->
-    <aside class="category-sidebar">
-      <h3 class="sidebar-title">Filtros</h3>
-
-      <div class="sidebar-section sidebar-section-price">
-        <label class="sidebar-label">Faixa de Preco</label>
-        <div class="price-row">
-          <div class="money-field">
-            <span class="money-prefix">R$</span>
-            <input type="number" id="min-price" class="sidebar-input" placeholder="0" min="0">
-          </div>
-          <div class="money-field">
-            <span class="money-prefix">R$</span>
-            <input type="number" id="max-price" class="sidebar-input" placeholder="9999" min="0">
-          </div>
-        </div>
+    <aside class="category-sidebar" id="category-sidebar">
+      <div class="sidebar-header">
+        <i class="fas fa-sliders-h sidebar-header-icon"></i>
+        <h3 class="sidebar-title">Filtros</h3>
       </div>
 
-      <div class="sidebar-section">
-        <label class="sidebar-label">Categoria / Tipo</label>
-        <div class="select-wrap">
-          <select id="subcategory-select" class="sidebar-select">
-            <option value="">Todos</option>
-          </select>
+      <!-- Convites: novidades em breve -->
+      <div class="sidebar-coming-soon" id="sidebar-coming-soon" hidden>
+        <div class="coming-soon-icon"><i class="fas fa-rocket"></i></div>
+        <p class="coming-soon-title">Novidades em breve</p>
+        <p class="coming-soon-sub">Estamos preparando filtros especiais para a linha de convites.</p>
+      </div>
+
+      <!-- Embalagens: filtros ativos -->
+      <div id="sidebar-filters">
+
+        <div class="sidebar-section">
+          <div class="sidebar-section-head">
+            <span class="sidebar-label">Faixa de Preço</span>
+          </div>
+          <div class="range-slider-wrap">
+            <div class="range-track">
+              <div class="range-fill" id="range-fill"></div>
+            </div>
+            <input type="range" id="range-min" class="range-input" min="0" max="1000" value="0" step="1">
+            <input type="range" id="range-max" class="range-input" min="0" max="1000" value="1000" step="1">
+          </div>
+          <div class="price-inputs-row">
+            <div class="price-field">
+              <span class="price-prefix">R$</span>
+              <input type="number" id="min-price" class="price-number-input" placeholder="0" min="0">
+            </div>
+            <span class="price-dash">—</span>
+            <div class="price-field">
+              <span class="price-prefix">R$</span>
+              <input type="number" id="max-price" class="price-number-input" min="0">
+            </div>
+          </div>
         </div>
+
+        <div class="sidebar-section" id="filter-groups-section">
+          <div class="sidebar-section-head">
+            <span class="sidebar-label">Categorias</span>
+            <button class="filter-clear-btn" id="clear-groups" type="button">Limpar</button>
+          </div>
+          <div class="filter-checks" id="filter-groups"></div>
+        </div>
+
+        <div class="sidebar-section" id="filter-items-section">
+          <div class="sidebar-section-head">
+            <span class="sidebar-label">Tipos</span>
+            <button class="filter-clear-btn" id="clear-items" type="button">Limpar</button>
+          </div>
+          <div class="filter-checks" id="filter-items"></div>
+        </div>
+
+        <div class="sidebar-section" id="filter-models-section" hidden>
+          <div class="sidebar-section-head">
+            <span class="sidebar-label">Modelo</span>
+            <button class="filter-clear-btn" id="clear-models" type="button">Limpar</button>
+          </div>
+          <div class="filter-checks" id="filter-models"></div>
+        </div>
+
       </div>
     </aside>
 
@@ -199,5 +263,55 @@
   <script src="js/scripts.js"></script>
   <script src="js/catalog-menu.js"></script>
   <script src="js/category-page.js"></script>
+
+  <script>
+    /* ── Mobile sidebar toggle ─────────────────────────────────────────────── */
+    (function () {
+      const btn     = document.getElementById('mobile-filter-toggle');
+      const sidebar = document.getElementById('category-sidebar');
+      if (!btn || !sidebar) return;
+      btn.addEventListener('click', () => {
+        const open = sidebar.classList.toggle('is-open');
+        btn.innerHTML = open
+          ? '<i class="fas fa-times"></i> Fechar Filtros'
+          : '<i class="fas fa-sliders-h"></i> Filtros';
+      });
+    })();
+
+    /* ── Mobile search toggle ──────────────────────────────────────────────── */
+    (function () {
+      const toggleBtn = document.getElementById('mobile-search-toggle');
+      const closeBtn  = document.getElementById('mobile-search-close');
+      const searchBar = document.getElementById('mobile-search-bar');
+      const header    = document.getElementById('main-header');
+      const tabSearch = document.getElementById('tab-search-btn');
+      function openSearch()  { searchBar && searchBar.classList.add('is-open'); header && header.classList.add('search-open'); const i = searchBar && searchBar.querySelector('input'); if(i) i.focus(); }
+      function closeSearch() { searchBar && searchBar.classList.remove('is-open'); header && header.classList.remove('search-open'); }
+      toggleBtn && toggleBtn.addEventListener('click', openSearch);
+      tabSearch && tabSearch.addEventListener('click', function(e){ e.preventDefault(); openSearch(); });
+      closeBtn  && closeBtn.addEventListener('click',  closeSearch);
+    })();
+  </script>
+
+  <!-- ── Mobile Tab Bar ──────────────────────────────────────────────────── -->
+  <nav class="mobile-tab-bar" aria-label="Navegação mobile">
+    <a href="index.html" class="tab-item">
+      <i class="fas fa-home"></i><span>Início</span>
+    </a>
+    <a href="category.html?categoria=embalagens" class="tab-item tab-active">
+      <i class="fas fa-th-large"></i><span>Categorias</span>
+    </a>
+    <a href="#" class="tab-item" id="tab-search-btn">
+      <i class="fas fa-search"></i><span>Buscar</span>
+    </a>
+    <a href="cart.html" class="tab-item">
+      <i class="fas fa-shopping-cart"></i>
+      <span>Carrinho</span>
+      <span class="tab-cart-badge cart-count">0</span>
+    </a>
+    <a href="#" class="tab-item">
+      <i class="fas fa-user"></i><span>Conta</span>
+    </a>
+  </nav>
 </body>
 </html>

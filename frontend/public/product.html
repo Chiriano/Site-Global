@@ -22,7 +22,7 @@
   </div>
 
   <!-- Main Header -->
-  <header class="main-header">
+  <header class="main-header" id="main-header">
     <div class="container header-content">
       <div class="logo">
         <a href="index.html">
@@ -30,12 +30,29 @@
             onerror="this.onerror=null; this.src='https://placehold.co/200x50/ffffff/E31B23?text=Alpha+Convites';">
         </a>
       </div>
-      <div class="search-bar">
+      <div class="search-bar" id="desktop-search">
         <input type="text" placeholder="O que você está procurando?">
         <button type="button"><i class="fas fa-search"></i></button>
       </div>
       <div class="cart-btn">
         <a href="cart.html"><i class="fas fa-shopping-cart"></i> Carrinho <span class="cart-count">(0)</span></a>
+      </div>
+      <div class="mobile-header-icons">
+        <button class="mob-icon-btn" id="mobile-search-toggle" aria-label="Buscar">
+          <i class="fas fa-search"></i>
+        </button>
+        <a href="cart.html" class="mob-icon-btn mob-cart-icon" aria-label="Carrinho">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="mob-cart-badge cart-count">0</span>
+        </a>
+      </div>
+    </div>
+    <div class="mobile-search-bar" id="mobile-search-bar">
+      <div class="container">
+        <div class="mobile-search-inner">
+          <input type="text" placeholder="O que você está procurando?" class="mobile-search-input">
+          <button class="mobile-search-close" id="mobile-search-close"><i class="fas fa-times"></i></button>
+        </div>
       </div>
     </div>
   </header>
@@ -157,6 +174,11 @@
       <section class="product-options-section">
         <h2 class="options-title">Selecione as opções</h2>
         <div class="options-divider"></div>
+
+        <div class="options-group model-picker-group" id="model-picker-group" hidden>
+          <div class="options-question" id="model-picker-title">Escolha o modelo</div>
+          <div class="model-picker-grid" id="model-picker-grid"></div>
+        </div>
 
         <div class="options-group">
           <div class="options-question">Precisa contratar ou realizar ajuste na arte final?</div>
@@ -402,47 +424,190 @@
       sushi: {
         title:    'Caixa para Sushi Personalizada',
         subtitle: 'Caixa de papel ideal para pratos da culinária japonesa, como sushi, sashimi e hot roll.',
-        images:   ['assets/produtos/sushi.png', 'assets/produtos/sushi 2.png', 'assets/produtos/sushi 1.png'],
-        group:    'oriental',
-        groupLabel: 'Oriental',
-        sub:      'sushi',
-        subLabel: 'Sushi'
+        images:   [
+          'Produtos/Sushi/Caixa para Sushi Personalizada/Caixa para Sushi Personalizada.png',
+          'Produtos/Sushi/Caixa para Sushi Personalizada/Caixa para Sushi Personalizada-1.png',
+          'Produtos/Sushi/Caixa para Sushi Personalizada/Caixa para Sushi Personalizada-2.png'
+        ],
+        group: 'oriental', groupLabel: 'Oriental', sub: 'sushi', subLabel: 'Sushi'
       },
-      combinado: {
-        title:    'Caixa Combinado Gaveta',
-        subtitle: 'Embalagem gaveta ideal para combinados orientais personalizados.',
-        images:   ['assets/produtos/combinado 1.png', 'assets/produtos/combinado.png', 'assets/produtos/combinado 2.png'],
-        group:    'oriental',
-        groupLabel: 'Oriental',
-        sub:      'combinado',
-        subLabel: 'Combinado'
+      'combinado-liso': {
+        title:    'Caixa para Combinado Liso',
+        subtitle: 'Embalagem lisa para combinados orientais, ideal para delivery e apresentação.',
+        models: [
+          {
+            label: 'Modelo 1',
+            images: [
+              'Produtos/Combinado/Liso/Caixa para Combinado Liso/Caixa para Combinado Liso.png',
+              'Produtos/Combinado/Liso/Caixa para Combinado Liso/Caixa para Combinado Liso - 1.png',
+              'Produtos/Combinado/Liso/Caixa para Combinado Liso/Caixa para Combinado Liso - 2.png'
+            ]
+          },
+          {
+            label: 'Modelo 2',
+            images: [
+              'Produtos/Combinado/Liso/Caixa para Combinado Liso - Modelo/Caixa para Combinado Liso - Modelo.png',
+              'Produtos/Combinado/Liso/Caixa para Combinado Liso - Modelo/Caixa para Combinado Liso - 1 - Modelo.png',
+              'Produtos/Combinado/Liso/Caixa para Combinado Liso - Modelo/Caixa para Combinado Liso - 2 - Modelo.png'
+            ]
+          },
+          {
+            label: 'Modelo 3',
+            images: [
+              'Produtos/Combinado/Liso/Caixa para Combinado Liso - Modelo 1/Caixa para Combinado Liso - Modelo 1.png',
+              'Produtos/Combinado/Liso/Caixa para Combinado Liso - Modelo 1/Caixa para Combinado Liso - 1 - Modelo 1.png',
+              'Produtos/Combinado/Liso/Caixa para Combinado Liso - Modelo 1/Caixa para Combinado Liso - 2 - Modelo 1.png'
+            ]
+          },
+          {
+            label: 'Modelo 4',
+            images: [
+              'Produtos/Combinado/Liso/Caixa para Combinado Liso - Modelo 2/Caixa para Combinado Liso - Modelo 2.png',
+              'Produtos/Combinado/Liso/Caixa para Combinado Liso - Modelo 2/Caixa para Combinado Liso - 1 - Modelo 2.png',
+              'Produtos/Combinado/Liso/Caixa para Combinado Liso - Modelo 2/Caixa para Combinado Liso - 2 - Modelo 2.png'
+            ]
+          },
+          {
+            label: 'Modelo 5',
+            images: [
+              'Produtos/Combinado/Liso/Caixa para Combinado Liso - Modelo 3/Caixa para Combinado Liso - Modelo 3.png',
+              'Produtos/Combinado/Liso/Caixa para Combinado Liso - Modelo 3/Caixa para Combinado Liso - 1 - Modelo 3.png',
+              'Produtos/Combinado/Liso/Caixa para Combinado Liso - Modelo 3/Caixa para Combinado Liso - 2 - Modelo 3.png'
+            ]
+          },
+          {
+            label: 'Modelo 6',
+            images: [
+              'Produtos/Combinado/Liso/Caixa para Combinado Liso - Modelo 4/Caixa para Combinado Liso - Modelo 4.png',
+              'Produtos/Combinado/Liso/Caixa para Combinado Liso - Modelo 4/Caixa para Combinado Liso - 1 - Modelo 4.png',
+              'Produtos/Combinado/Liso/Caixa para Combinado Liso - Modelo 4/Caixa para Combinado Liso - 2 - Modelo 4.png'
+            ]
+          }
+        ],
+        group: 'oriental', groupLabel: 'Oriental', sub: 'combinado-liso', subLabel: 'Combinado Liso'
+      },
+      'combinado-especial': {
+        title:    'Caixa para Combinado Especial',
+        subtitle: 'Embalagem especial para combinados orientais com acabamento diferenciado.',
+        models: [
+          {
+            label: 'Modelo 1',
+            images: [
+              'Produtos/Combinado/Especial/Caixa para Combinado Especial/Caixa para Combinado Especial.png',
+              'Produtos/Combinado/Especial/Caixa para Combinado Especial/Caixa para Combinado Especial - 1.png',
+              'Produtos/Combinado/Especial/Caixa para Combinado Especial/Caixa para Combinado Especial - 2.png'
+            ]
+          },
+          {
+            label: 'Modelo 2',
+            images: [
+              'Produtos/Combinado/Especial/Caixa para Combinado Especial - Modelo/Caixa para Combinado Especial - Modelo.png',
+              'Produtos/Combinado/Especial/Caixa para Combinado Especial - Modelo/Caixa para Combinado Especial - 1 - Modelo.png',
+              'Produtos/Combinado/Especial/Caixa para Combinado Especial - Modelo/Caixa para Combinado Especial - 2 - Modelo.png'
+            ]
+          },
+          {
+            label: 'Modelo 3',
+            images: [
+              'Produtos/Combinado/Especial/Caixa para Combinado Especial - Modelo  1/Caixa para Combinado Especial - Modelo 1.png',
+              'Produtos/Combinado/Especial/Caixa para Combinado Especial - Modelo  1/Caixa para Combinado Especial - 1 - Modelo 1.png',
+              'Produtos/Combinado/Especial/Caixa para Combinado Especial - Modelo  1/Caixa para Combinado Especial - 2 - Modelo 1.png'
+            ]
+          },
+          {
+            label: 'Modelo 4',
+            images: [
+              'Produtos/Combinado/Especial/Caixa para Combinado Especial - Modelo  2/Caixa para Combinado Especial  - Modelo 2.png',
+              'Produtos/Combinado/Especial/Caixa para Combinado Especial - Modelo  2/Caixa para Combinado Especial  - 1 - Modelo 2.png',
+              'Produtos/Combinado/Especial/Caixa para Combinado Especial - Modelo  2/Caixa para Combinado Especial  - 2 - Modelo 2.png'
+            ]
+          },
+          {
+            label: 'Modelo 5',
+            images: [
+              'Produtos/Combinado/Especial/Caixa para Combinado Especial - Modelo  3/Caixa para Combinado Especial - Modelo  3.png',
+              'Produtos/Combinado/Especial/Caixa para Combinado Especial - Modelo  3/Caixa para Combinado Especial - 1 - Modelo  3.png',
+              'Produtos/Combinado/Especial/Caixa para Combinado Especial - Modelo  3/Caixa para Combinado Especial - 2 - Modelo  3.png'
+            ]
+          }
+        ],
+        group: 'oriental', groupLabel: 'Oriental', sub: 'combinado-especial', subLabel: 'Combinado Especial'
+      },
+      'combinado-personalizar': {
+        title:    'Caixa para Combinado Personalizar',
+        subtitle: 'Embalagem personalizada para combinados orientais com a identidade da sua marca.',
+        models: [
+          {
+            label: 'Modelo 1',
+            images: [
+              'Produtos/Combinado/Personalizar/Caixa para Combinado Personalizar/Caixa para Combinado Personalizar.png',
+              'Produtos/Combinado/Personalizar/Caixa para Combinado Personalizar/Caixa para Combinado Personalizar - 1.png',
+              'Produtos/Combinado/Personalizar/Caixa para Combinado Personalizar/Caixa para Combinado Personalizar - 2.png'
+            ]
+          },
+          {
+            label: 'Modelo 2',
+            images: [
+              'Produtos/Combinado/Personalizar/Caixa para Combinado Personalizar - Modelo/Caixa para Combinado Personalizar - Modelo.png',
+              'Produtos/Combinado/Personalizar/Caixa para Combinado Personalizar - Modelo/Caixa para Combinado Personalizar - 1 - Modelo.png',
+              'Produtos/Combinado/Personalizar/Caixa para Combinado Personalizar - Modelo/Caixa para Combinado Personalizar - 2 - Modelo.png'
+            ]
+          }
+        ],
+        group: 'oriental', groupLabel: 'Oriental', sub: 'combinado-personalizar', subLabel: 'Combinado Personalizar'
+      },
+      'combinado-kraft': {
+        title:    'Caixa Gaveta Combinado Kraft Personalizada',
+        subtitle: 'Embalagem estilo gaveta em kraft personalizada para combinados orientais.',
+        models: [
+          {
+            label: 'Modelo 1',
+            images: [
+              'Produtos/Combinado/Personalizar/Caixa Gaveta Combinado Kraft Personalizada/Caixa Gaveta Combinado Kraft Personalizada.png',
+              'Produtos/Combinado/Personalizar/Caixa Gaveta Combinado Kraft Personalizada/Caixa Gaveta Combinado Kraft Personalizada - 1.png',
+              'Produtos/Combinado/Personalizar/Caixa Gaveta Combinado Kraft Personalizada/Caixa Gaveta Combinado Kraft Personalizada - 2.png'
+            ]
+          },
+          {
+            label: 'Modelo 2',
+            images: [
+              'Produtos/Combinado/Personalizar/Caixa Gaveta Combinado Kraft Personalizada - Modelo/Caixa Gaveta Combinado Kraft Personalizada  - Modelo.png',
+              'Produtos/Combinado/Personalizar/Caixa Gaveta Combinado Kraft Personalizada - Modelo/Caixa Gaveta Combinado Kraft Personalizada - 1 - Modelo.png',
+              'Produtos/Combinado/Personalizar/Caixa Gaveta Combinado Kraft Personalizada - Modelo/Caixa Gaveta Combinado Kraft Personalizada - 2 - Modelo.png'
+            ]
+          }
+        ],
+        group: 'oriental', groupLabel: 'Oriental', sub: 'combinado-kraft', subLabel: 'Combinado Kraft'
       },
       harumaki: {
         title:    'Embalagem Harumaki 2un',
         subtitle: 'Embalagem personalizada para harumaki com 2 unidades.',
-        images:   ['assets/produtos/Harumaki 2.png', 'assets/produtos/Harumaki.png', 'assets/produtos/Harumaki 1.png'],
-        group:    'oriental',
-        groupLabel: 'Oriental',
-        sub:      'harumaki',
-        subLabel: 'Harumaki'
+        images:   [
+          'Produtos/Harumaki/Embalagem Harumaki 2un/Embalagem Harumaki 2un.png',
+          'Produtos/Harumaki/Embalagem Harumaki 2un/Embalagem Harumaki 2un-1.png',
+          'Produtos/Harumaki/Embalagem Harumaki 2un/Embalagem Harumaki 2un-2.png'
+        ],
+        group: 'oriental', groupLabel: 'Oriental', sub: 'harumaki', subLabel: 'Harumaki'
       },
       temaki: {
         title:    'Embalagem para Temaki com berço para Delivery',
         subtitle: 'Embalagem com berço ideal para delivery de temaki, mantendo o produto seguro.',
-        images:   ['assets/produtos/temaki.png', 'assets/produtos/temaki 1.png', 'assets/produtos/temaki 2.png'],
-        group:    'oriental',
-        groupLabel: 'Oriental',
-        sub:      'temaki',
-        subLabel: 'Temaki'
+        images:   [
+          'Produtos/Temaki/Embalagem para Temaki com berço para Delivery/Embalagem para Temaki com berço para Delivery.png',
+          'Produtos/Temaki/Embalagem para Temaki com berço para Delivery/Embalagem para Temaki com berço para Delivery-1.png',
+          'Produtos/Temaki/Embalagem para Temaki com berço para Delivery/Embalagem para Temaki com berço para Delivery-2.png'
+        ],
+        group: 'oriental', groupLabel: 'Oriental', sub: 'temaki', subLabel: 'Temaki'
       },
       yakissoba: {
-        title:    'Caixa Box c/ Tampa Personalizada com berço para Delivery',
+        title:    'Caixa Box c Tampa Personalizada com berço para Delivery',
         subtitle: 'Caixa box com tampa personalizada para yakissoba e pratos quentes.',
-        images:   ['assets/produtos/yakissoba 1.png', 'assets/produtos/yakissoba.png', 'assets/produtos/yakissoba 2.png'],
-        group:    'oriental',
-        groupLabel: 'Oriental',
-        sub:      'yakissoba',
-        subLabel: 'Yakissoba'
+        images:   [
+          'Produtos/Yakissoba/Caixa Box c Tampa Personalizada com berço para Delivery/Caixa Box c Tampa Personalizada com berço para Delivery.png',
+          'Produtos/Yakissoba/Caixa Box c Tampa Personalizada com berço para Delivery/Caixa Box c Tampa Personalizada com berço para Delivery-1.png',
+          'Produtos/Yakissoba/Caixa Box c Tampa Personalizada com berço para Delivery/Caixa Box c Tampa Personalizada com berço para Delivery-2.png'
+        ],
+        group: 'oriental', groupLabel: 'Oriental', sub: 'yakissoba', subLabel: 'Yakissoba'
       }
     };
 
@@ -469,13 +634,20 @@
 
       // â”€â”€ Gallery â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
       let currentIndex = 0;
-      const images     = config.images;
+      let images = Array.isArray(config.images) ? [...config.images] : [];
       const mainImg    = document.getElementById('gallery-main-img');
       const thumbsWrap = document.getElementById('gallery-thumbs');
       const prevBtn    = document.getElementById('gallery-prev');
       const nextBtn    = document.getElementById('gallery-next');
+      const modelPickerGroup = document.getElementById('model-picker-group');
+      const modelPickerTitle = document.getElementById('model-picker-title');
+      const modelPickerGrid  = document.getElementById('model-picker-grid');
 
       function setImage(index) {
+        if (!images.length) {
+          mainImg.src = 'https://placehold.co/900x600/fafafa/999?text=Sem+imagem';
+          return;
+        }
         currentIndex = (index + images.length) % images.length;
         mainImg.src  = images[currentIndex];
         thumbsWrap.querySelectorAll('.gallery-thumb').forEach((t, i) => {
@@ -483,22 +655,75 @@
         });
       }
 
-      // Build thumbnails
-      thumbsWrap.innerHTML = images.map((src, i) =>
-        `<div class="gallery-thumb${i === 0 ? ' active' : ''}" data-index="${i}">
-          <img src="${src}" alt="Imagem ${i + 1}"
-            onerror="this.src='https://placehold.co/80x80/fafafa/999?text=${i+1}'">
-        </div>`
-      ).join('');
+      function renderThumbnails() {
+        thumbsWrap.innerHTML = images.map((src, i) =>
+          `<div class="gallery-thumb${i === 0 ? ' active' : ''}" data-index="${i}">
+            <img src="${src}" alt="Imagem ${i + 1}"
+              onerror="this.src='https://placehold.co/80x80/fafafa/999?text=${i+1}'">
+          </div>`
+        ).join('');
 
-      thumbsWrap.querySelectorAll('.gallery-thumb').forEach(t => {
-        t.addEventListener('click', () => setImage(Number(t.dataset.index)));
-      });
+        thumbsWrap.querySelectorAll('.gallery-thumb').forEach(t => {
+          t.addEventListener('click', () => setImage(Number(t.dataset.index)));
+        });
+      }
+
+      function setGalleryImages(nextImages) {
+        images = Array.isArray(nextImages) ? nextImages : [];
+        currentIndex = 0;
+        renderThumbnails();
+        setImage(0);
+      }
+
+      function renderModelPicker(models) {
+        if (!Array.isArray(models) || !models.length) {
+          modelPickerGroup.hidden = true;
+          return;
+        }
+
+        const pickerTitle = `Escolha o modelo ${config.subLabel.toUpperCase()}`;
+        modelPickerTitle.textContent = pickerTitle;
+        modelPickerGroup.hidden = false;
+        modelPickerGrid.innerHTML = models.map((model, i) => {
+          const preview = model.images?.[0] || '';
+          return `
+            <button class="model-card${i === 0 ? ' active' : ''}" type="button" data-model-index="${i}" aria-selected="${i === 0 ? 'true' : 'false'}">
+              <span class="model-card-media">
+                <img src="${preview}" alt="${model.label}"
+                  onerror="this.src='https://placehold.co/160x110/f7f7f7/999?text=Modelo'">
+              </span>
+              <span class="model-card-label">${model.label}</span>
+            </button>
+          `;
+        }).join('');
+
+        modelPickerGrid.querySelectorAll('.model-card').forEach(card => {
+          card.addEventListener('click', () => {
+            const idx = Number(card.dataset.modelIndex);
+            const selectedModel = models[idx];
+            if (!selectedModel) return;
+            modelPickerGrid.querySelectorAll('.model-card').forEach(btn => {
+              btn.classList.remove('active');
+              btn.setAttribute('aria-selected', 'false');
+            });
+            card.classList.add('active');
+            card.setAttribute('aria-selected', 'true');
+            setGalleryImages(selectedModel.images);
+          });
+        });
+
+        setGalleryImages(models[0].images);
+      }
 
       prevBtn?.addEventListener('click', () => setImage(currentIndex - 1));
       nextBtn?.addEventListener('click', () => setImage(currentIndex + 1));
 
-      setImage(0);
+      if (Array.isArray(config.models) && config.models.length) {
+        renderModelPicker(config.models);
+      } else {
+        modelPickerGroup.hidden = true;
+        setGalleryImages(images);
+      }
 
       // ── Product description accordion ──────────────────────────────────────
       const descBody   = document.getElementById('prod-desc-body');
@@ -618,7 +843,43 @@
       });
     });
   </script>
+
+  <script>
+    /* ── Mobile search toggle ──────────────────────────────────────────────── */
+    (function () {
+      const toggleBtn = document.getElementById('mobile-search-toggle');
+      const closeBtn  = document.getElementById('mobile-search-close');
+      const searchBar = document.getElementById('mobile-search-bar');
+      const header    = document.getElementById('main-header');
+      const tabSearch = document.getElementById('tab-search-btn');
+      function openSearch()  { searchBar && searchBar.classList.add('is-open'); header && header.classList.add('search-open'); const i = searchBar && searchBar.querySelector('input'); if(i) i.focus(); }
+      function closeSearch() { searchBar && searchBar.classList.remove('is-open'); header && header.classList.remove('search-open'); }
+      toggleBtn && toggleBtn.addEventListener('click', openSearch);
+      tabSearch && tabSearch.addEventListener('click', function(e){ e.preventDefault(); openSearch(); });
+      closeBtn  && closeBtn.addEventListener('click',  closeSearch);
+    })();
+  </script>
+
+  <!-- ── Mobile Tab Bar ──────────────────────────────────────────────────── -->
+  <nav class="mobile-tab-bar" aria-label="Navegação mobile">
+    <a href="index.html" class="tab-item">
+      <i class="fas fa-home"></i><span>Início</span>
+    </a>
+    <a href="category.html?categoria=embalagens" class="tab-item">
+      <i class="fas fa-th-large"></i><span>Categorias</span>
+    </a>
+    <a href="#" class="tab-item" id="tab-search-btn">
+      <i class="fas fa-search"></i><span>Buscar</span>
+    </a>
+    <a href="cart.html" class="tab-item">
+      <i class="fas fa-shopping-cart"></i>
+      <span>Carrinho</span>
+      <span class="tab-cart-badge cart-count">0</span>
+    </a>
+    <a href="#" class="tab-item">
+      <i class="fas fa-user"></i><span>Conta</span>
+    </a>
+  </nav>
 </body>
 </html>
-
 

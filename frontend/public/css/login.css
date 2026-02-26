@@ -329,6 +329,10 @@ body {
   gap: 14px;
 }
 
+.create-account-page .card-footer {
+  justify-content: center;
+}
+
 .text-link {
   position: relative;
   color: #343c49;

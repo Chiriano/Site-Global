@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criar Conta | Alpha UltraPress</title>
+  <meta name="description" content="Crie sua conta Alpha UltraPress.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="./css/login.css">
+</head>
+<body class="create-account-page">
+  <main class="login-shell" aria-labelledby="create-account-title">
+    <div class="bg-layer bg-mesh" aria-hidden="true"></div>
+    <div class="bg-layer bg-grid" aria-hidden="true"></div>
+    <div class="bg-layer bg-vignette" aria-hidden="true"></div>
+    <div class="glow glow-left" aria-hidden="true"></div>
+    <div class="glow glow-right" aria-hidden="true"></div>
+
+    <section class="login-card" aria-label="Painel de criação de conta">
+      <div class="brand-wrap">
+        <img src="/assets/logo/logo-dark-ULTRAPRESS.png" alt="Logo Alpha UltraPress" class="brand-logo">
+        <span class="brand-fallback" aria-hidden="true">ALPHA ULTRAPRESS</span>
+      </div>
+
+      <header class="card-header">
+        <h1 id="create-account-title">Criar conta</h1>
+      </header>
+
+      <form id="create-account-form" novalidate>
+        <div class="field-group">
+          <label for="name">Nome completo</label>
+          <div class="field-control">
+            <i class="fa-regular fa-user" aria-hidden="true"></i>
+            <input id="name" name="name" type="text" autocomplete="name" placeholder="Seu nome completo" aria-required="true" required>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="email">E-mail</label>
+          <div class="field-control">
+            <i class="fa-regular fa-envelope" aria-hidden="true"></i>
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="voce@empresa.com" aria-required="true" required>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="password">Senha</label>
+          <div class="field-control">
+            <i class="fa-solid fa-lock" aria-hidden="true"></i>
+            <input id="password" name="password" type="password" autocomplete="new-password" placeholder="Crie uma senha" aria-required="true" required>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-login" aria-label="Criar conta">
+          <span class="btn-text">Criar conta</span>
+          <span class="btn-spinner" aria-hidden="true"></span>
+        </button>
+
+        <p class="form-message" role="status" aria-live="polite"></p>
+      </form>
+
+      <footer class="card-footer">
+        <a href="./login.html" class="text-link">Já tenho conta</a>
+      </footer>
+    </section>
+  </main>
+</body>
+</html>

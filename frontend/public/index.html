@@ -23,7 +23,7 @@
     </div>
 
     <!-- Main Header -->
-    <header class="main-header">
+    <header class="main-header" id="main-header">
         <div class="container header-content">
             <div class="logo">
                 <a href="index.html">
@@ -31,12 +31,31 @@
                         onerror="this.onerror=null; this.src='https://placehold.co/200x50/ffffff/E31B23?text=Alpha+Convites';">
                 </a>
             </div>
-            <div class="search-bar">
-                <input type="text" placeholder="O que voce esta procurando?">
+            <div class="search-bar" id="desktop-search">
+                <input type="text" placeholder="O que voce esta procurando?" id="search-input-main">
                 <button type="button"><i class="fas fa-search"></i></button>
             </div>
             <div class="cart-btn">
                 <a href="cart.html"><i class="fas fa-shopping-cart"></i> Carrinho <span class="cart-count">(0)</span></a>
+            </div>
+            <!-- Ícones compactos visíveis só no mobile -->
+            <div class="mobile-header-icons">
+                <button class="mob-icon-btn" id="mobile-search-toggle" aria-label="Buscar">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="cart.html" class="mob-icon-btn mob-cart-icon" aria-label="Carrinho">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="mob-cart-badge cart-count">0</span>
+                </a>
+            </div>
+        </div>
+        <!-- Barra de busca expandida (mobile) -->
+        <div class="mobile-search-bar" id="mobile-search-bar">
+            <div class="container">
+                <div class="mobile-search-inner">
+                    <input type="text" placeholder="O que você está procurando?" class="mobile-search-input">
+                    <button class="mobile-search-close" id="mobile-search-close"><i class="fas fa-times"></i></button>
+                </div>
             </div>
         </div>
     </header>
@@ -127,7 +146,6 @@
     <section class="home-cats-section container">
         <h2 class="section-title">Conheca nossas Embalagens</h2>
         <div class="home-cats-grid">
-
             <div class="home-cat-card">
                 <a href="category.html?category=embalagens&group=oriental">
                     <div class="home-cat-img-wrap">
@@ -141,7 +159,6 @@
                 </a>
                 <a href="category.html?category=embalagens&group=oriental" class="btn btn-primary home-cat-btn">Saber mais</a>
             </div>
-
             <div class="home-cat-card">
                 <a href="category.html?category=embalagens&group=fastfood">
                     <div class="home-cat-img-wrap">
@@ -155,7 +172,6 @@
                 </a>
                 <a href="category.html?category=embalagens&group=fastfood" class="btn btn-primary home-cat-btn">Saber mais</a>
             </div>
-
             <div class="home-cat-card">
                 <a href="category.html?category=embalagens&group=doces">
                     <div class="home-cat-img-wrap">
@@ -169,8 +185,8 @@
                 </a>
                 <a href="category.html?category=embalagens&group=doces" class="btn btn-primary home-cat-btn">Saber mais</a>
             </div>
-
         </div>
+
     </section>
 
     <!-- Promo Banner -->
@@ -229,6 +245,100 @@
     <script>window.SITE_LOGO_FILE = 'logo-dark-ULTRAPRESS.png';</script>
     <script src="js/scripts.js"></script>
     <script src="js/catalog-menu.js"></script>
+
+    <script>
+      /* ── Hero parallax ────────────────────────────────────────────────────── */
+      (function () {
+        const heroMain = document.querySelector('.hero-main');
+        const heroImg  = heroMain && heroMain.querySelector('img');
+        if (!heroMain || !heroImg) return;
+
+        let raf = null;
+        let targetX = 0, targetY = 0;
+        let currentX = 0, currentY = 0;
+
+        heroMain.addEventListener('mousemove', (e) => {
+          const rect = heroMain.getBoundingClientRect();
+          const cx = rect.width  / 2;
+          const cy = rect.height / 2;
+          const dx = (e.clientX - rect.left  - cx) / cx; // -1 → 1
+          const dy = (e.clientY - rect.top   - cy) / cy; // -1 → 1
+          targetX = dx * -10;
+          targetY = dy * -10;
+          if (!raf) animate();
+        });
+
+        heroMain.addEventListener('mouseleave', () => {
+          targetX = 0;
+          targetY = 0;
+          if (!raf) animate();
+        });
+
+        function animate() {
+          currentX += (targetX - currentX) * 0.08;
+          currentY += (targetY - currentY) * 0.08;
+          heroImg.style.transform = `scale(1.06) translate(${currentX}px, ${currentY}px)`;
+          heroImg.style.animation  = 'none';
+
+          const done = Math.abs(targetX - currentX) < 0.05 && Math.abs(targetY - currentY) < 0.05;
+          if (done && targetX === 0 && targetY === 0) {
+            raf = null;
+            heroImg.style.transform = '';
+            heroImg.style.animation  = '';
+          } else {
+            raf = requestAnimationFrame(animate);
+          }
+        }
+      })();
+    </script>
+
+    <!-- ── Mobile Tab Bar ──────────────────────────────────────────────────── -->
+    <nav class="mobile-tab-bar" aria-label="Navegação mobile">
+        <a href="index.html" class="tab-item tab-active">
+            <i class="fas fa-home"></i><span>Início</span>
+        </a>
+        <a href="category.html?categoria=embalagens" class="tab-item">
+            <i class="fas fa-th-large"></i><span>Categorias</span>
+        </a>
+        <a href="#" class="tab-item" id="tab-search-btn">
+            <i class="fas fa-search"></i><span>Buscar</span>
+        </a>
+        <a href="cart.html" class="tab-item">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Carrinho</span>
+            <span class="tab-cart-badge cart-count">0</span>
+        </a>
+        <a href="#" class="tab-item">
+            <i class="fas fa-user"></i><span>Conta</span>
+        </a>
+    </nav>
+
+    <script>
+      /* ── Mobile search toggle ──────────────────────────────────────────────── */
+      (function () {
+        const toggleBtn  = document.getElementById('mobile-search-toggle');
+        const closeBtn   = document.getElementById('mobile-search-close');
+        const searchBar  = document.getElementById('mobile-search-bar');
+        const tabSearch  = document.getElementById('tab-search-btn');
+        const header     = document.getElementById('main-header');
+
+        function openSearch() {
+          searchBar && searchBar.classList.add('is-open');
+          header    && header.classList.add('search-open');
+          const inp = searchBar && searchBar.querySelector('input');
+          if (inp) inp.focus();
+        }
+        function closeSearch() {
+          searchBar && searchBar.classList.remove('is-open');
+          header    && header.classList.remove('search-open');
+        }
+
+        toggleBtn && toggleBtn.addEventListener('click', openSearch);
+        tabSearch && tabSearch.addEventListener('click', function(e){ e.preventDefault(); openSearch(); });
+        closeBtn  && closeBtn.addEventListener('click',  closeSearch);
+      })();
+    </script>
+
 </body>
 
 </html>
