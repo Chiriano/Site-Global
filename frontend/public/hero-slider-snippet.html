@@ -1,0 +1,130 @@
+<!--
+═══════════════════════════════════════════════════════════════════
+  Hero Slider — Alpha Ultrapress
+  INSTRUÇÕES DE USO:
+  1. Copie o bloco <section> abaixo e cole no index.html
+     logo após o </nav> (Navigation Bar) e antes da próxima section.
+  2. No <head> do index.html adicione:
+       <link rel="stylesheet" href="css/hero-slider.css">
+  3. Antes do </body> do index.html adicione:
+       <script src="js/hero-slider.js"></script>
+  4. Coloque o arquivo Banner-01.png em: assets/banners/Banner-01.png
+═══════════════════════════════════════════════════════════════════
+-->
+
+<!-- ═══════════════════════ HERO SLIDER ═══════════════════════ -->
+<section class="hero-slider" id="heroSlider" aria-label="Carrossel principal" aria-roledescription="carrossel">
+
+    <!-- ── Slide 1 — Banner-01.png (1920×640px) ──────────────── -->
+    <article class="hs-slide hs-slide--active"
+             style="background-image: url('assets/banners/Banner-01.png')"
+             role="group"
+             aria-roledescription="slide"
+             aria-label="Slide 1 de 4"
+             aria-hidden="false">
+        <div class="hs-overlay"></div>
+        <div class="hs-content">
+            <span class="hs-tag">Novidade</span>
+            <h2 class="hs-title">Embalagens que<br>Imprimem sua Marca</h2>
+            <p class="hs-subtitle">
+                Qualidade premium com acabamento profissional<br>
+                para o seu negócio crescer
+            </p>
+            <a href="category.html?name=embalagens" class="hs-btn">Ver Produtos</a>
+        </div>
+    </article>
+
+    <!-- ── Slide 2 — Imagem a definir ────────────────────────── -->
+    <!--
+        Quando tiver a imagem, adicione no article abaixo:
+        style="background-image: url('assets/banners/Banner-02.png')"
+    -->
+    <article class="hs-slide"
+             role="group"
+             aria-roledescription="slide"
+             aria-label="Slide 2 de 4"
+             aria-hidden="true">
+        <div class="hs-overlay"></div>
+        <div class="hs-content">
+            <span class="hs-tag">Em Breve</span>
+            <h2 class="hs-title">Título do Slide 2</h2>
+            <p class="hs-subtitle">Subtítulo descritivo do slide 2</p>
+            <a href="#" class="hs-btn">Saiba Mais</a>
+        </div>
+    </article>
+
+    <!-- ── Slide 3 — Imagem a definir ────────────────────────── -->
+    <!--
+        Quando tiver a imagem, adicione no article abaixo:
+        style="background-image: url('assets/banners/Banner-03.png')"
+    -->
+    <article class="hs-slide"
+             role="group"
+             aria-roledescription="slide"
+             aria-label="Slide 3 de 4"
+             aria-hidden="true">
+        <div class="hs-overlay"></div>
+        <div class="hs-content">
+            <span class="hs-tag">Em Breve</span>
+            <h2 class="hs-title">Título do Slide 3</h2>
+            <p class="hs-subtitle">Subtítulo descritivo do slide 3</p>
+            <a href="#" class="hs-btn">Saiba Mais</a>
+        </div>
+    </article>
+
+    <!-- ── Slide 4 — Imagem a definir ────────────────────────── -->
+    <!--
+        Quando tiver a imagem, adicione no article abaixo:
+        style="background-image: url('assets/banners/Banner-04.png')"
+    -->
+    <article class="hs-slide"
+             role="group"
+             aria-roledescription="slide"
+             aria-label="Slide 4 de 4"
+             aria-hidden="true">
+        <div class="hs-overlay"></div>
+        <div class="hs-content">
+            <span class="hs-tag">Em Breve</span>
+            <h2 class="hs-title">Título do Slide 4</h2>
+            <p class="hs-subtitle">Subtítulo descritivo do slide 4</p>
+            <a href="#" class="hs-btn">Saiba Mais</a>
+        </div>
+    </article>
+
+    <!-- ── Seta: Anterior ────────────────────────────────────── -->
+    <button class="hs-arrow hs-arrow--prev" id="hsPrev"
+            aria-label="Slide anterior" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26"
+             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"/>
+        </svg>
+    </button>
+
+    <!-- ── Seta: Próximo ─────────────────────────────────────── -->
+    <button class="hs-arrow hs-arrow--next" id="hsNext"
+            aria-label="Próximo slide" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26"
+             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"/>
+        </svg>
+    </button>
+
+    <!-- ── Indicadores (bolinhas) ────────────────────────────── -->
+    <div class="hs-dots" role="tablist" aria-label="Selecionar slide">
+        <button class="hs-dot hs-dot--active" role="tab" type="button"
+                data-index="0" aria-label="Slide 1" aria-selected="true"></button>
+        <button class="hs-dot" role="tab" type="button"
+                data-index="1" aria-label="Slide 2" aria-selected="false"></button>
+        <button class="hs-dot" role="tab" type="button"
+                data-index="2" aria-label="Slide 3" aria-selected="false"></button>
+        <button class="hs-dot" role="tab" type="button"
+                data-index="3" aria-label="Slide 4" aria-selected="false"></button>
+    </div>
+
+    <!-- ── Barra de progresso ────────────────────────────────── -->
+    <div class="hs-progress-bar" aria-hidden="true"></div>
+
+</section>
+<!-- ═══════════════════════ FIM HERO SLIDER ═══════════════════ -->

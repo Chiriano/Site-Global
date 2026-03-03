@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Produto | Alpha Convites</title>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Open+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -26,13 +26,19 @@
     <div class="container header-content">
       <div class="logo">
         <a href="index.html">
-          <img src="assets/logo/logo-dark-ULTRAPRESS.png" alt="Alpha Convites Logo"
+          <img src="assets/logo/logo-white-ULTRAPRESS.png" alt="Alpha Convites Logo"
             onerror="this.onerror=null; this.src='https://placehold.co/200x50/ffffff/E31B23?text=Alpha+Convites';">
         </a>
       </div>
       <div class="search-bar" id="desktop-search">
         <input type="text" placeholder="O que você está procurando?">
         <button type="button"><i class="fas fa-search"></i></button>
+      </div>
+      <div class="wishlist-header-btn">
+        <a href="wishlist.html" aria-label="Lista de desejos">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="wishlist-count" style="display:none"></span>
+        </a>
       </div>
       <div class="cart-btn">
         <a href="cart.html"><i class="fas fa-shopping-cart"></i> Carrinho <span class="cart-count">(0)</span></a>
@@ -41,6 +47,10 @@
         <button class="mob-icon-btn" id="mobile-search-toggle" aria-label="Buscar">
           <i class="fas fa-search"></i>
         </button>
+        <a href="wishlist.html" class="mob-icon-btn mob-wishlist-icon" aria-label="Lista de desejos">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="mob-cart-badge wishlist-count" style="display:none"></span>
+        </a>
         <a href="cart.html" class="mob-icon-btn mob-cart-icon" aria-label="Carrinho">
           <i class="fas fa-shopping-cart"></i>
           <span class="mob-cart-badge cart-count">0</span>
@@ -100,10 +110,15 @@
         <ul class="nav-links">
           <li><a href="category.html?name=convites">Convites</a></li>
           <li><a href="category.html?name=embalagens">Embalagens</a></li>
+          <li><a href="#">Ofertas</a></li>
+          <li><a href="#">Cupom</a></li>
+          <li><a href="#">Contato</a></li>
         </ul>
       </div>
       <div class="nav-right">
-        <a href="login.html"><i class="fas fa-user"></i> Entrar / Cadastrar</a>
+        <a href="login.html">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:6px"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Entrar
+        </a>
       </div>
     </div>
   </nav>
@@ -163,6 +178,10 @@
         <div class="product-head-top">
           <h1 class="product-title" id="product-title">Caixa para Sushi Personalizada</h1>
           <div class="product-code">Código 01582</div>
+          <button class="wl-heart-btn wl-detail-btn" id="product-wl-btn" data-wishlist-id="" aria-label="Adicionar aos favoritos" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span class="wl-detail-label">Favoritar</span>
+          </button>
         </div>
         <p class="product-subtitle" id="product-subtitle">Caixa de papel ideal para pratos da culinária japonesa, como sushi, sashimi e hot roll.</p>
         <div class="product-alert">
@@ -361,11 +380,12 @@
   </footer>
 
   <script src="js/cart.js"></script>
-  <script>window.SITE_LOGO_FILE = 'logo-dark-ULTRAPRESS.png';</script>
+  <script src="js/wishlist.js"></script>
+  <script>window.SITE_LOGO_FILE = 'logo-white-ULTRAPRESS.png';</script>
   <script src="js/scripts.js"></script>
   <script src="js/catalog-menu.js"></script>
   <script>
-    // â”€â”€ Product configs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Product configs ────────────────────────────────────────────────────────
     const defaultQuantities = [
       { units: 500,  label: '500 unid.',   price: 100.00 },
       { units: 1000, label: '1.000 unid.', price: 180.00 },
@@ -616,7 +636,7 @@
       const subKey = (params.get('sub') || params.get('subcategory') || 'sushi').toLowerCase();
       const config = productConfigs[subKey] || productConfigs.sushi;
 
-      // â”€â”€ Breadcrumb â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      // ── Breadcrumb ─────────────────────────────────────────────────────────
       const bc = document.getElementById('breadcrumb');
       if (bc) {
         bc.innerHTML =
@@ -626,13 +646,31 @@
           ` &rsaquo; <span>${config.title}</span>`;
       }
 
-      // â”€â”€ Title / subtitle â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      // ── Title / subtitle ───────────────────────────────────────────────────
       const titleEl    = document.getElementById('product-title');
       const subtitleEl = document.getElementById('product-subtitle');
       if (titleEl)    titleEl.textContent    = config.title;
       if (subtitleEl) subtitleEl.textContent = config.subtitle;
 
-      // â”€â”€ Gallery â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      // -- Wishlist button ---------------------------------------------------
+      const wlBtn = document.getElementById('product-wl-btn');
+      if (wlBtn) {
+        const productData = { id: subKey, name: config.title, price: 0, image: (config.images || [])[0] || '', item: config.sub || subKey, group: config.group || '' };
+        wlBtn.dataset.wishlistId = subKey;
+        const updateWlBtn = () => {
+          const active = window.WishlistStore && window.WishlistStore.isInWishlist(subKey);
+          wlBtn.classList.toggle('wl-active', !!active);
+          const label = wlBtn.querySelector('.wl-detail-label');
+          if (label) label.textContent = active ? 'Favoritado' : 'Favoritar';
+          wlBtn.setAttribute('aria-label', active ? 'Remover dos favoritos' : 'Adicionar aos favoritos');
+        };
+        wlBtn.addEventListener('click', () => {
+          if (window.WishlistStore) { window.WishlistStore.toggle(productData); updateWlBtn(); }
+        });
+        if (window.WishlistStore) updateWlBtn();
+      }
+
+      // ── Gallery ────────────────────────────────────────────────────────────
       let currentIndex = 0;
       let images = Array.isArray(config.images) ? [...config.images] : [];
       const mainImg    = document.getElementById('gallery-main-img');
@@ -725,7 +763,7 @@
         setGalleryImages(images);
       }
 
-      // ── Product description accordion ──────────────────────────────────────
+      // -- Product description accordion --------------------------------------
       const descBody   = document.getElementById('prod-desc-body');
       const descToggle = document.getElementById('prod-desc-toggle');
       const descIcon   = descToggle?.querySelector('.prod-desc-icon');
@@ -737,7 +775,7 @@
         if (descIcon) descIcon.style.transform = open ? 'rotate(180deg)' : 'rotate(0)';
       });
 
-      // ── Share buttons ───────────────────────────────────────────────────────
+      // -- Share buttons -------------------------------------------------------
       const pageUrl   = encodeURIComponent(window.location.href);
       const pageTitle = encodeURIComponent(config.title);
       const shareFb   = document.getElementById('share-fb');
@@ -747,10 +785,10 @@
       if (shareWa)   shareWa.href   = `https://wa.me/?text=${pageTitle}%20${pageUrl}`;
       if (shareMail) shareMail.href = `mailto:?subject=${pageTitle}&body=${pageUrl}`;
 
-      // ── Quantities ─────────────────────────────────────────────────────────
+      // -- Quantities ---------------------------------------------------------
       renderQuantities(config.quantities || defaultQuantities);
 
-      // ── Gabarito download ──────────────────────────────────────────────────
+      // -- Gabarito download --------------------------------------------------
       const gabaritoList = document.getElementById('gabarito-list');
       if (gabaritoList) {
         const gabaritoFile = config.gabaritoFile || 'pdf/GABARITO--Caixas-Sushi-PDF.rar';
@@ -762,7 +800,7 @@
           </a>`;
       }
 
-      // ── Option buttons ─────────────────────────────────────────────────────
+      // -- Option buttons -----------------------------------------------------
       document.querySelectorAll('[data-option-selector]').forEach(group => {
         const btns  = group.querySelectorAll('[data-option-btn]');
         const input = group.querySelector('[data-option-input]');
@@ -776,7 +814,7 @@
         });
       });
 
-      // ── File upload ────────────────────────────────────────────────────────
+      // -- File upload --------------------------------------------------------
       const fileInput      = document.getElementById('file-input');
       const uploadBtn      = document.getElementById('upload-btn');
       const uploadFilename = document.getElementById('upload-filename');
@@ -790,7 +828,7 @@
         uploadFilename.classList.add('has-file');
       });
 
-      // ── Order summary (reactive to qty selection) ──────────────────────────
+      // -- Order summary (reactive to qty selection) --------------------------
       const summaryProduct = document.getElementById('summary-product');
       const summaryQty     = document.getElementById('summary-qty');
       const summaryPrice   = document.getElementById('summary-price');
@@ -816,7 +854,7 @@
       // Initial render
       updateSummary();
 
-      // ── Frete simulation ───────────────────────────────────────────────────
+      // -- Frete simulation ---------------------------------------------------
       const cepInput   = document.getElementById('cep-input');
       const freteBtn   = document.getElementById('frete-btn');
       const freteResult = document.getElementById('frete-result');
@@ -845,7 +883,7 @@
   </script>
 
   <script>
-    /* ── Mobile search toggle ──────────────────────────────────────────────── */
+    /* -- Mobile search toggle ------------------------------------------------ */
     (function () {
       const toggleBtn = document.getElementById('mobile-search-toggle');
       const closeBtn  = document.getElementById('mobile-search-close');
@@ -860,7 +898,7 @@
     })();
   </script>
 
-  <!-- ── Mobile Tab Bar ──────────────────────────────────────────────────── -->
+  <!-- -- Mobile Tab Bar ---------------------------------------------------- -->
   <nav class="mobile-tab-bar" aria-label="Navegação mobile">
     <a href="index.html" class="tab-item">
       <i class="fas fa-home"></i><span>Início</span>

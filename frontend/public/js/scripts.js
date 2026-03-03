@@ -49,7 +49,7 @@ function configureCartHeaderLink() {
 
 function configureSiteLogo() {
     const configuredFile = (window.SITE_LOGO_FILE || localStorage.getItem('site_logo_file') || '').trim();
-    const fileCandidates = [configuredFile, 'logo.png', 'logo-dark-2.png', 'logo-white-2.png']
+    const fileCandidates = [configuredFile, 'logo-white-ULTRAPRESS.png', 'logo-white-2.png', 'logo.png']
         .filter((value, index, array) => value && array.indexOf(value) === index);
     const basePaths = [`${ASSETS_BASE}/logo`, 'assets/logo', './assets/logo', '/frontend/public/assets/logo'];
     const logoCandidates = [];
@@ -62,8 +62,6 @@ function configureSiteLogo() {
 
     const logoImages = document.querySelectorAll('.logo img, .footer-bottom img');
     logoImages.forEach((img) => {
-        img.style.maxHeight = '140px';
-        img.style.width = 'auto';
         let index = 0;
         img.src = logoCandidates[index];
         img.onerror = () => {
@@ -130,8 +128,8 @@ function configureSiteLogo() {
 
     const headerLogo = document.querySelector('.main-header .logo img');
     if (headerLogo) {
-        headerLogo.style.width = '240px';
-        headerLogo.style.maxWidth = '240px';
+        headerLogo.style.width = '150px';
+        headerLogo.style.maxWidth = '150px';
         headerLogo.style.maxHeight = 'none';
         headerLogo.style.height = 'auto';
     }
@@ -232,7 +230,19 @@ async function loadProducts() {
     }
 }
 
+function wrapStickyHeader() {
+    const header = document.querySelector('.main-header');
+    const nav    = document.querySelector('.main-nav');
+    if (!header || !nav) return;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'sticky-header-bar';
+    header.parentNode.insertBefore(wrapper, header);
+    wrapper.appendChild(header);
+    wrapper.appendChild(nav);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    wrapStickyHeader();
     configureSiteLogo();
     configureCartHeaderLink();
     updateCartCount();

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Categoria | Alpha Convites</title>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Open+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -26,13 +26,19 @@
     <div class="container header-content">
       <div class="logo">
         <a href="index.html">
-          <img src="assets/logo/logo-dark-2.png" alt="Alpha Convites Logo"
+          <img src="assets/logo/logo-white-ULTRAPRESS.png" alt="Alpha Convites Logo"
             onerror="this.onerror=null; this.src='https://placehold.co/200x50/ffffff/E31B23?text=Alpha+Convites';">
         </a>
       </div>
       <div class="search-bar" id="desktop-search">
         <input type="text" placeholder="O que voce esta procurando?">
         <button type="button"><i class="fas fa-search"></i></button>
+      </div>
+      <div class="wishlist-header-btn">
+        <a href="wishlist.html" aria-label="Lista de desejos">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="wishlist-count" style="display:none"></span>
+        </a>
       </div>
       <div class="cart-btn">
         <a href="cart.html"><i class="fas fa-shopping-cart"></i> Carrinho <span class="cart-count">(0)</span></a>
@@ -41,6 +47,10 @@
         <button class="mob-icon-btn" id="mobile-search-toggle" aria-label="Buscar">
           <i class="fas fa-search"></i>
         </button>
+        <a href="wishlist.html" class="mob-icon-btn mob-wishlist-icon" aria-label="Lista de desejos">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="mob-cart-badge wishlist-count" style="display:none"></span>
+        </a>
         <a href="cart.html" class="mob-icon-btn mob-cart-icon" aria-label="Carrinho">
           <i class="fas fa-shopping-cart"></i>
           <span class="mob-cart-badge cart-count">0</span>
@@ -50,7 +60,7 @@
     <div class="mobile-search-bar" id="mobile-search-bar">
       <div class="container">
         <div class="mobile-search-inner">
-          <input type="text" placeholder="O que você está procurando?" class="mobile-search-input">
+          <input type="text" placeholder="O que voc� est� procurando?" class="mobile-search-input">
           <button class="mobile-search-close" id="mobile-search-close"><i class="fas fa-times"></i></button>
         </div>
       </div>
@@ -67,7 +77,7 @@
           </button>
           <!-- Mega Menu Premium -->
           <div class="mega-menu" id="mega-menu">
-            <!-- Ícones horizontais no topo -->
+            <!-- �cones horizontais no topo -->
             <div class="catalog-icons-row">
               <button class="catalog-icon-btn" data-cat="convites" type="button">
                 <div class="catalog-icon-circle">
@@ -82,7 +92,7 @@
                 <span>Embalagens</span>
               </button>
             </div>
-            <!-- 3 painéis abaixo -->
+            <!-- 3 pain�is abaixo -->
             <div class="catalog-grid">
               <div class="catalog-col-left"></div>
               <div class="catalog-col-mid"></div>
@@ -101,10 +111,15 @@
         <ul class="nav-links">
           <li><a href="category.html?name=convites">Convites</a></li>
           <li><a href="category.html?name=embalagens">Embalagens</a></li>
+          <li><a href="#">Ofertas</a></li>
+          <li><a href="#">Cupom</a></li>
+          <li><a href="#">Contato</a></li>
         </ul>
       </div>
       <div class="nav-right">
-        <a href="login.html"><i class="fas fa-user"></i> Entrar / Cadastrar</a>
+        <a href="login.html">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:6px"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Entrar
+        </a>
       </div>
     </div>
   </nav>
@@ -124,7 +139,7 @@
       onerror="this.onerror=null; this.src='https://placehold.co/1200x260/f5f5f5/333333?text=Embalagens';">
   </div>
 
-  <!-- Mobile: botão para abrir filtros -->
+  <!-- Mobile: bot�o para abrir filtros -->
   <div class="container">
     <button class="mobile-filter-toggle" id="mobile-filter-toggle">
       <i class="fas fa-sliders-h"></i> Filtros
@@ -153,7 +168,7 @@
 
         <div class="sidebar-section">
           <div class="sidebar-section-head">
-            <span class="sidebar-label">Faixa de Preço</span>
+            <span class="sidebar-label">Faixa de Pre�o</span>
           </div>
           <div class="range-slider-wrap">
             <div class="range-track">
@@ -167,7 +182,7 @@
               <span class="price-prefix">R$</span>
               <input type="number" id="min-price" class="price-number-input" placeholder="0" min="0">
             </div>
-            <span class="price-dash">—</span>
+            <span class="price-dash">�</span>
             <div class="price-field">
               <span class="price-prefix">R$</span>
               <input type="number" id="max-price" class="price-number-input" min="0">
@@ -253,19 +268,21 @@
       </div>
     </div>
     <div class="container footer-bottom">
-      <img src="assets/logo/logo-white-2.png" alt="Alpha Convites Logo" style="max-height:30px;"
+      <img src="assets/logo/logo-white-ULTRAPRESS.png" alt="Alpha Convites Logo" style="max-height:30px;"
         onerror="this.style.display='none'">
       <p>&copy; 2026 Alpha Convites. Todos os direitos reservados.</p>
     </div>
   </footer>
 
   <script src="js/cart.js"></script>
+  <script src="js/wishlist.js"></script>
+  <script>window.SITE_LOGO_FILE = 'logo-white-ULTRAPRESS.png';</script>
   <script src="js/scripts.js"></script>
   <script src="js/catalog-menu.js"></script>
   <script src="js/category-page.js"></script>
 
   <script>
-    /* ── Mobile sidebar toggle ─────────────────────────────────────────────── */
+    /* -- Mobile sidebar toggle ----------------------------------------------- */
     (function () {
       const btn     = document.getElementById('mobile-filter-toggle');
       const sidebar = document.getElementById('category-sidebar');
@@ -278,7 +295,7 @@
       });
     })();
 
-    /* ── Mobile search toggle ──────────────────────────────────────────────── */
+    /* -- Mobile search toggle ------------------------------------------------ */
     (function () {
       const toggleBtn = document.getElementById('mobile-search-toggle');
       const closeBtn  = document.getElementById('mobile-search-close');
@@ -293,10 +310,10 @@
     })();
   </script>
 
-  <!-- ── Mobile Tab Bar ──────────────────────────────────────────────────── -->
-  <nav class="mobile-tab-bar" aria-label="Navegação mobile">
+  <!-- -- Mobile Tab Bar ---------------------------------------------------- -->
+  <nav class="mobile-tab-bar" aria-label="Navega��o mobile">
     <a href="index.html" class="tab-item">
-      <i class="fas fa-home"></i><span>Início</span>
+      <i class="fas fa-home"></i><span>In�cio</span>
     </a>
     <a href="category.html?categoria=embalagens" class="tab-item tab-active">
       <i class="fas fa-th-large"></i><span>Categorias</span>
@@ -315,3 +332,4 @@
   </nav>
 </body>
 </html>
+

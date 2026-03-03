@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alpha Convites | Grafica Online, Produtos Promocionais Personalizados</title>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Open+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/hero-slider.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
@@ -27,13 +28,19 @@
         <div class="container header-content">
             <div class="logo">
                 <a href="index.html">
-                    <img src="assets/logo/logo-dark-ULTRAPRESS.png" alt="Alpha Convites Logo"
+                    <img src="assets/logo/logo-white-ULTRAPRESS.png" alt="Alpha Convites Logo"
                         onerror="this.onerror=null; this.src='https://placehold.co/200x50/ffffff/E31B23?text=Alpha+Convites';">
                 </a>
             </div>
             <div class="search-bar" id="desktop-search">
                 <input type="text" placeholder="O que voce esta procurando?" id="search-input-main">
                 <button type="button"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="wishlist-header-btn">
+                <a href="wishlist.html" aria-label="Lista de desejos">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                    <span class="wishlist-count" style="display:none"></span>
+                </a>
             </div>
             <div class="cart-btn">
                 <a href="cart.html"><i class="fas fa-shopping-cart"></i> Carrinho <span class="cart-count">(0)</span></a>
@@ -43,6 +50,10 @@
                 <button class="mob-icon-btn" id="mobile-search-toggle" aria-label="Buscar">
                     <i class="fas fa-search"></i>
                 </button>
+                <a href="wishlist.html" class="mob-icon-btn mob-wishlist-icon" aria-label="Lista de desejos">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                    <span class="mob-cart-badge wishlist-count" style="display:none"></span>
+                </a>
                 <a href="cart.html" class="mob-icon-btn mob-cart-icon" aria-label="Carrinho">
                     <i class="fas fa-shopping-cart"></i>
                     <span class="mob-cart-badge cart-count">0</span>
@@ -104,43 +115,76 @@
                 <ul class="nav-links">
                     <li><a href="category.html?name=convites">Convites</a></li>
                     <li><a href="category.html?name=embalagens">Embalagens</a></li>
+                    <li><a href="#">Ofertas</a></li>
+                    <li><a href="#">Cupom</a></li>
+                    <li><a href="#">Contato</a></li>
                 </ul>
             </div>
             <div class="nav-right">
-                <a href="login.html"><i class="fas fa-user"></i> Entrar / Cadastrar</a>
+                <a href="login.html">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:6px"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Entrar
+                </a>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero-section container">
-        <div class="hero-main">
-            <img src="assets/banners/banner-home.png" alt="Embalagens Personalizadas"
-                onerror="this.onerror=null; this.src='https://placehold.co/800x400/f5f5f5/333333?text=Embalagens';">
-            <a href="category.html?categoria=embalagens" class="hero-main-cta">
-                <span class="hero-cta-main">Personalize com a sua marca!</span>
-                <span class="hero-cta-sub">Confira nossas embalagens</span>
-            </a>
+    <!-- ═══════════════════════ HERO SLIDER ═══════════════════════ -->
+    <section class="hero-slider" id="heroSlider" aria-label="Carrossel principal" aria-roledescription="carrossel">
+
+        <!-- Slide 1 — Banner-01.png (1920×500px) -->
+        <article class="hs-slide hs-slide--active"
+                 style="background-image: url('assets/banners/Banner-01.png')"
+                 role="group" aria-roledescription="slide"
+                 aria-label="Slide 1 de 3" aria-hidden="false">
+            <div class="hs-overlay"></div>
+        </article>
+
+        <!-- Slide 2 — Banner-02.png -->
+        <article class="hs-slide"
+                 style="background-image: url('assets/banners/Banner-02.png')"
+                 role="group" aria-roledescription="slide"
+                 aria-label="Slide 2 de 3" aria-hidden="true">
+            <div class="hs-overlay"></div>
+        </article>
+
+        <!-- Slide 3 — Banner-03.png -->
+        <article class="hs-slide"
+                 style="background-image: url('assets/banners/Banner-03.png')"
+                 role="group" aria-roledescription="slide"
+                 aria-label="Slide 3 de 3" aria-hidden="true">
+            <div class="hs-overlay"></div>
+        </article>
+
+        <!-- Seta: Anterior -->
+        <button class="hs-arrow hs-arrow--prev" id="hsPrev" aria-label="Slide anterior" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"/>
+            </svg>
+        </button>
+
+        <!-- Seta: Próximo -->
+        <button class="hs-arrow hs-arrow--next" id="hsNext" aria-label="Próximo slide" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"/>
+            </svg>
+        </button>
+
+        <!-- Indicadores (bolinhas) -->
+        <div class="hs-dots" role="tablist" aria-label="Selecionar slide">
+            <button class="hs-dot hs-dot--active" role="tab" type="button" data-index="0" aria-label="Slide 1" aria-selected="true"></button>
+            <button class="hs-dot" role="tab" type="button" data-index="1" aria-label="Slide 2" aria-selected="false"></button>
+            <button class="hs-dot" role="tab" type="button" data-index="2" aria-label="Slide 3" aria-selected="false"></button>
         </div>
-        <div class="hero-side">
-            <div class="hero-side-banner">
-                <img src="assets/banners/banner-hom1.png" alt="Banner Convites"
-                    onerror="this.onerror=null; this.src='https://placehold.co/400x190/f5f5f5/333333?text=Convites';">
-                <div class="side-glass-block">
-                    <span class="side-glass-title">Acabamentos Premium</span>
-                    <a href="category.html?categoria=convites" class="side-glass-btn">Ver convite</a>
-                </div>
-            </div>
-            <div class="hero-side-banner">
-                <img src="assets/banners/banner-hom.png" alt="Banner Embalagens Orientais"
-                    onerror="this.onerror=null; this.src='https://placehold.co/400x190/f5f5f5/333333?text=Oriental';">
-                <div class="side-glass-block side-glass-dark">
-                    <span class="side-glass-title">Inovação & Criatividade</span>
-                    <a href="category.html?categoria=convites" class="side-glass-btn side-glass-btn-dark">Ver convite</a>
-                </div>
-            </div>
-        </div>
+
+        <!-- Barra de progresso -->
+        <div class="hs-progress-bar" aria-hidden="true"></div>
+
     </section>
+    <!-- ═══════════════════════ FIM HERO SLIDER ═══════════════════ -->
 
     <!-- Home Category Cards: Oriental / Fast Food / Doces -->
     <section class="home-cats-section container">
@@ -242,57 +286,13 @@
     </footer>
 
     <script src="js/cart.js"></script>
-    <script>window.SITE_LOGO_FILE = 'logo-dark-ULTRAPRESS.png';</script>
+    <script src="js/wishlist.js"></script>
+    <script>window.SITE_LOGO_FILE = 'logo-white-ULTRAPRESS.png';</script>
     <script src="js/scripts.js"></script>
     <script src="js/catalog-menu.js"></script>
+    <script src="js/hero-slider.js"></script>
 
-    <script>
-      /* ── Hero parallax ────────────────────────────────────────────────────── */
-      (function () {
-        const heroMain = document.querySelector('.hero-main');
-        const heroImg  = heroMain && heroMain.querySelector('img');
-        if (!heroMain || !heroImg) return;
-
-        let raf = null;
-        let targetX = 0, targetY = 0;
-        let currentX = 0, currentY = 0;
-
-        heroMain.addEventListener('mousemove', (e) => {
-          const rect = heroMain.getBoundingClientRect();
-          const cx = rect.width  / 2;
-          const cy = rect.height / 2;
-          const dx = (e.clientX - rect.left  - cx) / cx; // -1 → 1
-          const dy = (e.clientY - rect.top   - cy) / cy; // -1 → 1
-          targetX = dx * -10;
-          targetY = dy * -10;
-          if (!raf) animate();
-        });
-
-        heroMain.addEventListener('mouseleave', () => {
-          targetX = 0;
-          targetY = 0;
-          if (!raf) animate();
-        });
-
-        function animate() {
-          currentX += (targetX - currentX) * 0.08;
-          currentY += (targetY - currentY) * 0.08;
-          heroImg.style.transform = `scale(1.06) translate(${currentX}px, ${currentY}px)`;
-          heroImg.style.animation  = 'none';
-
-          const done = Math.abs(targetX - currentX) < 0.05 && Math.abs(targetY - currentY) < 0.05;
-          if (done && targetX === 0 && targetY === 0) {
-            raf = null;
-            heroImg.style.transform = '';
-            heroImg.style.animation  = '';
-          } else {
-            raf = requestAnimationFrame(animate);
-          }
-        }
-      })();
-    </script>
-
-    <!-- ── Mobile Tab Bar ──────────────────────────────────────────────────── -->
+    <!-- -- Mobile Tab Bar ---------------------------------------------------- -->
     <nav class="mobile-tab-bar" aria-label="Navegação mobile">
         <a href="index.html" class="tab-item tab-active">
             <i class="fas fa-home"></i><span>Início</span>
@@ -314,7 +314,7 @@
     </nav>
 
     <script>
-      /* ── Mobile search toggle ──────────────────────────────────────────────── */
+      /* -- Mobile search toggle ------------------------------------------------ */
       (function () {
         const toggleBtn  = document.getElementById('mobile-search-toggle');
         const closeBtn   = document.getElementById('mobile-search-close');
@@ -342,5 +342,6 @@
 </body>
 
 </html>
+
 
 

@@ -1,0 +1,307 @@
+/* ═══════════════════════════════════════════════════════════════════
+   Hero Slider — Alpha Ultrapress
+   hero-slider.css
+   Dependência: nenhuma (vanilla CSS puro)
+═══════════════════════════════════════════════════════════════════ */
+
+/* ── Container ──────────────────────────────────────────────────── */
+.hero-slider {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+    background: #000;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* ── Slides ─────────────────────────────────────────────────────── */
+.hs-slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0d0d0d;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity;
+}
+
+/* Slide ativo */
+.hs-slide--active {
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 1;
+}
+
+/* Slides sem imagem: fundo degradê de espera */
+.hs-slide:not([style*="background-image"]) {
+    background: linear-gradient(135deg, #0d0d0d 0%, #1c0000 60%, #0d0d0d 100%);
+}
+
+/* ── Overlay desativado ──────────────────────────────────────────── */
+.hs-overlay {
+    display: none;
+}
+
+/* ── Conteúdo interno ───────────────────────────────────────────── */
+.hs-content {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0 10% 72px;
+    max-width: 700px;
+
+    /* Estado inicial — pronto para animar */
+    opacity: 0;
+    transform: translateY(30px);
+    transition:
+        opacity  0.65s ease 0.45s,
+        transform 0.65s ease 0.45s;
+}
+
+/* Ativa animação quando o slide está ativo */
+.hs-slide--active .hs-content {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ── Tag / Label ────────────────────────────────────────────────── */
+.hs-tag {
+    display: inline-block;
+    background: #d40000;
+    color: #fff;
+    font-family: 'Inter', 'Open Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 2px;
+    margin-bottom: 22px;
+}
+
+/* ── Título ─────────────────────────────────────────────────────── */
+.hs-title {
+    font-family: 'Poppins', 'Inter', sans-serif;
+    font-size: clamp(26px, 3.5vw, 52px);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.18;
+    margin: 0 0 18px;
+    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.55);
+}
+
+/* ── Subtítulo ──────────────────────────────────────────────────── */
+.hs-subtitle {
+    font-family: 'Inter', 'Open Sans', sans-serif;
+    font-size: clamp(14px, 1.4vw, 18px);
+    color: rgba(255, 255, 255, 0.88);
+    line-height: 1.65;
+    margin: 0 0 36px;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
+}
+
+/* ── Botão CTA ──────────────────────────────────────────────────── */
+.hs-btn {
+    display: inline-block;
+    background: #d40000;
+    color: #fff;
+    font-family: 'Inter', 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 15px 40px;
+    border-radius: 3px;
+    transition:
+        background  0.25s ease,
+        transform   0.2s  ease,
+        box-shadow  0.25s ease;
+    box-shadow: 0 4px 22px rgba(212, 0, 0, 0.42);
+}
+
+.hs-btn:hover {
+    background: #a80000;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(212, 0, 0, 0.52);
+}
+
+.hs-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 14px rgba(212, 0, 0, 0.35);
+}
+
+/* ── Botão CTA do Slide 1 — posicionado sobre o oval vermelho da imagem */
+/* Imagem: 1920×640px. Oval vermelho em ~38% left / ~63% top            */
+.hs-s1-cta {
+    position: absolute;
+    left: 38%;
+    top: 63%;
+    transform: translateX(-50%);
+    z-index: 3;
+    color: #fff;
+    font-family: 'Inter', 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: transparent;
+    width: 200px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.hs-s1-cta:hover {
+    opacity: 0.82;
+    transform: translateX(-50%) scale(1.06);
+}
+
+@media (max-width: 1200px) { .hs-s1-cta { left: 37%; top: 62%; } }
+@media (max-width: 992px)  { .hs-s1-cta { left: 36%; top: 60%; width: 170px; } }
+@media (max-width: 768px)  { .hs-s1-cta { left: 50%; top: 62%; width: 160px; transform: translateX(-50%); } }
+@media (max-width: 480px)  { .hs-s1-cta { left: 50%; top: 60%; font-size: 12px; width: 130px; height: 42px; } }
+
+/* ── Setas de navegação ─────────────────────────────────────────── */
+.hs-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+        color         0.25s ease,
+        transform     0.25s ease;
+}
+
+.hs-arrow:hover {
+    color: #d40000;
+    transform: translateY(-50%) scale(1.08);
+}
+
+.hs-arrow svg {
+    width: 16px;
+    height: 16px;
+}
+
+.hs-arrow--prev { left: 28px; }
+.hs-arrow--next { right: 28px; }
+
+/* ── Indicadores (bolinhas) ─────────────────────────────────────── */
+.hs-dots {
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.hs-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.40);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition:
+        background     0.3s ease,
+        width          0.3s ease,
+        border-radius  0.3s ease;
+}
+
+.hs-dot--active {
+    background: #d40000;
+    width: 30px;
+    border-radius: 5px;
+}
+
+.hs-dot:hover:not(.hs-dot--active) {
+    background: rgba(255, 255, 255, 0.75);
+    transform: scale(1.2);
+}
+
+/* ── Barra de progresso ─────────────────────────────────────────── */
+.hs-progress-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 0%;
+    background: #d40000;
+    z-index: 10;
+    transition: width linear;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   RESPONSIVO
+══════════════════════════════════════════════════════════════════ */
+
+/* Tela grande até 1200px */
+@media (max-width: 1200px) {
+    .hero-slider { height: 520px; }
+    .hs-content  { padding: 0 8% 64px; }
+}
+
+/* Tablet */
+@media (max-width: 992px) {
+    .hero-slider { height: 420px; }
+    .hs-content  { padding: 0 7% 56px; max-width: 100%; }
+    .hs-arrow    { width: 22px; height: 22px; }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .hero-slider { height: 360px; }
+
+    .hs-content {
+        align-items: center;
+        text-align: center;
+        padding: 0 6% 56px;
+        max-width: 100%;
+    }
+
+    .hs-arrow--prev { left: 12px; }
+    .hs-arrow--next { right: 12px; }
+    .hs-arrow       { width: 20px; height: 20px; }
+}
+
+/* Mobile pequeno */
+@media (max-width: 480px) {
+    .hero-slider { height: 280px; }
+
+    .hs-tag      { font-size: 10px; letter-spacing: 1.5px; margin-bottom: 12px; }
+    .hs-subtitle { display: none; }
+    .hs-btn      { padding: 11px 26px; font-size: 12px; }
+    .hs-arrow    { display: none; }
+
+    .hs-dots     { bottom: 14px; gap: 8px; }
+    .hs-dot      { width: 8px; height: 8px; }
+    .hs-dot--active { width: 22px; }
+}
