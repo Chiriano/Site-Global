@@ -384,6 +384,7 @@
   <script>window.SITE_LOGO_FILE = 'logo-white-ULTRAPRESS.png';</script>
   <script src="js/scripts.js"></script>
   <script src="js/catalog-menu.js"></script>
+  <script src="js/products-data.js"></script>
   <script>
     // ── Product configs ────────────────────────────────────────────────────────
     const defaultQuantities = [
@@ -440,201 +441,12 @@
         <p><strong>Responsabilidade:</strong> Após envio ou aprovação do arquivo, a Alpha Press não se responsabiliza por aspectos técnicos de arquivo, design e direitos autorais.</p>
       </div>`;
 
-    const productConfigs = {
-      sushi: {
-        title:    'Caixa para Sushi Personalizada',
-        subtitle: 'Caixa de papel ideal para pratos da culinária japonesa, como sushi, sashimi e hot roll.',
-        images:   [
-          'Produtos/Sushi/Caixa para Sushi Personalizada/Caixa para Sushi Personalizada.png',
-          'Produtos/Sushi/Caixa para Sushi Personalizada/Caixa para Sushi Personalizada-1.png',
-          'Produtos/Sushi/Caixa para Sushi Personalizada/Caixa para Sushi Personalizada-2.png'
-        ],
-        group: 'oriental', groupLabel: 'Oriental', sub: 'sushi', subLabel: 'Sushi'
-      },
-      'combinado-liso': {
-        title:    'Caixa para Combinado Liso',
-        subtitle: 'Embalagem lisa para combinados orientais, ideal para delivery e apresentação.',
-        models: [
-          {
-            label: 'Modelo 1',
-            images: [
-              'Produtos/Combinado/Liso/Caixa para Combinado Liso/Caixa para Combinado Liso.png',
-              'Produtos/Combinado/Liso/Caixa para Combinado Liso/Caixa para Combinado Liso - 1.png',
-              'Produtos/Combinado/Liso/Caixa para Combinado Liso/Caixa para Combinado Liso - 2.png'
-            ]
-          },
-          {
-            label: 'Modelo 2',
-            images: [
-              'Produtos/Combinado/Liso/Caixa para Combinado Liso - Modelo/Caixa para Combinado Liso - Modelo.png',
-              'Produtos/Combinado/Liso/Caixa para Combinado Liso - Modelo/Caixa para Combinado Liso - 1 - Modelo.png',
-              'Produtos/Combinado/Liso/Caixa para Combinado Liso - Modelo/Caixa para Combinado Liso - 2 - Modelo.png'
-            ]
-          },
-          {
-            label: 'Modelo 3',
-            images: [
-              'Produtos/Combinado/Liso/Caixa para Combinado Liso - Modelo 1/Caixa para Combinado Liso - Modelo 1.png',
-              'Produtos/Combinado/Liso/Caixa para Combinado Liso - Modelo 1/Caixa para Combinado Liso - 1 - Modelo 1.png',
-              'Produtos/Combinado/Liso/Caixa para Combinado Liso - Modelo 1/Caixa para Combinado Liso - 2 - Modelo 1.png'
-            ]
-          },
-          {
-            label: 'Modelo 4',
-            images: [
-              'Produtos/Combinado/Liso/Caixa para Combinado Liso - Modelo 2/Caixa para Combinado Liso - Modelo 2.png',
-              'Produtos/Combinado/Liso/Caixa para Combinado Liso - Modelo 2/Caixa para Combinado Liso - 1 - Modelo 2.png',
-              'Produtos/Combinado/Liso/Caixa para Combinado Liso - Modelo 2/Caixa para Combinado Liso - 2 - Modelo 2.png'
-            ]
-          },
-          {
-            label: 'Modelo 5',
-            images: [
-              'Produtos/Combinado/Liso/Caixa para Combinado Liso - Modelo 3/Caixa para Combinado Liso - Modelo 3.png',
-              'Produtos/Combinado/Liso/Caixa para Combinado Liso - Modelo 3/Caixa para Combinado Liso - 1 - Modelo 3.png',
-              'Produtos/Combinado/Liso/Caixa para Combinado Liso - Modelo 3/Caixa para Combinado Liso - 2 - Modelo 3.png'
-            ]
-          },
-          {
-            label: 'Modelo 6',
-            images: [
-              'Produtos/Combinado/Liso/Caixa para Combinado Liso - Modelo 4/Caixa para Combinado Liso - Modelo 4.png',
-              'Produtos/Combinado/Liso/Caixa para Combinado Liso - Modelo 4/Caixa para Combinado Liso - 1 - Modelo 4.png',
-              'Produtos/Combinado/Liso/Caixa para Combinado Liso - Modelo 4/Caixa para Combinado Liso - 2 - Modelo 4.png'
-            ]
-          }
-        ],
-        group: 'oriental', groupLabel: 'Oriental', sub: 'combinado-liso', subLabel: 'Combinado Liso'
-      },
-      'combinado-especial': {
-        title:    'Caixa para Combinado Especial',
-        subtitle: 'Embalagem especial para combinados orientais com acabamento diferenciado.',
-        models: [
-          {
-            label: 'Modelo 1',
-            images: [
-              'Produtos/Combinado/Especial/Caixa para Combinado Especial/Caixa para Combinado Especial.png',
-              'Produtos/Combinado/Especial/Caixa para Combinado Especial/Caixa para Combinado Especial - 1.png',
-              'Produtos/Combinado/Especial/Caixa para Combinado Especial/Caixa para Combinado Especial - 2.png'
-            ]
-          },
-          {
-            label: 'Modelo 2',
-            images: [
-              'Produtos/Combinado/Especial/Caixa para Combinado Especial - Modelo/Caixa para Combinado Especial - Modelo.png',
-              'Produtos/Combinado/Especial/Caixa para Combinado Especial - Modelo/Caixa para Combinado Especial - 1 - Modelo.png',
-              'Produtos/Combinado/Especial/Caixa para Combinado Especial - Modelo/Caixa para Combinado Especial - 2 - Modelo.png'
-            ]
-          },
-          {
-            label: 'Modelo 3',
-            images: [
-              'Produtos/Combinado/Especial/Caixa para Combinado Especial - Modelo  1/Caixa para Combinado Especial - Modelo 1.png',
-              'Produtos/Combinado/Especial/Caixa para Combinado Especial - Modelo  1/Caixa para Combinado Especial - 1 - Modelo 1.png',
-              'Produtos/Combinado/Especial/Caixa para Combinado Especial - Modelo  1/Caixa para Combinado Especial - 2 - Modelo 1.png'
-            ]
-          },
-          {
-            label: 'Modelo 4',
-            images: [
-              'Produtos/Combinado/Especial/Caixa para Combinado Especial - Modelo  2/Caixa para Combinado Especial  - Modelo 2.png',
-              'Produtos/Combinado/Especial/Caixa para Combinado Especial - Modelo  2/Caixa para Combinado Especial  - 1 - Modelo 2.png',
-              'Produtos/Combinado/Especial/Caixa para Combinado Especial - Modelo  2/Caixa para Combinado Especial  - 2 - Modelo 2.png'
-            ]
-          },
-          {
-            label: 'Modelo 5',
-            images: [
-              'Produtos/Combinado/Especial/Caixa para Combinado Especial - Modelo  3/Caixa para Combinado Especial - Modelo  3.png',
-              'Produtos/Combinado/Especial/Caixa para Combinado Especial - Modelo  3/Caixa para Combinado Especial - 1 - Modelo  3.png',
-              'Produtos/Combinado/Especial/Caixa para Combinado Especial - Modelo  3/Caixa para Combinado Especial - 2 - Modelo  3.png'
-            ]
-          }
-        ],
-        group: 'oriental', groupLabel: 'Oriental', sub: 'combinado-especial', subLabel: 'Combinado Especial'
-      },
-      'combinado-personalizar': {
-        title:    'Caixa para Combinado Personalizar',
-        subtitle: 'Embalagem personalizada para combinados orientais com a identidade da sua marca.',
-        models: [
-          {
-            label: 'Modelo 1',
-            images: [
-              'Produtos/Combinado/Personalizar/Caixa para Combinado Personalizar/Caixa para Combinado Personalizar.png',
-              'Produtos/Combinado/Personalizar/Caixa para Combinado Personalizar/Caixa para Combinado Personalizar - 1.png',
-              'Produtos/Combinado/Personalizar/Caixa para Combinado Personalizar/Caixa para Combinado Personalizar - 2.png'
-            ]
-          },
-          {
-            label: 'Modelo 2',
-            images: [
-              'Produtos/Combinado/Personalizar/Caixa para Combinado Personalizar - Modelo/Caixa para Combinado Personalizar - Modelo.png',
-              'Produtos/Combinado/Personalizar/Caixa para Combinado Personalizar - Modelo/Caixa para Combinado Personalizar - 1 - Modelo.png',
-              'Produtos/Combinado/Personalizar/Caixa para Combinado Personalizar - Modelo/Caixa para Combinado Personalizar - 2 - Modelo.png'
-            ]
-          }
-        ],
-        group: 'oriental', groupLabel: 'Oriental', sub: 'combinado-personalizar', subLabel: 'Combinado Personalizar'
-      },
-      'combinado-kraft': {
-        title:    'Caixa Gaveta Combinado Kraft Personalizada',
-        subtitle: 'Embalagem estilo gaveta em kraft personalizada para combinados orientais.',
-        models: [
-          {
-            label: 'Modelo 1',
-            images: [
-              'Produtos/Combinado/Personalizar/Caixa Gaveta Combinado Kraft Personalizada/Caixa Gaveta Combinado Kraft Personalizada.png',
-              'Produtos/Combinado/Personalizar/Caixa Gaveta Combinado Kraft Personalizada/Caixa Gaveta Combinado Kraft Personalizada - 1.png',
-              'Produtos/Combinado/Personalizar/Caixa Gaveta Combinado Kraft Personalizada/Caixa Gaveta Combinado Kraft Personalizada - 2.png'
-            ]
-          },
-          {
-            label: 'Modelo 2',
-            images: [
-              'Produtos/Combinado/Personalizar/Caixa Gaveta Combinado Kraft Personalizada - Modelo/Caixa Gaveta Combinado Kraft Personalizada  - Modelo.png',
-              'Produtos/Combinado/Personalizar/Caixa Gaveta Combinado Kraft Personalizada - Modelo/Caixa Gaveta Combinado Kraft Personalizada - 1 - Modelo.png',
-              'Produtos/Combinado/Personalizar/Caixa Gaveta Combinado Kraft Personalizada - Modelo/Caixa Gaveta Combinado Kraft Personalizada - 2 - Modelo.png'
-            ]
-          }
-        ],
-        group: 'oriental', groupLabel: 'Oriental', sub: 'combinado-kraft', subLabel: 'Combinado Kraft'
-      },
-      harumaki: {
-        title:    'Embalagem Harumaki 2un',
-        subtitle: 'Embalagem personalizada para harumaki com 2 unidades.',
-        images:   [
-          'Produtos/Harumaki/Embalagem Harumaki 2un/Embalagem Harumaki 2un.png',
-          'Produtos/Harumaki/Embalagem Harumaki 2un/Embalagem Harumaki 2un-1.png',
-          'Produtos/Harumaki/Embalagem Harumaki 2un/Embalagem Harumaki 2un-2.png'
-        ],
-        group: 'oriental', groupLabel: 'Oriental', sub: 'harumaki', subLabel: 'Harumaki'
-      },
-      temaki: {
-        title:    'Embalagem para Temaki com berço para Delivery',
-        subtitle: 'Embalagem com berço ideal para delivery de temaki, mantendo o produto seguro.',
-        images:   [
-          'Produtos/Temaki/Embalagem para Temaki com berço para Delivery/Embalagem para Temaki com berço para Delivery.png',
-          'Produtos/Temaki/Embalagem para Temaki com berço para Delivery/Embalagem para Temaki com berço para Delivery-1.png',
-          'Produtos/Temaki/Embalagem para Temaki com berço para Delivery/Embalagem para Temaki com berço para Delivery-2.png'
-        ],
-        group: 'oriental', groupLabel: 'Oriental', sub: 'temaki', subLabel: 'Temaki'
-      },
-      yakissoba: {
-        title:    'Caixa Box c Tampa Personalizada com berço para Delivery',
-        subtitle: 'Caixa box com tampa personalizada para yakissoba e pratos quentes.',
-        images:   [
-          'Produtos/Yakissoba/Caixa Box c Tampa Personalizada com berço para Delivery/Caixa Box c Tampa Personalizada com berço para Delivery.png',
-          'Produtos/Yakissoba/Caixa Box c Tampa Personalizada com berço para Delivery/Caixa Box c Tampa Personalizada com berço para Delivery-1.png',
-          'Produtos/Yakissoba/Caixa Box c Tampa Personalizada com berço para Delivery/Caixa Box c Tampa Personalizada com berço para Delivery-2.png'
-        ],
-        group: 'oriental', groupLabel: 'Oriental', sub: 'yakissoba', subLabel: 'Yakissoba'
-      }
-    };
+    const productConfigs = window.productConfigs || {};
 
     document.addEventListener('DOMContentLoaded', () => {
       const params = new URLSearchParams(window.location.search);
-      const subKey = (params.get('sub') || params.get('subcategory') || 'sushi').toLowerCase();
-      const config = productConfigs[subKey] || productConfigs.sushi;
+      const productId = parseInt(params.get('id') || '0', 10);
+      const config = productConfigs[productId] || Object.values(productConfigs)[0] || {};
 
       // ── Breadcrumb ─────────────────────────────────────────────────────────
       const bc = document.getElementById('breadcrumb');
@@ -655,10 +467,10 @@
       // -- Wishlist button ---------------------------------------------------
       const wlBtn = document.getElementById('product-wl-btn');
       if (wlBtn) {
-        const productData = { id: subKey, name: config.title, price: 0, image: (config.images || [])[0] || '', item: config.sub || subKey, group: config.group || '' };
-        wlBtn.dataset.wishlistId = subKey;
+        const productData = { id: productId, name: config.title, price: 0, image: (config.models && config.models[0] && config.models[0].images && config.models[0].images[0]) || (config.images && config.images[0]) || '', item: config.sub, group: config.group || '' };
+        wlBtn.dataset.wishlistId = productId;
         const updateWlBtn = () => {
-          const active = window.WishlistStore && window.WishlistStore.isInWishlist(subKey);
+          const active = window.WishlistStore && window.WishlistStore.isInWishlist(productId);
           wlBtn.classList.toggle('wl-active', !!active);
           const label = wlBtn.querySelector('.wl-detail-label');
           if (label) label.textContent = active ? 'Favoritado' : 'Favoritar';

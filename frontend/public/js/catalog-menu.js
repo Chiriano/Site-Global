@@ -15,11 +15,11 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     fastfood: {
       label: 'Fast Food',
-      items: ['hamburguer', 'batata-frita', 'pastel', 'hot-dog'],
+      items: ['hamburguer', 'batata-frita', 'pastel', 'hot-dog', 'pizza', 'pizza-fatia', 'porcao'],
     },
     doces: {
       label: 'Doces',
-      items: ['bolo', 'churros'],
+      items: ['bolo-fatia', 'bolo-fatia-sem-berco', 'churros-delivery', 'churros-mesa', 'doces-diversos', 'doces-variados'],
     },
   };
 
@@ -30,17 +30,27 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
 
   const itemLabels = {
+    // Oriental
     sushi: 'Sushi',
     combinado: 'Combinado',
     harumaki: 'Harumaki',
     temaki: 'Temaki',
     yakissoba: 'Yakissoba',
-    hamburguer: 'Hamburguer',
+    // Fast Food
+    hamburguer: 'Hambúrguer',
     'batata-frita': 'Batata Frita',
     pastel: 'Pastel',
     'hot-dog': 'Hot Dog',
-    bolo: 'Bolo',
-    churros: 'Churros',
+    pizza: 'Pizza',
+    'pizza-fatia': 'Pizza Fatia',
+    porcao: 'Porção',
+    // Doces
+    'bolo-fatia': 'Bolo Fatia',
+    'bolo-fatia-sem-berco': 'Bolo Fatia sem Berço',
+    'churros-delivery': 'Churros Delivery',
+    'churros-mesa': 'Churros Mesa',
+    'doces-diversos': 'Doces Diversos',
+    'doces-variados': 'Doces Variados',
   };
 
   const state = {

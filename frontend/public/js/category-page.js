@@ -2,53 +2,125 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ── Dados ───────────────────────────────────────────────────────────────────
   const mockProducts = [
-    { id: 1,   name: 'Convite Clássico',  price: 19.9, category: 'convites', group: null, item: null, image: 'assets/produtos/convite-classico.png' },
-    { id: 2,   name: 'Convite Premium',   price: 29.9, category: 'convites', group: null, item: null, image: 'assets/produtos/convite-premium.png' },
+    { id: 1, name: 'Convites Capa Dura', price: 0, category: 'convites', group: null, item: null, image: 'assets/Produtos/Convites/Convites Capa Dura/Convites Capa Dura.png' },
 
-    { id: 101, name: 'Caixa para Sushi Personalizada',                         price: 42.9, category: 'embalagens', group: 'oriental', item: 'sushi',                 image: 'Produtos/Sushi/Caixa para Sushi Personalizada/Caixa para Sushi Personalizada.png' },
-    { id: 102, name: 'Caixa para Combinado Liso',                               price: 42.9, category: 'embalagens', group: 'oriental', item: 'combinado-liso',        type: 'combinado', model: 'liso',         image: 'Produtos/Combinado/Liso/Caixa para Combinado Liso/Caixa para Combinado Liso.png' },
-    { id: 106, name: 'Caixa para Combinado Especial',                           price: 42.9, category: 'embalagens', group: 'oriental', item: 'combinado-especial',    type: 'combinado', model: 'especial',     image: 'Produtos/Combinado/Especial/Caixa para Combinado Especial/Caixa para Combinado Especial.png' },
-    { id: 107, name: 'Caixa para Combinado Personalizar',                       price: 42.9, category: 'embalagens', group: 'oriental', item: 'combinado-personalizar', type: 'combinado', model: 'personalizar', image: 'Produtos/Combinado/Personalizar/Caixa para Combinado Personalizar/Caixa para Combinado Personalizar.png' },
-    { id: 108, name: 'Caixa Gaveta Combinado Kraft Personalizada',              price: 42.9, category: 'embalagens', group: 'oriental', item: 'combinado-kraft',         type: 'combinado', model: 'kraft',        image: 'Produtos/Combinado/Personalizar/Caixa Gaveta Combinado Kraft Personalizada/Caixa Gaveta Combinado Kraft Personalizada.png' },
-    { id: 103, name: 'Embalagem Harumaki 2un',                                  price: 42.9, category: 'embalagens', group: 'oriental', item: 'harumaki',              image: 'Produtos/Harumaki/Embalagem Harumaki 2un/Embalagem Harumaki 2un.png' },
-    { id: 104, name: 'Embalagem para Temaki com berço para Delivery',           price: 42.9, category: 'embalagens', group: 'oriental', item: 'temaki',                image: 'Produtos/Temaki/Embalagem para Temaki com berço para Delivery/Embalagem para Temaki com berço para Delivery.png' },
-    { id: 105, name: 'Caixa Box c Tampa Personalizada com berço para Delivery', price: 42.9, category: 'embalagens', group: 'oriental', item: 'yakissoba',             image: 'Produtos/Yakissoba/Caixa Box c Tampa Personalizada com berço para Delivery/Caixa Box c Tampa Personalizada com berço para Delivery.png' },
+    // ── ORIENTAL › Combinado ────────────────────────────────────────────────
+    { id: 101, name: 'Caixa para Combinado Especial',                    price: 42.9, category: 'embalagens', group: 'oriental', item: 'combinado', type: 'combinado', model: 'especial',     image: 'assets/Produtos/Oriental/Combinado/Especial/Caixa para Combinado Especial/Caixa para Combinado Especial.png' },
+    { id: 102, name: 'Caixa Gaveta Combinado Liso',                      price: 42.9, category: 'embalagens', group: 'oriental', item: 'combinado', type: 'combinado', model: 'liso',          image: 'assets/Produtos/Oriental/Combinado/Liso/Caixa Gaveta Combinado Liso/Caixa Gaveta Combinado Liso.png' },
+    { id: 103, name: 'Caixa para Combinado Liso',                        price: 42.9, category: 'embalagens', group: 'oriental', item: 'combinado', type: 'combinado', model: 'liso',          image: 'assets/Produtos/Oriental/Combinado/Liso/Caixa para Combinado Liso/Caixa para Combinado Liso.png' },
+    { id: 104, name: 'Caixa Gaveta Combinado Kraft Personalizada',       price: 42.9, category: 'embalagens', group: 'oriental', item: 'combinado', type: 'combinado', model: 'personalizar',  image: 'assets/Produtos/Oriental/Combinado/Personalizar/Caixa Gaveta Combinado Kraft Personalizada/Caixa Gaveta Combinado Kraft Personalizada.png' },
+    { id: 105, name: 'Caixa para Combinado Especial Kraft Personalizado',price: 42.9, category: 'embalagens', group: 'oriental', item: 'combinado', type: 'combinado', model: 'personalizar',  image: 'assets/Produtos/Oriental/Combinado/Personalizar/Caixa para Combinado Especial Kraft Personalizado/Caixa para Combinado Especial Kraft Personalizado.png' },
+    { id: 106, name: 'Caixa para Combinado Personalizar',                price: 42.9, category: 'embalagens', group: 'oriental', item: 'combinado', type: 'combinado', model: 'personalizar',  image: 'assets/Produtos/Oriental/Combinado/Personalizar/Caixa para Combinado Personalizar/Caixa para Combinado Personalizar.png' },
 
-    { id: 201, name: 'Caixa Hambúrguer',       price: 34.9, category: 'embalagens', group: 'fastfood', item: 'hamburguer',   image: 'assets/produtos/hamburguer.png' },
-    { id: 202, name: 'Embalagem Batata Frita',  price: 24.9, category: 'embalagens', group: 'fastfood', item: 'batata-frita', image: 'assets/produtos/batata-frita.png' },
-    { id: 203, name: 'Caixa para Pastel',       price: 27.9, category: 'embalagens', group: 'fastfood', item: 'pastel',       image: 'assets/produtos/pastel.png' },
-    { id: 204, name: 'Embalagem Hot Dog',        price: 26.9, category: 'embalagens', group: 'fastfood', item: 'hot-dog',     image: 'assets/produtos/hot-dog.png' },
+    // ── ORIENTAL › Harumaki ─────────────────────────────────────────────────
+    { id: 107, name: 'Embalagem para Rolinho Primavera (Harumaki) 1un Liso', price: 39.9, category: 'embalagens', group: 'oriental', item: 'harumaki', image: 'assets/Produtos/Oriental/Harumaki/Liso/Embalagem para Rolinho Primavera (Harumaki) 1un Liso/Embalagem para Rolinho Primavera (Harumaki) 1un Liso.png' },
+    { id: 108, name: 'Embalagem para Rolinho Primavera (Harumaki) 2un Liso', price: 39.9, category: 'embalagens', group: 'oriental', item: 'harumaki', image: 'assets/Produtos/Oriental/Harumaki/Liso/Embalagem para Rolinho Primavera (Harumaki) 2un Liso/Embalagem para Rolinho Primavera (Harumaki) 2un Liso.png' },
+    { id: 109, name: 'Embalagem Harumaki 1un Personalizada',                 price: 39.9, category: 'embalagens', group: 'oriental', item: 'harumaki', image: 'assets/Produtos/Oriental/Harumaki/Personalizar/Embalagem Harumaki 1un Personalizada/Embalagem Harumaki 1un Personalizada.png' },
+    { id: 110, name: 'Embalagem Harumaki 2un Personalizada',                 price: 39.9, category: 'embalagens', group: 'oriental', item: 'harumaki', image: 'assets/Produtos/Oriental/Harumaki/Personalizar/Embalagem Harumaki 2un Personalizada/Embalagem Harumaki 2un Personalizada.png' },
 
-    { id: 301, name: 'Caixa para Bolo',   price: 39.9, category: 'embalagens', group: 'doces', item: 'bolo',    image: 'assets/produtos/bolo.png' },
-    { id: 302, name: 'Embalagem Churros', price: 22.9, category: 'embalagens', group: 'doces', item: 'churros', image: 'assets/produtos/churros.png' },
+    // ── ORIENTAL › Sushi ────────────────────────────────────────────────────
+    { id: 111, name: 'Caixa para Sushi Liso',        price: 42.9, category: 'embalagens', group: 'oriental', item: 'sushi', image: 'assets/Produtos/Oriental/Sushi/Liso/Caixa para Sushi Liso/Caixa para Sushi Liso.png' },
+    { id: 112, name: 'Caixa para Sushi Personalizada', price: 42.9, category: 'embalagens', group: 'oriental', item: 'sushi', image: 'assets/Produtos/Oriental/Sushi/Personalizar/Caixa para Sushi Personalizada/Caixa para Sushi Personalizada.png' },
+
+    // ── ORIENTAL › Temaki ───────────────────────────────────────────────────
+    { id: 113, name: 'Embalagem para Temaki com berço para Delivery Liso',        price: 39.9, category: 'embalagens', group: 'oriental', item: 'temaki', image: 'assets/Produtos/Oriental/Temaki/Liso/Embalagem para Temaki com berço para Delivery Liso/Embalagem para Temaki com berço para Delivery Liso.png' },
+    { id: 114, name: 'Temaki Triangular com Berço',                               price: 39.9, category: 'embalagens', group: 'oriental', item: 'temaki', image: 'assets/Produtos/Oriental/Temaki/Liso/Temaki Triangular com Berço/Temaki Triangular com Berço/Temaki Triangular com Berço.png' },
+    { id: 115, name: 'Embalagem para Temaki com berço para Delivery Personalizar', price: 39.9, category: 'embalagens', group: 'oriental', item: 'temaki', image: 'assets/Produtos/Oriental/Temaki/Personalizar/Embalagem para Temaki com berço para Delivery Personalizar/Embalagem para Temaki com berço para Delivery Personalizar.png' },
+    { id: 116, name: 'Temaki Triangular com Berço Personalizar',                  price: 39.9, category: 'embalagens', group: 'oriental', item: 'temaki', image: 'assets/Produtos/Oriental/Temaki/Personalizar/Temaki Triangular com Berço Personalizar/Temaki Triangular com Berço Personalizar.png' },
+
+    // ── ORIENTAL › Yakissoba ────────────────────────────────────────────────
+    { id: 117, name: 'Caixa Box Liso',                 price: 42.9, category: 'embalagens', group: 'oriental', item: 'yakissoba', image: 'assets/Produtos/Oriental/Yakissoba/Liso/Caixa Box Liso/Caixa Box Liso.png' },
+    { id: 118, name: 'Caixa Box com Tampa Liso',       price: 42.9, category: 'embalagens', group: 'oriental', item: 'yakissoba', image: 'assets/Produtos/Oriental/Yakissoba/Liso/Caixa Box com Tampa Liso/Caixa Box com Tampa Liso.png' },
+    { id: 119, name: 'Caixa Box Personalizada',        price: 42.9, category: 'embalagens', group: 'oriental', item: 'yakissoba', image: 'assets/Produtos/Oriental/Yakissoba/Personalizar/Caixa Box Personalizada/Caixa Box Personalizada.png' },
+    { id: 120, name: 'Caixa Box com Tampa Personalizada', price: 42.9, category: 'embalagens', group: 'oriental', item: 'yakissoba', image: 'assets/Produtos/Oriental/Yakissoba/Personalizar/Caixa Box com Tampa Personalizada/Caixa Box com Tampa Personalizada.png' },
+
+    // ── FAST FOOD › Batata Frita ────────────────────────────────────────────
+    { id: 201, name: 'Caixa Batata Frita 120G Liso',         price: 24.9, category: 'embalagens', group: 'fastfood', item: 'batata-frita', image: 'assets/Produtos/Fast Food/Batata Frita/Liso/Caixa Batata Frita 120G Liso/Caixa Batata Frita 120G Liso.png' },
+    { id: 202, name: 'Caixa Batata Frita 250G Liso',         price: 24.9, category: 'embalagens', group: 'fastfood', item: 'batata-frita', image: 'assets/Produtos/Fast Food/Batata Frita/Liso/Caixa Batata Frita 250G Liso/Caixa Batata Frita 250G Liso.png' },
+    { id: 203, name: 'Embalagem Cone Multiuso Liso',          price: 24.9, category: 'embalagens', group: 'fastfood', item: 'batata-frita', image: 'assets/Produtos/Fast Food/Batata Frita/Liso/Embalagem Cone Multiuso Liso/Embalagem Cone Multiuso Liso.png' },
+    { id: 204, name: 'Caixa Batata Frita 120G PERSONALIZADO', price: 24.9, category: 'embalagens', group: 'fastfood', item: 'batata-frita', image: 'assets/Produtos/Fast Food/Batata Frita/Personalizar/Caixa Batata Frita 120G PERSONALIZADO/Caixa Batata Frita 120G PERSONALIZADO.png' },
+    { id: 205, name: 'Caixa Batata Frita 250G PERSONALIZADO', price: 24.9, category: 'embalagens', group: 'fastfood', item: 'batata-frita', image: 'assets/Produtos/Fast Food/Batata Frita/Personalizar/Caixa Batata Frita 250G PERSONALIZADO/Caixa Batata Frita 250G PERSONALIZADO.png' },
+    { id: 206, name: 'Embalagem Cone Multiuso PERSONALIZADO', price: 24.9, category: 'embalagens', group: 'fastfood', item: 'batata-frita', image: 'assets/Produtos/Fast Food/Batata Frita/Personalizar/Embalagem Cone Multiuso PERSONALIZADO/Embalagem Cone Multiuso PERSONALIZADO.png' },
+
+    // ── FAST FOOD › Hambúrguer ──────────────────────────────────────────────
+    { id: 207, name: 'Caixa Hambúrguer Tradicional Liso',   price: 34.9, category: 'embalagens', group: 'fastfood', item: 'hamburguer', image: 'assets/Produtos/Fast Food/Hamburguer/Liso/Caixa Hambúrguer Tradicional Liso/Caixa Hambúrguer Tradicional Liso.png' },
+    { id: 208, name: 'Caixa para Hambúrguer Liso',          price: 34.9, category: 'embalagens', group: 'fastfood', item: 'hamburguer', image: 'assets/Produtos/Fast Food/Hamburguer/Liso/Caixa para Hambúrguer Liso/Caixa para Hambúrguer Liso.png' },
+    { id: 209, name: 'Caixa Box Hamburguer Personalizado',  price: 34.9, category: 'embalagens', group: 'fastfood', item: 'hamburguer', image: 'assets/Produtos/Fast Food/Hamburguer/Personalizar/Caixa Box Hamburguer Personalizado/Caixa Box Hamburguer Personalizado.png' },
+    { id: 210, name: 'Caixa Hambúrguer Kraft Personalizada', price: 34.9, category: 'embalagens', group: 'fastfood', item: 'hamburguer', image: 'assets/Produtos/Fast Food/Hamburguer/Personalizar/Caixa Hambúrguer Kraft Personalizada/Caixa Hambúrguer Kraft Personalizada.png' },
+
+    // ── FAST FOOD › Hot Dog ─────────────────────────────────────────────────
+    { id: 211, name: 'Hot Dog com Trava',             price: 26.9, category: 'embalagens', group: 'fastfood', item: 'hot-dog', image: 'assets/Produtos/Fast Food/Hot Dog/Liso/Hot Dog com Trava/Hot Dog com Trava.png' },
+    { id: 212, name: 'Hot Dog com Trava Personalizar', price: 26.9, category: 'embalagens', group: 'fastfood', item: 'hot-dog', image: 'assets/Produtos/Fast Food/Hot Dog/Personalizar/Hot Dog com Trava Personalizar/Hot Dog com Trava Personalizar.png' },
+
+    // ── FAST FOOD › Pastel ──────────────────────────────────────────────────
+    { id: 213, name: 'Pastel Balcão Liso', price: 27.9, category: 'embalagens', group: 'fastfood', item: 'pastel', image: 'assets/Produtos/Fast Food/Pastel/Liso/Pastel Balcão Liso/Pastel Balcão Liso.png' },
+
+    // ── FAST FOOD › Pizza ───────────────────────────────────────────────────
+    { id: 214, name: 'Embalagem Mini Pizza Liso',        price: 29.9, category: 'embalagens', group: 'fastfood', item: 'pizza', image: 'assets/Produtos/Fast Food/Pizza/Liso/Embalagem Mini Pizza Liso/Embalagem Mini Pizza Liso.png' },
+    { id: 215, name: 'Embalagem Mini Pizza Personalizada', price: 29.9, category: 'embalagens', group: 'fastfood', item: 'pizza', image: 'assets/Produtos/Fast Food/Pizza/Personalizar/Embalagem Mini Pizza Personalizada/Embalagem Mini Pizza Personalizada.png' },
+
+    // ── FAST FOOD › Pizza Fatia ─────────────────────────────────────────────
+    { id: 216, name: 'Embalagem para Pizza pedaço Liso',        price: 27.9, category: 'embalagens', group: 'fastfood', item: 'pizza-fatia', image: 'assets/Produtos/Fast Food/Pizza Fatia/Liso/Embalagem para Pizza pedaço Liso/Embalagem para Pizza pedaço Liso.png' },
+    { id: 217, name: 'Embalagem para Pizza pedaço personalizada', price: 27.9, category: 'embalagens', group: 'fastfood', item: 'pizza-fatia', image: 'assets/Produtos/Fast Food/Pizza Fatia/Personalizar/Embalagem para Pizza pedaço personalizada/Embalagem para Pizza pedaço personalizada.png' },
+
+    // ── FAST FOOD › Porção ──────────────────────────────────────────────────
+    { id: 218, name: 'Caixa para Porções Liso',                  price: 32.9, category: 'embalagens', group: 'fastfood', item: 'porcao', image: 'assets/Produtos/Fast Food/Porção/Liso/Caixa para Porções Liso/Caixa para Porções Liso.png' },
+    { id: 219, name: 'Embalagem Porção Balcão Liso',             price: 32.9, category: 'embalagens', group: 'fastfood', item: 'porcao', image: 'assets/Produtos/Fast Food/Porção/Liso/Embalagem Porção Balcão Liso/Embalagem Porção Balcão Liso.png' },
+    { id: 220, name: 'Caixa Personalizada para Porção Delivery', price: 32.9, category: 'embalagens', group: 'fastfood', item: 'porcao', image: 'assets/Produtos/Fast Food/Porção/Personalizar/Caixa Personalizada para Porção Delivery/Caixa Personalizada para Porção Delivery.png' },
+
+    // ── DOCES › Bolo Fatia ──────────────────────────────────────────────────
+    { id: 301, name: 'Caixa para Bolo Fatia Liso',         price: 34.9, category: 'embalagens', group: 'doces', item: 'bolo-fatia', image: 'assets/Produtos/Doces/Bolo Fatia/Liso/Caixa para Bolo Fatia Liso/Caixa para Bolo Fatia Liso.png' },
+    { id: 302, name: 'Caixa para Bolo Fatia Personalizar', price: 34.9, category: 'embalagens', group: 'doces', item: 'bolo-fatia', image: 'assets/Produtos/Doces/Bolo Fatia/Personalizar/Caixa para Bolo Fatia Personalizar/Caixa para Bolo Fatia Personalizar.png' },
+
+    // ── DOCES › Bolo Fatia sem Berço ────────────────────────────────────────
+    { id: 303, name: 'Caixa para Bolo Fatia sem berço Liso',         price: 34.9, category: 'embalagens', group: 'doces', item: 'bolo-fatia-sem-berco', image: 'assets/Produtos/Doces/Bolo Fatia sem Berço/Liso/Caixa para Bolo Fatia sem berço Liso/Caixa para Bolo Fatia sem berço Liso.png' },
+    { id: 304, name: 'Caixa para Bolo Fatia sem berço Personalizar', price: 34.9, category: 'embalagens', group: 'doces', item: 'bolo-fatia-sem-berco', image: 'assets/Produtos/Doces/Bolo Fatia sem Berço/Personalizar/Caixa para Bolo Fatia sem berço Personalizar/Caixa para Bolo Fatia sem berço Personalizar.png' },
+
+    // ── DOCES › Churros Delivery ────────────────────────────────────────────
+    { id: 305, name: 'Embalagens para Churros Liso',         price: 29.9, category: 'embalagens', group: 'doces', item: 'churros-delivery', image: 'assets/Produtos/Doces/Churros Delivery/Liso/Embalagens para Churros Liso/Embalagens para Churros Liso.png' },
+    { id: 306, name: 'Embalagens para Churros Personalizar', price: 29.9, category: 'embalagens', group: 'doces', item: 'churros-delivery', image: 'assets/Produtos/Doces/Churros Delivery/Personalizar/Embalagens para Churros Personalizar/Embalagens para Churros Personalizar.png' },
+
+    // ── DOCES › Churros Mesa ────────────────────────────────────────────────
+    { id: 307, name: 'Embalagens para Churros Mesa Lisa',         price: 29.9, category: 'embalagens', group: 'doces', item: 'churros-mesa', image: 'assets/Produtos/Doces/Churros Mesa/Liso/Embalagens para Churros Mesa Lisa/Embalagens para Churros Mesa Lisa.png' },
+    { id: 308, name: 'Embalagens para Churros Mesa Personalizar', price: 29.9, category: 'embalagens', group: 'doces', item: 'churros-mesa', image: 'assets/Produtos/Doces/Churros Mesa/Personalizar/Embalagens para Churros Mesa Personalizar/Embalagens para Churros Mesa Personalizar.png' },
+
+    // ── DOCES › Doces Diversos ──────────────────────────────────────────────
+    { id: 309, name: 'Caixa para Doces Diversos Liso',         price: 34.9, category: 'embalagens', group: 'doces', item: 'doces-diversos', image: 'assets/Produtos/Doces/Doces Diversos/Liso/Caixa para Doces Diversos Liso/Caixa para Doces Diversos Liso.png' },
+    { id: 310, name: 'Caixa para Doces Diversos Personalizar', price: 34.9, category: 'embalagens', group: 'doces', item: 'doces-diversos', image: 'assets/Produtos/Doces/Doces Diversos/Personalizar/Caixa para Doces Diversos Personalizar/Caixa para Doces Diversos Personalizar.png' },
+
+    // ── DOCES › Doces Variados ──────────────────────────────────────────────
+    { id: 311, name: 'Caixa para Doce Liso',         price: 34.9, category: 'embalagens', group: 'doces', item: 'doces-variados', image: 'assets/Produtos/Doces/Doces Variados/Liso/Caixa para Doce Liso/Caixa para Doce Liso.png' },
+    { id: 312, name: 'Caixa para Doce Personalizar', price: 34.9, category: 'embalagens', group: 'doces', item: 'doces-variados', image: 'assets/Produtos/Doces/Doces Variados/Personalizar/Caixa para Doce Personalizar/Caixa para Doce Personalizar.png' },
   ];
 
   const labels = {
     category: { convites: 'Convites', embalagens: 'Embalagens' },
     group:    { oriental: 'Oriental', fastfood: 'Fast Food', doces: 'Doces' },
     item: {
-      sushi: 'Sushi',
-      combinado: 'Combinado',
-      'combinado-liso': 'Combinado Liso', 'combinado-especial': 'Combinado Especial', 'combinado-personalizar': 'Combinado Personalizar', 'combinado-kraft': 'Combinado Kraft',
-      harumaki: 'Harumaki', temaki: 'Temaki', yakissoba: 'Yakissoba',
-      hamburguer: 'Hambúrguer', 'batata-frita': 'Batata Frita',
-      pastel: 'Pastel', 'hot-dog': 'Hot Dog',
-      bolo: 'Bolo', churros: 'Churros',
+      // Oriental
+      combinado: 'Combinado', harumaki: 'Harumaki', sushi: 'Sushi', temaki: 'Temaki', yakissoba: 'Yakissoba',
+      // Fast Food
+      'batata-frita': 'Batata Frita', hamburguer: 'Hambúrguer', 'hot-dog': 'Hot Dog',
+      pastel: 'Pastel', pizza: 'Pizza', 'pizza-fatia': 'Pizza Fatia', porcao: 'Porção',
+      // Doces
+      'bolo-fatia': 'Bolo Fatia', 'bolo-fatia-sem-berco': 'Bolo Fatia sem Berço',
+      'churros-delivery': 'Churros Delivery', 'churros-mesa': 'Churros Mesa',
+      'doces-diversos': 'Doces Diversos', 'doces-variados': 'Doces Variados',
     },
   };
 
   const itemOptionsByGroup = {
-    oriental: ['sushi', 'combinado', 'harumaki', 'temaki', 'yakissoba'],
-    fastfood: ['hamburguer', 'batata-frita', 'pastel', 'hot-dog'],
-    doces:    ['bolo', 'churros'],
+    oriental: ['combinado', 'harumaki', 'sushi', 'temaki', 'yakissoba'],
+    fastfood: ['hamburguer', 'batata-frita', 'pastel', 'hot-dog', 'pizza', 'pizza-fatia', 'porcao'],
+    doces:    ['bolo-fatia', 'bolo-fatia-sem-berco', 'churros-delivery', 'churros-mesa', 'doces-diversos', 'doces-variados'],
   };
 
   const modelOptionsByItem = {
-    combinado: ['liso', 'especial', 'personalizar', 'kraft'],
+    combinado: ['liso', 'especial', 'personalizar'],
   };
 
   const modelLabels = {
-    liso: 'Liso', especial: 'Especial', personalizar: 'Personalizar', kraft: 'Kraft',
+    liso: 'Liso', especial: 'Especial', personalizar: 'Personalizar',
   };
 
   function getFilterItem(p) { return p.type || p.item; }
@@ -129,7 +201,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ── Card ───────────────────────────────────────────────────────────────────
   function cardTemplate(product) {
-    const productUrl = `product.html?sub=${encodeURIComponent(product.item || '')}&group=${encodeURIComponent(product.group || '')}&subcategory=${encodeURIComponent(product.item || '')}`;
+    const productUrl = product.category === 'convites'
+      ? `convite-product.html?id=${product.id}`
+      : `product.html?id=${product.id}&group=${encodeURIComponent(product.group || '')}`;
     return `
       <article class="produto" data-price="${product.price}">
         <a href="${productUrl}">
@@ -137,6 +211,9 @@ document.addEventListener('DOMContentLoaded', () => {
             <img src="${product.image}" alt="${product.name}" onerror="this.src='https://placehold.co/220x180/fafafa/999?text=Produto'">
           </div>
         </a>
+        <button class="wl-heart-btn" data-wishlist-id="${product.id}" data-product='${JSON.stringify({id:product.id,name:product.name,price:product.price,image:product.image,item:product.item,group:product.group})}' aria-label="Adicionar aos favoritos" type="button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
         <div class="produto-info">
           <h3 class="produto-nome">${product.name}</h3>
           <div class="produto-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
@@ -164,6 +241,19 @@ document.addEventListener('DOMContentLoaded', () => {
         : (labels.category[state.level1] || state.level1);
 
     resultText.textContent = `Exibindo ${products.length} produto${products.length === 1 ? '' : 's'} em ${refLabel}`;
+
+    // Atualiza corações e liga evento de toggle
+    if (window.WishlistStore) window.WishlistStore.initHearts();
+    grid.querySelectorAll('.wl-heart-btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const product = JSON.parse(this.dataset.product);
+        const added = window.WishlistStore.toggle(product);
+        this.classList.toggle('wl-active', added);
+        this.setAttribute('aria-label', added ? 'Remover dos favoritos' : 'Adicionar aos favoritos');
+      });
+    });
   }
 
   // ── Sidebar: modo convites vs embalagens ───────────────────────────────────
