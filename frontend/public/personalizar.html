@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personalizar | Alpha Convites</title>
+  <link rel="stylesheet" href="css/personalizar.css">
+</head>
+<body>
+  <div class="pz-page">
+    <header class="pz-header">
+      <a id="btn-voltar" class="pz-back" href="convite-product.html">Voltar</a>
+      <div class="pz-header-center">
+        <h1 class="pz-title">Personalizar</h1>
+        <p class="pz-subtitle">Escolha o modelo, envie as fotos e ajuste o enquadramento</p>
+      </div>
+      <button id="btn-avancar" class="pz-advance" type="button">Avançar</button>
+    </header>
+
+    <main class="pz-workspace">
+      <aside class="pz-left-panel">
+        <section class="pz-side-card">
+          <h2>Modelos de Fotos</h2>
+          <div id="layouts-grid" class="pz-layout-grid"></div>
+        </section>
+
+        <section class="pz-side-card">
+          <h3>Templates de Fundo</h3>
+          <div id="templates-grid" class="pz-template-grid"></div>
+        </section>
+
+        <section class="pz-side-card">
+          <h3>Editar Fotos</h3>
+          <label class="pz-label" for="slot-select">Quadro</label>
+          <select id="slot-select" class="pz-input"></select>
+
+          <label class="pz-label" for="foto-input">Upload</label>
+          <input id="foto-input" class="pz-input" type="file" accept="image/*">
+        </section>
+
+        <section class="pz-side-card">
+          <h3>Textos</h3>
+          <div id="texts-form"></div>
+        </section>
+      </aside>
+
+      <section class="pz-center-panel">
+        <div class="pz-paper-wrap">
+          <div class="pz-paper" id="paper">
+            <div id="canvas-wrap" class="pz-canvas-wrap">
+              <canvas id="preview-canvas" width="2200" height="3000"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="pz-right-panel">
+        <div class="pz-floating-actions">
+          <button id="btn-salvar" class="pz-fab pz-fab-save" type="button" title="Salvar">Salvar</button>
+          <hr class="pz-fab-sep">
+          <button id="btn-fullscreen" class="pz-fab" type="button" title="Tela cheia">&#x26F6;</button>
+          <button id="btn-zoom-plus" class="pz-fab" type="button" title="Zoom +">+</button>
+          <button id="btn-zoom-minus" class="pz-fab" type="button" title="Zoom -">-</button>
+          <button id="btn-zoom-reset" class="pz-fab" type="button" title="Ajustar visualizacao">&#x21BB;</button>
+          <span id="zoom-value" class="pz-zoom-value">100%</span>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <script src="js/products-data.js"></script>
+  <script src="js/personalizar-page.js"></script>
+</body>
+</html>
+

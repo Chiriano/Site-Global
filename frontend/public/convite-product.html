@@ -143,9 +143,11 @@
       transition: border-color .2s;
     }
     .cp-pers-btn:hover { border-color: #111; }
-    .cp-pers-body {
-      border: 1.5px solid #e5e7eb; border-radius: 8px; padding: 16px;
-      font-size: 14px; color: #555; margin-top: -10px;
+    .cp-pers-status {
+      margin-top: -10px;
+      font-size: 13px;
+      color: #16a34a;
+      font-weight: 600;
     }
 
     /* Qty + Comprar */
@@ -390,11 +392,9 @@
 
       <!-- Personalize o Produto -->
       <button class="cp-pers-btn" id="cp-pers-btn" type="button">
-        Personalize o Produto <i class="fas fa-chevron-down" id="cp-pers-icon"></i>
+        Personalize o Produto <i class="fas fa-arrow-right"></i>
       </button>
-      <div class="cp-pers-body" id="cp-pers-body" hidden>
-        <p>Entre em contato para personalizar este produto.</p>
-      </div>
+      <div class="cp-pers-status" id="cp-pers-status" hidden>Personalização confirmada.</div>
 
       <!-- Quantidade + Comprar -->
       <div class="cp-actions">
@@ -602,14 +602,18 @@
       }
 
       // ── Personalize dropdown ────────────────────────────────────────────────
-      const persBtn  = document.getElementById('cp-pers-btn');
-      const persBody = document.getElementById('cp-pers-body');
-      const persIcon = document.getElementById('cp-pers-icon');
+      const persBtn = document.getElementById('cp-pers-btn');
       persBtn?.addEventListener('click', () => {
-        const open = !persBody.hidden;
-        persBody.hidden = open;
-        if (persIcon) persIcon.className = open ? 'fas fa-chevron-down' : 'fas fa-chevron-up';
+        window.location.href = `personalizar.html?id=${encodeURIComponent(productId)}`;
       });
+
+      const persStatus = document.getElementById('cp-pers-status');
+      const customFlag = params.get('custom');
+      const customKey = `alpha_personalizacao_${productId}`;
+      const finalKey = `alpha_personalizacao_finalizada_${productId}`;
+      if (persStatus && customFlag === '1' && (localStorage.getItem(customKey) || localStorage.getItem(finalKey))) {
+        persStatus.hidden = false;
+      }
 
       // ── Quantidade ──────────────────────────────────────────────────────────
       let qty = 1;

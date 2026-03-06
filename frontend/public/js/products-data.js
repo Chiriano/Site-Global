@@ -4,6 +4,198 @@ window.productConfigs = {
     group: null, groupLabel: "Convites",
     sub: "convites-capa-dura", subLabel: "Convites Capa Dura",
     images: ["assets/Produtos/Convites/Convites Capa Dura/Convites Capa Dura.png"],
+    personalizacao: {
+      print: {
+        mm: { w: 300, h: 220, sangria: 5 },
+        canvas: { w: 3000, h: 2200 },
+        safeArea: { x: 50, y: 50, w: 2900, h: 2100 }
+      },
+      templates: [
+        {
+          id: "template-fundo-branco",
+          name: "Template Classico",
+          src: "assets/templates/fundo-branco.png",
+          colors: ["#f8f3ea", "#f2eadf"],
+          noise: false
+        }
+      ],
+      layouts: [
+        {
+          id: "layout-cover",
+          name: "Capa premium",
+          canvas: { w: 3000, h: 2200 },
+          style: "cover",
+          photos: [
+            {
+              key: "foto1",
+              x: 90,
+              y: 90,
+              w: 2820,
+              h: 2020,
+              radius: 18,
+              border: false,
+              overlayGradient: {
+                direction: "to-bottom",
+                stops: [
+                  { at: 0, color: "rgba(255,255,255,0.95)" },
+                  { at: 0.4, color: "rgba(255,255,255,0.75)" },
+                  { at: 0.7, color: "rgba(255,255,255,0.45)" },
+                  { at: 1, color: "rgba(255,255,255,0.15)" }
+                ]
+              }
+            }
+          ],
+          texts: [
+            { key: "titulo", x: 1500, y: 380, maxW: 2600, font: "122px Georgia", color: "#7f5f22", align: "center" },
+            { key: "subtitulo", x: 1500, y: 520, maxW: 2200, font: "56px 'Trebuchet MS'", color: "#4d3f2d", align: "center" }
+          ]
+        },
+        {
+          id: "layout-texto-foto-classico",
+          name: "Texto + foto (moldura)",
+          canvas: { w: 3000, h: 2200 },
+          style: "text-photo-framed",
+          photos: [
+            { key: "foto1", x: 1620, y: 200, w: 1260, h: 1800, radius: 28, border: true }
+          ],
+          texts: [
+            { key: "titulo", x: 750, y: 600, maxW: 1300, font: "116px Georgia", color: "#7f5f22", align: "center" },
+            { key: "subtitulo", x: 750, y: 740, maxW: 1200, font: "56px 'Trebuchet MS'", color: "#4d3f2d", align: "center" },
+            { key: "mensagem", x: 750, y: 920, maxW: 1100, font: "50px 'Trebuchet MS'", color: "#5b4b35", align: "center" }
+          ]
+        },
+        {
+          id: "layout-texto-foto-livre",
+          name: "Texto + foto (livre)",
+          canvas: { w: 3000, h: 2200 },
+          style: "text-photo-free",
+          photos: [
+            {
+              key: "foto1",
+              x: 1580,
+              y: 180,
+              w: 1300,
+              h: 1840,
+              radius: 30,
+              free: true,
+              bleedBottom: 180,
+              shadow: true,
+              border: false
+            }
+          ],
+          texts: [
+            { key: "titulo", x: 750, y: 600, maxW: 1300, font: "116px Georgia", color: "#7f5f22", align: "center" },
+            { key: "subtitulo", x: 750, y: 740, maxW: 1200, font: "56px 'Trebuchet MS'", color: "#4d3f2d", align: "center" },
+            { key: "mensagem", x: 750, y: 920, maxW: 1100, font: "50px 'Trebuchet MS'", color: "#5b4b35", align: "center" }
+          ]
+        },
+        {
+          id: "layout-album-1",
+          name: "Album 1 foto grande",
+          canvas: { w: 3000, h: 2200 },
+          style: "album",
+          photos: [
+            { key: "foto1", x: 120, y: 560, w: 2760, h: 1540, radius: 26 }
+          ],
+          texts: [
+            { key: "titulo", x: 1500, y: 200, maxW: 2600, font: "108px Georgia", color: "#7f5f22", align: "center" },
+            { key: "subtitulo", x: 1500, y: 360, maxW: 2200, font: "56px 'Trebuchet MS'", color: "#4d3f2d", align: "center" }
+          ]
+        },
+        {
+          id: "layout-album-2-side",
+          name: "Album 2 lado a lado",
+          canvas: { w: 3000, h: 2200 },
+          style: "album",
+          photos: [
+            { key: "foto1", x: 120, y: 560, w: 1300, h: 1540, radius: 24 },
+            { key: "foto2", x: 1580, y: 560, w: 1300, h: 1540, radius: 24 }
+          ],
+          texts: [
+            { key: "titulo", x: 1500, y: 200, maxW: 2600, font: "108px Georgia", color: "#7f5f22", align: "center" },
+            { key: "subtitulo", x: 1500, y: 360, maxW: 2200, font: "56px 'Trebuchet MS'", color: "#4d3f2d", align: "center" }
+          ]
+        },
+        {
+          id: "layout-album-4",
+          name: "Album 4 fotos",
+          canvas: { w: 3000, h: 2200 },
+          style: "album",
+          photos: [
+            { key: "foto1", x: 120, y: 560, w: 1300, h: 730, radius: 22 },
+            { key: "foto2", x: 1580, y: 560, w: 1300, h: 730, radius: 22 },
+            { key: "foto3", x: 120, y: 1400, w: 1300, h: 730, radius: 22 },
+            { key: "foto4", x: 1580, y: 1400, w: 1300, h: 730, radius: 22 }
+          ],
+          texts: [
+            { key: "titulo", x: 1500, y: 200, maxW: 2600, font: "108px Georgia", color: "#7f5f22", align: "center" },
+            { key: "subtitulo", x: 1500, y: 360, maxW: 2200, font: "56px 'Trebuchet MS'", color: "#4d3f2d", align: "center" }
+          ]
+        },
+        {
+          id: "layout-album-1-2",
+          name: "Album 1 grande + 2 pequenas",
+          canvas: { w: 3000, h: 2200 },
+          style: "album",
+          photos: [
+            { key: "foto1", x: 120, y: 560, w: 1700, h: 1540, radius: 28 },
+            { key: "foto2", x: 1980, y: 560, w: 900, h: 730, radius: 24 },
+            { key: "foto3", x: 1980, y: 1400, w: 900, h: 730, radius: 24 }
+          ],
+          texts: [
+            { key: "titulo", x: 1500, y: 200, maxW: 2600, font: "108px Georgia", color: "#7f5f22", align: "center" },
+            { key: "subtitulo", x: 1500, y: 360, maxW: 2200, font: "56px 'Trebuchet MS'", color: "#4d3f2d", align: "center" }
+          ]
+        },
+        {
+          id: "layout-album-2-top-1-bottom",
+          name: "Album 2 em cima + 1 embaixo",
+          canvas: { w: 3000, h: 2200 },
+          style: "album",
+          photos: [
+            { key: "foto1", x: 120, y: 560, w: 1300, h: 730, radius: 22 },
+            { key: "foto2", x: 1580, y: 560, w: 1300, h: 730, radius: 22 },
+            { key: "foto3", x: 120, y: 1400, w: 2760, h: 730, radius: 22 }
+          ],
+          texts: [
+            { key: "titulo", x: 1500, y: 200, maxW: 2600, font: "108px Georgia", color: "#7f5f22", align: "center" },
+            { key: "subtitulo", x: 1500, y: 360, maxW: 2200, font: "56px 'Trebuchet MS'", color: "#4d3f2d", align: "center" }
+          ]
+        },
+        {
+          id: "layout-album-vertical-3",
+          name: "Album faixa vertical 3 fotos",
+          canvas: { w: 3000, h: 2200 },
+          style: "album",
+          photos: [
+            { key: "foto1", x: 120, y: 560, w: 860, h: 1540, radius: 24 },
+            { key: "foto2", x: 1070, y: 560, w: 860, h: 1540, radius: 24 },
+            { key: "foto3", x: 2020, y: 560, w: 860, h: 1540, radius: 24 }
+          ],
+          texts: [
+            { key: "titulo", x: 1500, y: 200, maxW: 2600, font: "108px Georgia", color: "#7f5f22", align: "center" },
+            { key: "subtitulo", x: 1500, y: 360, maxW: 2200, font: "56px 'Trebuchet MS'", color: "#4d3f2d", align: "center" }
+          ]
+        },
+        {
+          id: "layout-album-mosaico",
+          name: "Album mosaico",
+          canvas: { w: 3000, h: 2200 },
+          style: "album",
+          photos: [
+            { key: "foto1", x: 120, y: 560, w: 1300, h: 730, radius: 22 },
+            { key: "foto2", x: 1580, y: 560, w: 1300, h: 730, radius: 22 },
+            { key: "foto3", x: 120, y: 1400, w: 840, h: 730, radius: 22 },
+            { key: "foto4", x: 1080, y: 1400, w: 840, h: 730, radius: 22 },
+            { key: "foto5", x: 2040, y: 1400, w: 840, h: 730, radius: 22 }
+          ],
+          texts: [
+            { key: "titulo", x: 1500, y: 200, maxW: 2600, font: "108px Georgia", color: "#7f5f22", align: "center" },
+            { key: "subtitulo", x: 1500, y: 360, maxW: 2200, font: "56px 'Trebuchet MS'", color: "#4d3f2d", align: "center" }
+          ]
+        }
+      ]
+    },
   },
   101: {
     title: "Caixa para Combinado Especial",
