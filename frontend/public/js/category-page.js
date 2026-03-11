@@ -451,15 +451,27 @@ document.addEventListener('DOMContentLoaded', () => {
     renderModelCheckboxes(state);
   }
 
+  // ── Banner dinâmico ────────────────────────────────────────────────────────
+  function applyBanner(level1) {
+    const banner = document.getElementById('category-banner');
+    if (!banner) return;
+    if (level1 === 'convites') {
+      banner.src = 'assets/banners/banner-Convites.png';
+      banner.alt = 'Banner Convites';
+    } else {
+      banner.src = 'assets/banners/banner-embalagens.png';
+      banner.alt = 'Banner Embalagens';
+    }
+  }
+
   // ── Logo dinâmica ──────────────────────────────────────────────────────────
   function applyLogo(level1) {
     const headerLogo     = document.querySelector('.logo img');
     const footerBrandLogo = document.querySelector('.footer-brand-logo img');
-    if (level1 !== 'convites') {
-      if (headerLogo)     headerLogo.src     = 'assets/logo/logo-dark-ULTRAPRESS.png';
-      if (footerBrandLogo) footerBrandLogo.src = 'assets/logo/logo-white-ULTRAPRESS.png';
-    } else {
+    if (level1 === 'convites') {
       if (footerBrandLogo) footerBrandLogo.src = 'assets/logo/logo-white-2.png';
+    } else {
+      if (footerBrandLogo) footerBrandLogo.src = 'assets/logo/logo-white-ULTRAPRESS.png';
     }
   }
 
@@ -510,9 +522,11 @@ document.addEventListener('DOMContentLoaded', () => {
     renderGroupCheckboxes(state);
     renderItemCheckboxes(state);
     applyLogo(state.level1);
+    applyBanner(state.level1);
     apply(state);
   };
 
   applyLogo(state.level1);
+  applyBanner(state.level1);
   apply(state);
 });

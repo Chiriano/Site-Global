@@ -1,75 +1,375 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Personalizar | Alpha Convites</title>
+  <title>Editor de Personalização | Alpha Convites</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/personalizar.css">
 </head>
 <body>
-  <div class="pz-page">
-    <header class="pz-header">
-      <a id="btn-voltar" class="pz-back" href="convite-product.html">Voltar</a>
-      <div class="pz-header-center">
-        <h1 class="pz-title">Personalizar</h1>
-        <p class="pz-subtitle">Escolha o modelo, envie as fotos e ajuste o enquadramento</p>
+
+  <header class="editor-header">
+    <div class="editor-header__left">
+      <a href="javascript:history.back()" class="btn-back" aria-label="Voltar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+      </a>
+      <img src="assets/logo/logo-white-2.png" alt="Alpha Convites" class="header-logo">
+      <div class="header-sep" aria-hidden="true"></div>
+      <div class="header-title-group">
+        <h1 class="header-title">Editor de Convites</h1>
+        <span class="header-subtitle">Personalização ao vivo</span>
       </div>
-      <button id="btn-avancar" class="pz-advance" type="button">Avançar</button>
-    </header>
+    </div>
+    <div class="editor-header__right">
+      <div class="header-status" aria-label="Status do editor">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span class="status-label">Editor ativo</span>
+      </div>
+      <button class="btn-header-primary" id="btn-header-download" type="button">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Baixar PDF
+      </button>
+    </div>
+  </header>
 
-    <main class="pz-workspace">
-      <aside class="pz-left-panel">
-        <section class="pz-side-card">
-          <h2>Modelos de Fotos</h2>
-          <div id="layouts-grid" class="pz-layout-grid"></div>
-        </section>
+  <main class="editor-layout" id="editor-layout">
+    <aside class="editor-panel" id="editor-panel" aria-label="Painel de personalização">
+      <div class="panel-rail" aria-label="Ferramentas do editor">
+        <button class="panel-rail__item" type="button" data-panel-toggle="upload" aria-label="Upload" aria-expanded="false">
+          <span class="panel-rail__icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </span>
+          <span class="panel-rail__label">Upload</span>
+        </button>
+        <button class="panel-rail__item" type="button" data-panel-toggle="pages" aria-label="Páginas" aria-expanded="false">
+          <span class="panel-rail__icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><rect x="7" y="7" width="10" height="10" rx="1.5"/></svg>
+          </span>
+          <span class="panel-rail__label">Páginas</span>
+        </button>
+        <button class="panel-rail__item" type="button" data-panel-toggle="text" aria-label="Texto" aria-expanded="false">
+          <span class="panel-rail__icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg>
+          </span>
+          <span class="panel-rail__label">Texto</span>
+        </button>
+        <button class="panel-rail__item" type="button" data-panel-toggle="export" aria-label="Exportar" aria-expanded="false">
+          <span class="panel-rail__icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </span>
+          <span class="panel-rail__label">Exportar</span>
+        </button>
+      </div>
 
-        <section class="pz-side-card">
-          <h3>Templates de Fundo</h3>
-          <div id="templates-grid" class="pz-template-grid"></div>
-        </section>
+      <div class="panel-shell" id="panel-shell" hidden>
+        <div class="panel-header">
+          <div class="panel-kicker">Alpha Editor</div>
+          <h2 class="panel-title" id="panel-title">Upload</h2>
+          <p class="panel-sub" id="panel-sub">Ferramentas da seção ativa do editor.</p>
+        </div>
 
-        <section class="pz-side-card">
-          <h3>Editar Fotos</h3>
-          <label class="pz-label" for="slot-select">Quadro</label>
-          <select id="slot-select" class="pz-input"></select>
-
-          <label class="pz-label" for="foto-input">Upload</label>
-          <input id="foto-input" class="pz-input" type="file" accept="image/*">
-        </section>
-
-        <section class="pz-side-card">
-          <h3>Textos</h3>
-          <div id="texts-form"></div>
-        </section>
-      </aside>
-
-      <section class="pz-center-panel">
-        <div class="pz-paper-wrap">
-          <div class="pz-paper" id="paper">
-            <div id="canvas-wrap" class="pz-canvas-wrap">
-              <canvas id="preview-canvas" width="2200" height="3000"></canvas>
+        <div class="panel-content">
+          <section class="editor-card panel-section" id="sec-upload" data-panel-section="upload">
+            <div class="editor-card__head">
+              <span class="editor-card__icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              </span>
+              <div>
+                <h3 class="editor-card__title">Upload da imagem</h3>
+                <p class="editor-card__sub">Área com visual premium para trocar a foto do convite.</p>
+              </div>
             </div>
-          </div>
-        </div>
-      </section>
 
-      <aside class="pz-right-panel">
-        <div class="pz-floating-actions">
-          <button id="btn-salvar" class="pz-fab pz-fab-save" type="button" title="Salvar">Salvar</button>
-          <hr class="pz-fab-sep">
-          <button id="btn-fullscreen" class="pz-fab" type="button" title="Tela cheia">&#x26F6;</button>
-          <button id="btn-zoom-plus" class="pz-fab" type="button" title="Zoom +">+</button>
-          <button id="btn-zoom-minus" class="pz-fab" type="button" title="Zoom -">-</button>
-          <button id="btn-zoom-reset" class="pz-fab" type="button" title="Ajustar visualizacao">&#x21BB;</button>
-          <span id="zoom-value" class="pz-zoom-value">100%</span>
+            <input type="file" accept="image/jpeg,image/png,image/webp" id="foto-input" hidden aria-label="Selecionar foto">
+
+            <div class="photo-upload photo-upload--premium" id="photo-upload" role="button" tabindex="0" aria-label="Clique para adicionar foto">
+              <div class="photo-upload__visual">
+                <svg class="upload-icon" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/>
+                  <circle cx="8.5" cy="8.5" r="1.5"/>
+                  <polyline points="21 15 16 10 5 21"/>
+                </svg>
+              </div>
+              <span class="upload-label">Arraste ou clique para enviar</span>
+              <span class="upload-hint">JPG, PNG e WEBP</span>
+              <span class="upload-chip">Canvas ready</span>
+            </div>
+
+            <p class="field-help" id="upload-target-hint">Selecione uma página com slot de foto para enviar imagens.</p>
+
+            <div class="photo-preview-wrap" id="photo-preview-wrap" hidden>
+              <img src="" alt="Foto selecionada" class="photo-preview-img" id="photo-preview-img">
+              <button class="btn-photo-change" id="btn-photo-change" type="button">Trocar imagem</button>
+            </div>
+          </section>
+
+          <section class="editor-card panel-section" id="sec-pages" data-panel-section="pages" hidden>
+            <div class="editor-card__head">
+              <span class="editor-card__icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><rect x="7" y="7" width="10" height="10" rx="1.5"/></svg>
+              </span>
+              <div>
+                <h3 class="editor-card__title">Páginas do convite</h3>
+                <p class="editor-card__sub">Três modelos separados com estado próprio e troca rápida pelo painel ou pelas miniaturas inferiores.</p>
+              </div>
+            </div>
+
+            <div class="frame-grid" id="frame-grid">
+              <button class="frame-option is-active" type="button" data-page="page1">
+                <span class="frame-thumb frame-thumb--page1"></span>
+                <span class="frame-meta">
+                  <strong>Página 1</strong>
+                  <small>Texto + foto principal</small>
+                </span>
+              </button>
+              <button class="frame-option" type="button" data-page="page2">
+                <span class="frame-thumb frame-thumb--page2"></span>
+                <span class="frame-meta">
+                  <strong>Página 2</strong>
+                  <small>Galeria com quadros</small>
+                </span>
+              </button>
+              <button class="frame-option" type="button" data-page="page3">
+                <span class="frame-thumb frame-thumb--page3"></span>
+                <span class="frame-meta">
+                  <strong>Página 3</strong>
+                  <small>Estrutura futura</small>
+                </span>
+              </button>
+            </div>
+          </section>
+
+          <section class="editor-card panel-section" id="sec-text" data-panel-section="text" hidden>
+            <div class="editor-card__head">
+              <span class="editor-card__icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg>
+              </span>
+              <div>
+                <h3 class="editor-card__title">Controles de texto</h3>
+                <p class="editor-card__sub">Título e caixa principal com controle de escala e limites visuais.</p>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <div class="control-group__label-row">
+                <label class="field-label" for="txt-nome">Título principal</label>
+                <span class="limit-pill">12 a 60</span>
+              </div>
+              <input type="text" id="txt-nome" class="field-input" placeholder="Digite o título principal" maxlength="36" autocomplete="off">
+              <div class="size-control">
+                <input type="range" id="title-size-range" min="12" max="60" value="35">
+                <input type="number" id="title-size-number" min="12" max="60" value="35">
+              </div>
+            </div>
+
+            <div class="control-group">
+              <div class="control-group__label-row">
+                <label class="field-label" for="txt-curso">Curso / Data</label>
+                <span class="limit-pill">texto auxiliar</span>
+              </div>
+              <input type="text" id="txt-curso" class="field-input" placeholder="Digite curso e data de formatura" maxlength="58" autocomplete="off">
+            </div>
+
+            <div class="control-group">
+              <div class="control-group__label-row">
+                <label class="field-label" for="txt-parents">Nome do Pai / Mãe</label>
+                <span class="limit-pill">12 a 30</span>
+              </div>
+              <textarea id="txt-parents" class="field-input field-input--textarea field-input--textarea-sm" rows="2" placeholder="Digite os nomes dos pais..."></textarea>
+            </div>
+
+            <div class="control-group">
+              <div class="control-group__label-row">
+                <label class="field-label" for="txt-bio-input">Caixa de texto principal</label>
+                <span class="limit-pill">12 a 45</span>
+              </div>
+              <textarea id="txt-bio-input" class="field-input field-input--textarea" rows="6" placeholder="Digite a mensagem principal do convite..."></textarea>
+              <div class="size-control">
+                <input type="range" id="bio-size-range" min="12" max="45" value="45">
+                <input type="number" id="bio-size-number" min="12" max="45" value="45">
+              </div>
+              <p class="field-help">O bloco continua usando autoajuste interno com mínimo absoluto de 12.</p>
+              <p class="field-help" id="text-section-hint">Página 1 com título e caixa principal ativos.</p>
+            </div>
+          </section>
+
+          <section class="editor-card panel-section" id="sec-export" data-panel-section="export" hidden>
+            <div class="editor-card__head">
+              <span class="editor-card__icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              </span>
+              <div>
+                <h3 class="editor-card__title">Exportação</h3>
+                <p class="editor-card__sub">Somente PDF visível nesta etapa.</p>
+              </div>
+            </div>
+
+            <button class="btn-action btn-action--primary btn-action--wide" id="btn-download" type="button">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Baixar PDF
+            </button>
+          </section>
         </div>
-      </aside>
-    </main>
+      </div>
+    </aside>
+
+    <section class="editor-workspace" aria-label="Área de edição">
+      <div class="workspace-bar">
+        <div class="workspace-bar__left">
+          <span class="workspace-dot" aria-hidden="true"></span>
+          <span class="workspace-label">Área de edição</span>
+        </div>
+        <div class="workspace-bar__right">
+          <span class="canvas-dims" id="canvas-dims">1100 × 800 px</span>
+        </div>
+      </div>
+
+      <div class="canvas-area" id="canvas-area">
+        <div class="canvas-wrapper" id="canvas-wrapper">
+          <canvas id="editor-canvas"></canvas>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <section class="editor-pages-carousel" aria-label="Miniaturas das páginas">
+    <div class="page-strip">
+      <div class="page-strip__head">
+        <div>
+          <span class="page-strip__eyebrow">Modelos</span>
+          <strong class="page-strip__title">Páginas do convite</strong>
+        </div>
+        <div class="page-strip__status">
+          <span id="page-status">Página 1 ativa</span>
+          <span id="slot-status">Upload direcionado para main-photo</span>
+        </div>
+      </div>
+      <div class="page-strip__list" id="page-strip-list"></div>
+    </div>
+  </section>
+
+  <footer class="main-footer editor-footer">
+    <div class="footer-container footer-content">
+      <div class="footer-brand">
+        <img src="assets/logo/logo-white-ULTRAPRESS.png" alt="Alpha Convites Logo" class="footer-brand__logo">
+      </div>
+      <div class="footer-col">
+        <h4>Como Funciona</h4>
+        <ul>
+          <li><a href="#">Processo de Compra</a></li>
+          <li><a href="#">Prazos e Entregas</a></li>
+          <li><a href="#">Qualidade de Impressão</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Sobre Nós</h4>
+        <ul>
+          <li><a href="#">Quem Somos</a></li>
+          <li><a href="#">Sustentabilidade</a></li>
+          <li><a href="#">Carreiras</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Serviço ao Cliente</h4>
+        <ul>
+          <li><a href="#">Central de Ajuda</a></li>
+          <li><a href="#">Contato</a></li>
+          <li><a href="#">Reclamações</a></li>
+        </ul>
+      </div>
+      <div class="footer-col newsletter-col">
+        <h4>Newsletter</h4>
+        <p>Receba ofertas exclusivas.</p>
+        <form class="newsletter-form">
+          <input type="email" placeholder="O seu e-mail">
+          <button type="submit">Inscrever</button>
+        </form>
+        <div class="social-icons" aria-label="Redes sociais">
+          <a href="#" aria-label="Facebook">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-7h2.4l.4-3h-2.8V9.2c0-.9.3-1.5 1.6-1.5H16V5.1c-.4-.1-1.3-.1-2.4-.1-2.4 0-4 1.4-4 4.2V11H7v3h2.2v7h4.3z"/></svg>
+          </a>
+          <a href="#" aria-label="Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+          </a>
+          <a href="#" aria-label="LinkedIn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.9 8.5A1.4 1.4 0 1 1 6.9 5.7a1.4 1.4 0 0 1 0 2.8zM5.7 18.3V9.9h2.5v8.4H5.7zm4 0V9.9h2.4V11c.3-.6 1.2-1.4 2.6-1.4 2.8 0 3.3 1.8 3.3 4.2v4.5h-2.5v-4c0-1 0-2.3-1.4-2.3s-1.6 1.1-1.6 2.2v4.1H9.7z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-container footer-bottom">
+      <p>&copy; 2026 Alpha Convites. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- Floating text toolbar -->
+  <div class="text-toolbar" id="text-toolbar" hidden role="toolbar" aria-label="Formatação de texto">
+    <div class="text-toolbar__group">
+      <button class="ttb-btn" id="ttb-font-dec" type="button" title="Diminuir fonte">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <input class="ttb-size-input" id="ttb-font-size" type="number" min="8" max="120" value="16" aria-label="Tamanho da fonte">
+      <button class="ttb-btn" id="ttb-font-inc" type="button" title="Aumentar fonte">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+    </div>
+    <div class="text-toolbar__sep" aria-hidden="true"></div>
+    <div class="text-toolbar__group">
+      <label class="ttb-label" for="ttb-line-height">Entrelinha</label>
+      <input class="ttb-size-input ttb-size-input--wide" id="ttb-line-height" type="number" min="0.8" max="3" step="0.1" value="1.2" aria-label="Altura da linha">
+    </div>
+    <div class="text-toolbar__sep" aria-hidden="true"></div>
+    <div class="text-toolbar__group">
+      <button class="ttb-btn ttb-btn--fmt" id="ttb-bold" type="button" title="Negrito (B)" aria-pressed="false"><strong>B</strong></button>
+      <button class="ttb-btn ttb-btn--fmt" id="ttb-italic" type="button" title="Itálico (I)" aria-pressed="false"><em>I</em></button>
+      <button class="ttb-btn ttb-btn--fmt" id="ttb-underline" type="button" title="Sublinhado (U)" aria-pressed="false"><span style="text-decoration:underline">U</span></button>
+    </div>
+    <div class="text-toolbar__sep" aria-hidden="true"></div>
+    <div class="text-toolbar__group">
+      <button class="ttb-btn ttb-btn--align" id="ttb-align-left" type="button" title="Alinhar à esquerda" aria-pressed="false">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="18" y2="18"/></svg>
+      </button>
+      <button class="ttb-btn ttb-btn--align" id="ttb-align-center" type="button" title="Centralizar" aria-pressed="false">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="6" y1="12" x2="18" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+      </button>
+      <button class="ttb-btn ttb-btn--align" id="ttb-align-right" type="button" title="Alinhar à direita" aria-pressed="false">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="9" y1="12" x2="21" y2="12"/><line x1="6" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="text-toolbar__sep" aria-hidden="true"></div>
+    <div class="text-toolbar__group">
+      <button class="ttb-btn" id="ttb-undo" type="button" title="Desfazer">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>
+      </button>
+      <button class="ttb-btn" id="ttb-redo" type="button" title="Refazer">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg>
+      </button>
+    </div>
+    <div class="text-toolbar__sep body-counter-sep" id="ttb-counter-sep" aria-hidden="true"></div>
+    <div class="text-toolbar__group body-counter" id="body-counter" hidden>
+      <span class="body-counter__value"><span id="body-counter-current">0</span> / <span id="body-counter-limit">0</span></span>
+    </div>
   </div>
 
-  <script src="js/products-data.js"></script>
-  <script src="js/personalizar-page.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="js/personalizar/templates/shared.js"></script>
+  <script src="js/personalizar/templates/page1.js"></script>
+  <script src="js/personalizar/templates/page2.js"></script>
+  <script src="js/personalizar/templates/page3.js"></script>
+  <script src="js/personalizar.js"></script>
+
 </body>
 </html>
-

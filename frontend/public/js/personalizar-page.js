@@ -1,937 +1,961 @@
 (function () {
-  const productConfigs = window.productConfigs || {};
-  const params = new URLSearchParams(window.location.search);
-  const productId = parseInt(params.get("id") || "0", 10);
-  const productConfig = productConfigs[productId];
-  const storageKey = `alpha_personalizacao_${productId}`;
+  'use strict';
 
-  const dom = {
-    btnVoltar: document.getElementById("btn-voltar"),
-    btnAvancar: document.getElementById("btn-avancar"),
-    btnSalvar: document.getElementById("btn-salvar"),
-    btnFullscreen: document.getElementById("btn-fullscreen"),
-    btnZoomPlus: document.getElementById("btn-zoom-plus"),
-    btnZoomMinus: document.getElementById("btn-zoom-minus"),
-    btnZoomReset: document.getElementById("btn-zoom-reset"),
-    zoomValue: document.getElementById("zoom-value"),
-    layoutsGrid: document.getElementById("layouts-grid"),
-    templatesGrid: document.getElementById("templates-grid"),
-    slotSelect: document.getElementById("slot-select"),
-    fotoInput: document.getElementById("foto-input"),
-    textsForm: document.getElementById("texts-form"),
-    canvasWrap: document.getElementById("canvas-wrap"),
-    canvas: document.getElementById("preview-canvas")
-  };
-  const ctx = dom.canvas.getContext("2d");
+  // ============================================================
+  // CONFIGURAÇÃO DAS PÁGINAS E MODELOS
+  // ============================================================
+  //
+  // Como ajustar coordenadas de slots e textos:
+  //   left, top, width, height → porcentagem da área de edição (0–100)
+  //   Para textos:
+  //     fontSize, fontSizeMin → porcentagem da ALTURA do editor (ex: 6 = 6% da altura)
+  //   Para fotos:
+  //     fade: true → aplica máscara de desvanecimento branco nas bordas (Página 1)
+  //
+  // Estrutura de pastas das imagens:
+  //   assets/molduras-de-foto/pagina-1/1.png
+  //   assets/molduras-de-foto/pagina-2/1.png, 2.png
+  //   assets/molduras-de-foto/pagina-3/1.png, 2.png, 3.png, 4.png
 
-  if (!productConfig || !productConfig.personalizacao || !Array.isArray(productConfig.personalizacao.layouts) || !productConfig.personalizacao.layouts.length) {
-    alert("Produto sem configuracao de personalizacao.");
-    window.location.href = `convite-product.html?id=${encodeURIComponent(productId)}`;
-    return;
-  }
+  var PAGES = {
 
-  const personalization = productConfig.personalizacao;
-  const backgroundTemplates = getBackgroundTemplates(personalization);
-  const print = personalization.print || { canvas: { w: 3000, h: 2200 }, safeArea: { x: 50, y: 50, w: 2100, h: 2900 } };
-
-  const state = {
-    selectedLayoutId: personalization.layouts[0].id,
-    selectedTemplateId: backgroundTemplates[0].id,
-    photos: {},
-    texts: {},
-    imageCache: {},
-    templateImageCache: {},
-    photoTransforms: {},
-    scale: 1,
-    renderQueued: false,
-    paperCache: {},
-    edit: { activeFrameKey: "", selectedFrameKey: "", dragging: false, hoverFrameKey: "", dropTargetFrameKey: "", lastPoint: null }
-  };
-
-  const saved = loadSavedState();
-  if (saved) {
-    state.selectedLayoutId = saved.layoutId || state.selectedLayoutId;
-    state.selectedTemplateId = saved.templateId || state.selectedTemplateId;
-    state.photos = saved.photos || {};
-    state.texts = saved.texts || {};
-    state.photoTransforms = saved.photoTransforms || {};
-    state.scale = typeof saved.scale === "number" ? saved.scale : 1;
-  }
-
-  dom.btnVoltar.href = `convite-product.html?id=${encodeURIComponent(productId)}`;
-  ensureCurrentTemplate();
-  ensureCurrentLayout();
-  renderLayoutCards();
-  renderTemplateCards();
-  renderSlotOptions();
-  renderTextInputs();
-  loadImagesFromState().finally(queueRender);
-  applyScale();
-  centerCanvasView();
-  updateCanvasCursor();
-
-  window.addEventListener("resize", centerCanvasView);
-  window.addEventListener("mousemove", onWindowMouseMove);
-  window.addEventListener("mouseup", onWindowMouseUp);
-  window.addEventListener("keydown", onWindowKeyDown);
-
-  dom.layoutsGrid.addEventListener("click", onLayoutClick);
-  dom.templatesGrid && dom.templatesGrid.addEventListener("click", onTemplateClick);
-  dom.slotSelect.addEventListener("change", function () {
-    dom.fotoInput.value = "";
-    state.edit.selectedFrameKey = dom.slotSelect.value || "";
-    queueRender();
-  });
-  dom.fotoInput.addEventListener("change", onFileInputChange);
-  dom.btnSalvar.addEventListener("click", onSave);
-  dom.btnAvancar.addEventListener("click", onAdvance);
-  dom.btnZoomPlus.addEventListener("click", function () { state.scale = Math.min(2.2, state.scale + 0.1); applyScale(); centerCanvasView(); });
-  dom.btnZoomMinus.addEventListener("click", function () { state.scale = Math.max(0.6, state.scale - 0.1); applyScale(); centerCanvasView(); });
-  dom.btnZoomReset && dom.btnZoomReset.addEventListener("click", function () {
-    state.scale = 1;
-    applyScale();
-    centerCanvasView();
-  });
-  dom.btnFullscreen.addEventListener("click", function () {
-    if (!document.fullscreenElement) {
-      dom.canvasWrap.requestFullscreen && dom.canvasWrap.requestFullscreen();
-      return;
-    }
-    document.exitFullscreen && document.exitFullscreen();
-  });
-
-  dom.canvas.addEventListener("dblclick", onCanvasDoubleClick);
-  dom.canvas.addEventListener("click", onCanvasClick);
-  dom.canvas.addEventListener("mousedown", onCanvasMouseDown);
-  dom.canvas.addEventListener("mousemove", onCanvasMouseMove);
-  dom.canvas.addEventListener("dragover", onCanvasDragOver);
-  dom.canvas.addEventListener("dragleave", onCanvasDragLeave);
-  dom.canvas.addEventListener("drop", onCanvasDrop);
-  dom.canvasWrap.addEventListener("dragover", onCanvasDragOver);
-  dom.canvasWrap.addEventListener("dragleave", onCanvasDragLeave);
-  dom.canvasWrap.addEventListener("drop", onCanvasDrop);
-
-  function onLayoutClick(event) {
-    const card = event.target.closest(".pz-layout-card");
-    if (!card) return;
-    const nextId = card.getAttribute("data-layout-id");
-    if (!nextId || nextId === state.selectedLayoutId) return;
-    state.selectedLayoutId = nextId;
-    state.edit = { activeFrameKey: "", selectedFrameKey: "", dragging: false, hoverFrameKey: "", dropTargetFrameKey: "", lastPoint: null };
-    ensureCurrentLayout();
-    renderLayoutCards();
-    renderSlotOptions();
-    renderTextInputs();
-    updateCanvasCursor();
-    queueRender();
-  }
-
-  function onTemplateClick(event) {
-    const card = event.target.closest(".pz-template-card");
-    if (!card) return;
-    const nextId = card.getAttribute("data-template-id");
-    if (!nextId || nextId === state.selectedTemplateId) return;
-    state.selectedTemplateId = nextId;
-    state.paperCache = {};
-    renderTemplateCards();
-    renderLayoutCards();
-    queueRender();
-  }
-
-  function onFileInputChange(event) {
-    const file = event.target.files && event.target.files[0];
-    if (!file) return;
-    const slotKey = dom.slotSelect.value;
-    if (!slotKey) {
-      alert("Selecione um quadro para editar.");
-      return;
-    }
-    assignFileToSlot(file, slotKey);
-  }
-
-  function onSave() {
-    savePersonalization();
-    alert("Personalizacao salva.");
-  }
-
-  function onAdvance() {
-    const layout = getCurrentLayout();
-    const requiredPhoto = layout.photos && layout.photos[0] ? layout.photos[0].key : null;
-    if (requiredPhoto && !state.photos[requiredPhoto]) {
-      alert("Envie ao menos a primeira foto para avancar.");
-      return;
-    }
-    savePersonalization();
-    window.location.href = `visualizar.html?id=${encodeURIComponent(productId)}`;
-  }
-
-  function renderLayoutCards() {
-    dom.layoutsGrid.innerHTML = personalization.layouts.map(function (layout) {
-      const isActive = layout.id === state.selectedLayoutId;
-      return `<button class="pz-layout-card${isActive ? " is-active" : ""}" data-layout-id="${escapeHtml(layout.id)}" type="button"><img src="${buildLayoutThumb(layout)}" alt="${escapeHtml(layout.name)}"><span>${escapeHtml(layout.name)}</span></button>`;
-    }).join("");
-  }
-
-  function renderTemplateCards() {
-    if (!dom.templatesGrid) return;
-    dom.templatesGrid.innerHTML = backgroundTemplates.map(function (template) {
-      const isActive = template.id === state.selectedTemplateId;
-      return `<button class="pz-template-card${isActive ? " is-active" : ""}" data-template-id="${escapeHtml(template.id)}" type="button"><img src="${buildTemplateThumb(template)}" alt="${escapeHtml(template.name)}"><span>${escapeHtml(template.name)}</span></button>`;
-    }).join("");
-  }
-
-  function renderSlotOptions() {
-    const layout = getCurrentLayout();
-    const current = dom.slotSelect.value;
-    const options = (layout.photos || []).map(function (frame, index) {
-      return `<option value="${escapeHtml(frame.key)}">${escapeHtml(frame.key)} (${index + 1})</option>`;
-    }).join("");
-    dom.slotSelect.innerHTML = options;
-    dom.slotSelect.disabled = !options;
-    dom.fotoInput.disabled = !options;
-    if (options && getFrameByKey(layout, current)) {
-      dom.slotSelect.value = current;
-    } else if (options) {
-      dom.slotSelect.selectedIndex = 0;
-    }
-    state.edit.selectedFrameKey = dom.slotSelect.value || "";
-  }
-
-  function renderTextInputs() {
-    const layout = getCurrentLayout();
-    dom.textsForm.innerHTML = (layout.texts || []).map(function (txt) {
-      const value = state.texts[txt.key] || "";
-      return `<label class="pz-label" for="txt-${escapeHtml(txt.key)}">${escapeHtml(txt.key)}</label><input id="txt-${escapeHtml(txt.key)}" data-key="${escapeHtml(txt.key)}" class="pz-input" type="text" placeholder="Digite ${escapeHtml(txt.key)}" value="${escapeHtml(value)}">`;
-    }).join("");
-    dom.textsForm.querySelectorAll("input[data-key]").forEach(function (input) {
-      input.addEventListener("input", function () {
-        const key = input.getAttribute("data-key");
-        state.texts[key] = input.value;
-        queueRender();
-      });
-    });
-  }
-
-  function loadImagesFromState() {
-    const jobs = Object.keys(state.photos).map(function (slotKey) {
-      return loadImage(state.photos[slotKey]).then(function (img) {
-        state.imageCache[slotKey] = img;
-      }).catch(function () {
-        delete state.imageCache[slotKey];
-      });
-    });
-    return Promise.all(jobs);
-  }
-
-  function queueRender() {
-    if (state.renderQueued) return;
-    state.renderQueued = true;
-    requestAnimationFrame(function () {
-      state.renderQueued = false;
-      renderCanvas();
-    });
-  }
-
-  function renderCanvas() {
-    const layout = getCurrentLayout();
-    const template = getCurrentTemplate();
-    const canvasSize = layout.canvas || print.canvas;
-    if (dom.canvas.width !== canvasSize.w || dom.canvas.height !== canvasSize.h) {
-      dom.canvas.width = canvasSize.w;
-      dom.canvas.height = canvasSize.h;
-    }
-
-    drawBackgroundPaper(ctx, dom.canvas.width, dom.canvas.height, template);
-    drawPageBorder(ctx, dom.canvas.width, dom.canvas.height);
-    drawLayoutDecorations(ctx, layout);
-
-    (layout.photos || []).forEach(function (frame) {
-      const image = state.imageCache[frame.key];
-      if (image) {
-        drawImageInFrame(ctx, image, frame, layout);
-      } else {
-        drawEmptyFrame(ctx, frame, layout);
-      }
-    });
-
-    (layout.texts || []).forEach(function (txt) {
-      const content = state.texts[txt.key] || "";
-      if (!content) return;
-      ctx.fillStyle = txt.color || "#4d3f2d";
-      ctx.font = txt.font || "56px serif";
-      ctx.textAlign = txt.align || "center";
-      ctx.textBaseline = "alphabetic";
-      ctx.fillText(content.slice(0, 120), txt.x, txt.y, txt.maxW || 1600);
-    });
-  }
-
-  function drawLayoutDecorations(ctx2, layout) {
-    if (!layout || !layout.style) return;
-    const gold = "rgba(182,152,82,0.75)";
-    if (layout.style === "text-photo-framed" || layout.style === "text-photo-free") {
-      ctx2.save();
-      ctx2.strokeStyle = gold;
-      ctx2.lineWidth = 2.5;
-      ctx2.beginPath();
-      ctx2.moveTo(1060, 700);
-      ctx2.lineTo(1060, 2430);
-      ctx2.stroke();
-      ctx2.strokeRect(150, 760, 860, 1560);
-      ctx2.globalAlpha = 0.45;
-      ctx2.strokeRect(178, 788, 804, 1504);
-      ctx2.restore();
-      return;
-    }
-
-    if (layout.style === "album") {
-      ctx2.save();
-      ctx2.strokeStyle = "rgba(182,152,82,0.58)";
-      ctx2.lineWidth = 2;
-      ctx2.beginPath();
-      ctx2.moveTo(280, 540);
-      ctx2.lineTo(1920, 540);
-      ctx2.stroke();
-      ctx2.restore();
-    }
-  }
-
-  function drawImageInFrame(ctx2, image, frame, layout) {
-    const drawArea = getFrameDrawArea(frame);
-    const radius = Number(frame.radius || 0);
-    if (frame.free) {
-      if (frame.shadow) {
-        ctx2.save();
-        roundedRectPath(ctx2, drawArea.x, drawArea.y, drawArea.w, drawArea.h, radius);
-        ctx2.shadowColor = "rgba(0,0,0,0.28)";
-        ctx2.shadowBlur = 28;
-        ctx2.shadowOffsetY = 12;
-        ctx2.fillStyle = "rgba(0,0,0,0.01)";
-        ctx2.fill();
-        ctx2.restore();
-      }
-      ctx2.save();
-      roundedRectPath(ctx2, drawArea.x, drawArea.y, drawArea.w, drawArea.h, radius);
-      ctx2.clip();
-      drawImageCoverWithTransform(ctx2, image, drawArea, frame);
-      ctx2.restore();
-    } else {
-      ctx2.save();
-      roundedRectPath(ctx2, frame.x, frame.y, frame.w, frame.h, radius);
-      ctx2.clip();
-      drawImageCoverWithTransform(ctx2, image, frame, frame);
-      ctx2.restore();
-    }
-
-    drawFrameOverlay(ctx2, frame);
-    if (shouldDrawFrameBorder(frame, layout)) drawFrameBorder(ctx2, frame);
-    if (state.edit.activeFrameKey === frame.key) drawEditFrameHighlight(ctx2, frame);
-    drawSelectionHighlights(ctx2, frame);
-  }
-
-  function drawEmptyFrame(ctx2, frame, layout) {
-    const drawArea = getFrameDrawArea(frame);
-    const radius = Math.max(Number(frame.radius || 0), 2);
-    const lw = Math.max(7, drawArea.w * 0.009);
-    ctx2.save();
-    roundedRectPath(ctx2, drawArea.x, drawArea.y, drawArea.w, drawArea.h, radius);
-    ctx2.fillStyle = frame.free ? "rgba(215,210,203,0.52)" : "rgba(228,224,218,0.72)";
-    ctx2.fill();
-    if (shouldDrawFrameBorder(frame, layout)) {
-      ctx2.strokeStyle = "rgba(182,152,82,0.85)";
-      ctx2.lineWidth = lw;
-      ctx2.stroke();
-    }
-    const cx = drawArea.x + drawArea.w / 2;
-    const cy = drawArea.y + drawArea.h / 2;
-    const arm = Math.min(drawArea.w, drawArea.h) * 0.13;
-    ctx2.strokeStyle = "rgba(182,152,82,0.38)";
-    ctx2.lineWidth = lw * 0.65;
-    ctx2.lineCap = "round";
-    ctx2.beginPath();
-    ctx2.moveTo(cx - arm, cy); ctx2.lineTo(cx + arm, cy);
-    ctx2.moveTo(cx, cy - arm); ctx2.lineTo(cx, cy + arm);
-    ctx2.stroke();
-    ctx2.restore();
-    drawSelectionHighlights(ctx2, frame);
-  }
-
-  function drawSelectionHighlights(ctx2, frame) {
-    if (state.edit.dropTargetFrameKey === frame.key) {
-      drawFrameAccent(ctx2, frame, "rgba(90,158,255,0.95)", 5, 10);
-      return;
-    }
-    if (state.edit.selectedFrameKey === frame.key) {
-      drawFrameAccent(ctx2, frame, "rgba(241,220,168,0.88)", 4, 8);
-      return;
-    }
-    if (state.edit.hoverFrameKey === frame.key && !state.edit.activeFrameKey) {
-      drawFrameAccent(ctx2, frame, "rgba(255,255,255,0.55)", 3, 6);
-    }
-  }
-
-  function drawFrameAccent(ctx2, frame, color, width, offset) {
-    const area = getFrameDrawArea(frame);
-    const radius = Math.max(Number(frame.radius || 0), 2);
-    ctx2.save();
-    roundedRectPath(ctx2, area.x - offset, area.y - offset, area.w + offset * 2, area.h + offset * 2, radius + offset);
-    ctx2.strokeStyle = color;
-    ctx2.lineWidth = width;
-    ctx2.stroke();
-    ctx2.restore();
-  }
-
-  function drawFrameBorder(ctx2, frame) {
-    const radius = Math.max(Number(frame.radius || 0), 2);
-    const lw = Math.max(7, frame.w * 0.009);
-    ctx2.save();
-    roundedRectPath(ctx2, frame.x, frame.y, frame.w, frame.h, radius);
-    ctx2.strokeStyle = "rgba(182,152,82,0.88)";
-    ctx2.lineWidth = lw;
-    ctx2.stroke();
-    ctx2.restore();
-  }
-
-  function drawFrameOverlay(ctx2, frame) {
-    if (!frame.overlayGradient || !Array.isArray(frame.overlayGradient.stops)) return;
-    const gradient = ctx2.createLinearGradient(frame.x, frame.y, frame.x, frame.y + frame.h);
-    frame.overlayGradient.stops.forEach(function (stop) {
-      gradient.addColorStop(typeof stop.at === "number" ? clamp(stop.at, 0, 1) : 0, stop.color || "rgba(255,255,255,0)");
-    });
-    ctx2.save();
-    roundedRectPath(ctx2, frame.x, frame.y, frame.w, frame.h, Number(frame.radius || 0));
-    ctx2.clip();
-    ctx2.fillStyle = gradient;
-    ctx2.fillRect(frame.x, frame.y, frame.w, frame.h);
-    ctx2.restore();
-  }
-
-  function drawEditFrameHighlight(ctx2, frame) {
-    const radius = Math.max(Number(frame.radius || 0), 2);
-    ctx2.save();
-    roundedRectPath(ctx2, frame.x - 6, frame.y - 6, frame.w + 12, frame.h + 12, radius + 8);
-    ctx2.strokeStyle = "rgba(90,158,255,0.9)";
-    ctx2.lineWidth = 5;
-    ctx2.stroke();
-    ctx2.restore();
-  }
-
-  function drawPageBorder(ctx2, w, h) {
-    const gold = "rgba(182,152,82,0.80)";
-    const lw = Math.max(2, w * 0.0014);
-    const m = Math.round(w * 0.027);
-    const gap = lw * 3.5;
-    ctx2.save();
-    ctx2.strokeStyle = gold;
-    ctx2.lineWidth = lw;
-    ctx2.strokeRect(m, m, w - m * 2, h - m * 2);
-    const inner = m + gap + lw;
-    ctx2.strokeRect(inner, inner, w - inner * 2, h - inner * 2);
-    drawOrnament(ctx2, w / 2, m + (gap + lw) / 2, gold, lw);
-    ctx2.restore();
-  }
-
-  function drawOrnament(ctx2, cx, cy, color, lw) {
-    const s = Math.max(6, lw * 7);
-    ctx2.save();
-    ctx2.fillStyle = color;
-    ctx2.strokeStyle = color;
-    ctx2.lineWidth = lw;
-    ctx2.beginPath();
-    ctx2.moveTo(cx, cy - s * 0.65);
-    ctx2.lineTo(cx + s * 0.38, cy);
-    ctx2.lineTo(cx, cy + s * 0.65);
-    ctx2.lineTo(cx - s * 0.38, cy);
-    ctx2.closePath();
-    ctx2.fill();
-    ctx2.beginPath();
-    ctx2.moveTo(cx - s * 1.7, cy);
-    ctx2.lineTo(cx - s * 0.5, cy);
-    ctx2.moveTo(cx + s * 0.5, cy);
-    ctx2.lineTo(cx + s * 1.7, cy);
-    ctx2.stroke();
-    ctx2.restore();
-  }
-
-  function buildLayoutThumb(layout) {
-    const thumbCanvas = document.createElement("canvas");
-    thumbCanvas.width = 120;
-    thumbCanvas.height = 90;
-    const thumbCtx = thumbCanvas.getContext("2d");
-    drawBackgroundPaper(thumbCtx, 120, 90, getCurrentTemplate());
-    drawPageBorder(thumbCtx, 120, 90);
-    drawLayoutThumbDecorations(thumbCtx, layout, 120 / print.canvas.w, 90 / print.canvas.h);
-    const sx = thumbCanvas.width / print.canvas.w;
-    const sy = thumbCanvas.height / print.canvas.h;
-    (layout.photos || []).forEach(function (frame) {
-      drawThumbFrame(thumbCtx, {
-        key: frame.key,
-        x: frame.x * sx,
-        y: frame.y * sy,
-        w: frame.w * sx,
-        h: frame.h * sy,
-        radius: (frame.radius || 0) * sx,
-        border: frame.border,
-        free: frame.free,
-        bleedBottom: (frame.bleedBottom || 0) * sy
-      }, layout);
-    });
-    return thumbCanvas.toDataURL("image/png");
-  }
-
-  function drawThumbFrame(ctx2, frame, layout) {
-    const drawArea = getFrameDrawArea(frame);
-    const radius = Math.max(Number(frame.radius || 0), 1.5);
-    ctx2.save();
-    roundedRectPath(ctx2, drawArea.x, drawArea.y, drawArea.w, drawArea.h, radius);
-    ctx2.fillStyle = frame.free ? "rgba(215,210,203,0.60)" : "rgba(228,224,218,0.85)";
-    ctx2.fill();
-    if (shouldDrawFrameBorder(frame, layout)) {
-      ctx2.strokeStyle = "rgba(182,152,82,0.88)";
-      ctx2.lineWidth = Math.max(1.5, drawArea.w * 0.05);
-      ctx2.stroke();
-    }
-    ctx2.restore();
-  }
-
-  function drawLayoutThumbDecorations(ctx2, layout, sx, sy) {
-    if (!layout || !layout.style) return;
-    ctx2.save();
-    ctx2.strokeStyle = "rgba(182,152,82,0.6)";
-    ctx2.lineWidth = 1;
-    if (layout.style === "text-photo-framed" || layout.style === "text-photo-free") {
-      ctx2.beginPath();
-      ctx2.moveTo(1060 * sx, 700 * sy);
-      ctx2.lineTo(1060 * sx, 2430 * sy);
-      ctx2.stroke();
-      ctx2.strokeRect(150 * sx, 760 * sy, 860 * sx, 1560 * sy);
-    } else if (layout.style === "album") {
-      ctx2.beginPath();
-      ctx2.moveTo(280 * sx, 540 * sy);
-      ctx2.lineTo(1920 * sx, 540 * sy);
-      ctx2.stroke();
-    }
-    ctx2.restore();
-  }
-
-  function buildTemplateThumb(template) {
-    const thumbCanvas = document.createElement("canvas");
-    thumbCanvas.width = 100;
-    thumbCanvas.height = 70;
-    const thumbCtx = thumbCanvas.getContext("2d");
-    drawBackgroundPaper(thumbCtx, 100, 70, template);
-    drawPageBorder(thumbCtx, 100, 70);
-    return thumbCanvas.toDataURL("image/png");
-  }
-
-  function drawBackgroundPaper(ctx2, w, h, template) {
-    const safeTemplate = template || backgroundTemplates[0];
-    const cacheKey = `${safeTemplate.id}_${w}x${h}`;
-    if (!state.paperCache[cacheKey]) {
-      const cacheCanvas = document.createElement("canvas");
-      cacheCanvas.width = w;
-      cacheCanvas.height = h;
-      const c = cacheCanvas.getContext("2d");
-      const colors = Array.isArray(safeTemplate.colors) && safeTemplate.colors.length ? safeTemplate.colors : ["#f6f1e7", "#eadfc9"];
-      const base = c.createLinearGradient(0, 0, 0, h);
-      colors.forEach(function (color, index) { base.addColorStop(colors.length === 1 ? 1 : index / (colors.length - 1), color); });
-      c.fillStyle = base;
-      c.fillRect(0, 0, w, h);
-
-      if (safeTemplate.src) {
-        const image = state.templateImageCache[safeTemplate.id];
-        if (image) {
-          drawImageCover(c, image, 0, 0, w, h);
-        } else if (!state.templateImageCache[`loading_${safeTemplate.id}`]) {
-          state.templateImageCache[`loading_${safeTemplate.id}`] = true;
-          loadImage(safeTemplate.src).then(function (img) {
-            state.templateImageCache[safeTemplate.id] = img;
-            delete state.templateImageCache[`loading_${safeTemplate.id}`];
-            state.paperCache = {};
-            queueRender();
-            renderTemplateCards();
-            renderLayoutCards();
-          }).catch(function () {
-            delete state.templateImageCache[`loading_${safeTemplate.id}`];
-          });
+    // ── Página 1: foto com fade branco ──────────────────────
+    1: {
+      id: 1,
+      name: 'Página 1',
+      bgColor: '#f8f3ea',   // cor que aparece através do fade
+      models: [
+        {
+          id: 'p1-m1',
+          name: 'Foto com Fade',
+          src: 'assets/molduras-de-foto/pagina-1/1.png',
+          photos: [
+            { key: 'foto1', left: 0, top: 0, width: 100, height: 100, fade: true }
+          ],
+          texts: []
         }
-      }
-      state.paperCache[cacheKey] = cacheCanvas;
+      ]
+    },
+
+    // ── Página 2: título + nome + bio + foto ─────────────────
+    2: {
+      id: 2,
+      name: 'Página 2',
+      bgColor: 'transparent',
+      models: [
+        {
+          id: 'p2-m1',
+          name: 'Foto Livre',
+          src: 'assets/molduras-de-foto/pagina-2/1.png',
+          photos: [
+            { key: 'foto1', left: 52, top: 8, width: 43, height: 65 }
+          ],
+          texts: [
+            {
+              key: 'titulo',
+              label: 'Título',
+              left: 5, top: 8, width: 44, height: 14,
+              fontFamily: "'Georgia', 'Times New Roman', serif",
+              fontSize: 7, fontSizeMin: 3,
+              align: 'center', italic: true,
+              maxChars: 50, placeholder: 'Nome / Título'
+            },
+            {
+              key: 'nome',
+              label: 'Nome Completo',
+              left: 5, top: 24, width: 44, height: 7,
+              fontFamily: "'Georgia', 'Times New Roman', serif",
+              fontSize: 3, fontSizeMin: 1.5,
+              align: 'center', italic: false,
+              maxChars: 80, placeholder: 'Nome Completo'
+            },
+            {
+              key: 'bio',
+              label: 'Biografia',
+              left: 5, top: 34, width: 44, height: 42,
+              fontFamily: "'Georgia', 'Times New Roman', serif",
+              fontSize: 2, fontSizeMin: 1,
+              align: 'justify', italic: false, lineHeight: 1.5,
+              maxChars: 600, placeholder: 'Escreva aqui a biografia...'
+            }
+          ]
+        },
+        {
+          id: 'p2-m2',
+          name: 'Com Moldura',
+          src: 'assets/molduras-de-foto/pagina-2/2.png',
+          photos: [
+            { key: 'foto1', left: 53, top: 12, width: 40, height: 56 }
+          ],
+          texts: [
+            {
+              key: 'titulo',
+              label: 'Título',
+              left: 5, top: 8, width: 44, height: 14,
+              fontFamily: "'Georgia', 'Times New Roman', serif",
+              fontSize: 7, fontSizeMin: 3,
+              align: 'center', italic: true,
+              maxChars: 50, placeholder: 'Nome / Título'
+            },
+            {
+              key: 'nome',
+              label: 'Nome Completo',
+              left: 5, top: 24, width: 44, height: 7,
+              fontFamily: "'Georgia', 'Times New Roman', serif",
+              fontSize: 3, fontSizeMin: 1.5,
+              align: 'center', italic: false,
+              maxChars: 80, placeholder: 'Nome Completo'
+            },
+            {
+              key: 'bio',
+              label: 'Biografia',
+              left: 5, top: 34, width: 44, height: 42,
+              fontFamily: "'Georgia', 'Times New Roman', serif",
+              fontSize: 2, fontSizeMin: 1,
+              align: 'justify', italic: false, lineHeight: 1.5,
+              maxChars: 600, placeholder: 'Escreva aqui a biografia...'
+            }
+          ]
+        }
+      ]
+    },
+
+    // ── Página 3: molduras com layouts de foto ───────────────
+    3: {
+      id: 3,
+      name: 'Página 3',
+      bgColor: 'transparent',
+      models: [
+        {
+          id: 'p3-m1',
+          name: 'Modelo 1 · 1 foto',
+          src: 'assets/molduras-de-foto/pagina-3/1.png',
+          photos: [
+            { key: 'foto1', left: 5, top: 8, width: 90, height: 83 }
+          ],
+          texts: []
+        },
+        {
+          id: 'p3-m2',
+          name: 'Modelo 2 · 2 fotos',
+          src: 'assets/molduras-de-foto/pagina-3/2.png',
+          photos: [
+            { key: 'foto1', left: 3.0,  top: 7.7, width: 44.2, height: 84.5 },
+            { key: 'foto2', left: 52.8, top: 7.7, width: 44.2, height: 84.5 }
+          ],
+          texts: []
+        },
+        {
+          id: 'p3-m3',
+          name: 'Modelo 3 · 3 fotos',
+          src: 'assets/molduras-de-foto/pagina-3/3.png',
+          photos: [
+            { key: 'foto1', left: 5,  top: 8,  width: 44, height: 40 },
+            { key: 'foto2', left: 5,  top: 51, width: 44, height: 40 },
+            { key: 'foto3', left: 52, top: 8,  width: 43, height: 83 }
+          ],
+          texts: []
+        },
+        {
+          id: 'p3-m4',
+          name: 'Modelo 4 · 4 fotos',
+          src: 'assets/molduras-de-foto/pagina-3/4.png',
+          photos: [
+            { key: 'foto1', left: 7.4,  top: 13.2, width: 39.0, height: 37.8 },
+            { key: 'foto2', left: 47.7, top: 13.2, width: 39.0, height: 37.8 },
+            { key: 'foto3', left: 7.4,  top: 52.5, width: 39.0, height: 37.8 },
+            { key: 'foto4', left: 47.7, top: 52.5, width: 39.0, height: 37.8 }
+          ],
+          texts: []
+        }
+      ]
     }
-    ctx2.clearRect(0, 0, w, h);
-    ctx2.drawImage(state.paperCache[cacheKey], 0, 0);
-  }
+  };
 
-  function drawImageCover(ctx2, image, x, y, w, h) {
-    const boxRatio = w / h;
-    const imageRatio = image.width / image.height;
-    let sx; let sy; let sw; let sh;
-    if (imageRatio > boxRatio) {
-      sh = image.height; sw = sh * boxRatio; sx = (image.width - sw) / 2; sy = 0;
-    } else {
-      sw = image.width; sh = sw / boxRatio; sx = 0; sy = (image.height - sh) / 2;
+  // ============================================================
+  // ESTADO DO EDITOR
+  // ============================================================
+
+  var state = {
+    activePage:  1,
+    // Modelo ativo por página  (ex: { 1: 'p1-m1', 2: 'p2-m1', 3: 'p3-m1' })
+    activeModel: { 1: 'p1-m1', 2: 'p2-m1', 3: 'p3-m1' },
+    // Slot ativo por página
+    activeSlot:  { 1: 'foto1', 2: 'foto1', 3: 'foto1' },
+    // Imagens: chave 'pageId:modelId:slotKey' → { src, naturalW, naturalH, scale, offsetX, offsetY }
+    images: {},
+    // Textos: chave 'pageId:textKey' → string
+    texts: {},
+    // Zoom da visualização do editor (não da foto)
+    editorZoom: 1,
+    // Estado do drag
+    drag: {
+      active:       false,
+      moved:        false,   // true se o mouse se moveu mais que o threshold
+      slotKey:      null,
+      slotEl:       null,
+      imgEl:        null,
+      startClientX: 0,
+      startClientY: 0,
+      startOffsetX: 0,
+      startOffsetY: 0
     }
-    ctx2.drawImage(image, sx, sy, sw, sh, x, y, w, h);
+  };
+
+  // ============================================================
+  // REFERÊNCIAS DOM
+  // ============================================================
+
+  var dom = {
+    btnVoltar:        document.getElementById('btn-voltar'),
+    btnAvancar:       document.getElementById('btn-avancar'),
+    btnSalvar:        document.getElementById('btn-salvar'),
+    btnZoomIn:        document.getElementById('btn-zoom-in'),
+    btnZoomOut:       document.getElementById('btn-zoom-out'),
+    btnZoomReset:     document.getElementById('btn-zoom-reset'),
+    btnCenter:        document.getElementById('btn-center'),
+    btnFill:          document.getElementById('btn-fill'),
+    btnReset:         document.getElementById('btn-reset'),
+    zoomVal:          document.getElementById('zoom-val'),
+    modelGrid:        document.getElementById('model-grid'),
+    slotSelect:       document.getElementById('slot-select'),
+    slotSelectorWrap: document.getElementById('slot-selector-wrap'),
+    fotoInput:        document.getElementById('foto-input'),
+    photoActions:     document.getElementById('photo-actions'),
+    textsForm:        document.getElementById('texts-form'),
+    sectionTexts:     document.getElementById('section-texts'),
+    sectionFoto:      document.getElementById('section-foto'),
+    pageSubtitle:     document.getElementById('page-subtitle'),
+    canvasStage:      document.getElementById('canvas-stage'),
+    editorWrap:       document.getElementById('editor-wrap'),
+    bgLayer:          document.getElementById('bg-layer'),
+    slotsLayer:       document.getElementById('slots-layer'),
+    textsLayer:       document.getElementById('texts-layer'),
+    molduraLayer:     document.getElementById('moldura-layer'),
+    canvasHint:       document.getElementById('canvas-hint'),
+    toastArea:        document.getElementById('toast-area'),
+    pageNav:          document.getElementById('page-nav')
+  };
+
+  // ============================================================
+  // INICIALIZAÇÃO
+  // ============================================================
+
+  function init() {
+    // Link "Voltar" baseado no ?id= da URL
+    var params    = new URLSearchParams(window.location.search);
+    var productId = params.get('id') || '';
+    dom.btnVoltar.href = 'convite-product.html' + (productId ? '?id=' + encodeURIComponent(productId) : '');
+
+    renderAll();
+    bindEvents();
   }
 
-  function drawImageCoverWithTransform(ctx2, image, drawRect, frame) {
-    const boxRatio = drawRect.w / drawRect.h;
-    const imageRatio = image.width / image.height;
-    const tr = getPhotoTransform(frame);
-    let sx; let sy; let sw; let sh;
-    if (imageRatio > boxRatio) {
-      sh = image.height; sw = sh * boxRatio;
-      const excessX = image.width - sw;
-      sx = clamp(excessX / 2 + tr.x * (excessX / 2), 0, excessX); sy = 0;
-    } else {
-      sw = image.width; sh = sw / boxRatio;
-      const excessY = image.height - sh;
-      sx = 0; sy = clamp(excessY / 2 + tr.y * (excessY / 2), 0, excessY);
-    }
-    ctx2.drawImage(image, sx, sy, sw, sh, drawRect.x, drawRect.y, drawRect.w, drawRect.h);
+  // ============================================================
+  // RENDERIZAÇÃO
+  // ============================================================
+
+  /** Renderização completa (usado na inicialização) */
+  function renderAll() {
+    updateSubtitle();
+    renderPageNav();
+    renderModelGrid();
+    renderMoldura();
+    renderBgLayer();
+    renderSlots();
+    renderTextsLayer();
+    renderTextsForm();
+    renderSlotSelect();
+    renderLeftPanelVisibility();
+    renderEditorZoom();
   }
 
-  function roundedRectPath(ctx2, x, y, w, h, radius) {
-    const r = Math.max(0, Math.min(radius || 0, Math.min(w, h) / 2));
-    ctx2.beginPath();
-    ctx2.moveTo(x + r, y);
-    ctx2.lineTo(x + w - r, y);
-    ctx2.quadraticCurveTo(x + w, y, x + w, y + r);
-    ctx2.lineTo(x + w, y + h - r);
-    ctx2.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-    ctx2.lineTo(x + r, y + h);
-    ctx2.quadraticCurveTo(x, y + h, x, y + h - r);
-    ctx2.lineTo(x, y + r);
-    ctx2.quadraticCurveTo(x, y, x + r, y);
-    ctx2.closePath();
+  /** Atualiza ao trocar de página */
+  function renderPageSwitch() {
+    updateSubtitle();
+    renderPageNav();
+    renderModelGrid();
+    renderMoldura();
+    renderBgLayer();
+    renderSlots();
+    renderTextsLayer();
+    renderTextsForm();
+    renderSlotSelect();
+    renderLeftPanelVisibility();
   }
 
-  function onCanvasDragOver(event) {
-    event.preventDefault();
-    event.dataTransfer.dropEffect = "copy";
-    dom.canvasWrap.classList.add("is-dragover");
-    const layout = getCurrentLayout();
-    const point = getCanvasPoint(event);
-    const frame = point ? findFrameAtPoint(layout, point.x, point.y) : null;
-    state.edit.dropTargetFrameKey = frame ? frame.key : "";
-    if (frame) {
-      state.edit.selectedFrameKey = frame.key;
-      dom.slotSelect.value = frame.key;
-    }
-    queueRender();
+  /** Atualiza ao trocar de modelo dentro da página */
+  function renderModelSwitch() {
+    renderModelGrid();
+    renderMoldura();
+    renderSlots();
+    renderTextsLayer();
+    renderSlotSelect();
   }
 
-  function onCanvasDragLeave(event) {
-    if (event.target === dom.canvas || event.target === dom.canvasWrap) {
-      dom.canvasWrap.classList.remove("is-dragover");
-      state.edit.dropTargetFrameKey = "";
-      queueRender();
-    }
+  function updateSubtitle() {
+    var page = PAGES[state.activePage];
+    dom.pageSubtitle.textContent = 'Editando: ' + page.name;
   }
 
-  function onCanvasDrop(event) {
-    event.preventDefault();
-    dom.canvasWrap.classList.remove("is-dragover");
-    const files = event.dataTransfer && event.dataTransfer.files;
-    const file = files && files[0];
-    if (!file || !file.type.startsWith("image/")) return;
-    const point = getCanvasPoint(event);
-    const layout = getCurrentLayout();
-    const frame = point ? findFrameAtPoint(layout, point.x, point.y) : null;
-    const slotKey = frame ? frame.key : dom.slotSelect.value;
-    state.edit.dropTargetFrameKey = "";
-    if (!slotKey) return alert("Selecione um quadro para enviar a foto.");
-    if (frame) {
-      dom.slotSelect.value = frame.key;
-      state.edit.selectedFrameKey = frame.key;
-    }
-    assignFileToSlot(file, slotKey);
-    queueRender();
-  }
-
-  function onCanvasClick(event) {
-    if (state.edit.dragging) return;
-    const layout = getCurrentLayout();
-    const point = getCanvasPoint(event);
-    const frame = point ? findFrameAtPoint(layout, point.x, point.y) : null;
-    if (!frame) return;
-    state.edit.selectedFrameKey = frame.key;
-    dom.slotSelect.value = frame.key;
-    queueRender();
-  }
-
-  function onCanvasDoubleClick(event) {
-    const layout = getCurrentLayout();
-    const point = getCanvasPoint(event);
-    const frame = point ? findFrameAtPoint(layout, point.x, point.y) : null;
-    if (!frame || !state.imageCache[frame.key]) {
-      if (state.edit.activeFrameKey) {
-        state.edit.activeFrameKey = "";
-        state.edit.dragging = false;
-        state.edit.lastPoint = null;
-        updateCanvasCursor();
-        queueRender();
-      }
-      return;
-    }
-    state.edit.selectedFrameKey = frame.key;
-    state.edit.activeFrameKey = state.edit.activeFrameKey === frame.key ? "" : frame.key;
-    state.edit.dragging = false;
-    state.edit.lastPoint = null;
-    dom.slotSelect.value = frame.key;
-    updateCanvasCursor();
-    queueRender();
-  }
-
-  function onCanvasMouseDown(event) {
-    if (event.button !== 0 || !state.edit.activeFrameKey) return;
-    const layout = getCurrentLayout();
-    const point = getCanvasPoint(event);
-    const frame = point ? findFrameAtPoint(layout, point.x, point.y) : null;
-    if (!frame || frame.key !== state.edit.activeFrameKey || !state.imageCache[frame.key]) return;
-    state.edit.dragging = true;
-    state.edit.lastPoint = point;
-    updateCanvasCursor();
-    event.preventDefault();
-  }
-
-  function onCanvasMouseMove(event) {
-    const layout = getCurrentLayout();
-    const point = getCanvasPoint(event);
-    const frame = point ? findFrameAtPoint(layout, point.x, point.y) : null;
-    if (state.edit.dragging) return;
-    const nextHover = frame ? frame.key : "";
-    const changed = nextHover !== state.edit.hoverFrameKey;
-    state.edit.hoverFrameKey = nextHover;
-    updateCanvasCursor();
-    if (changed) queueRender();
-  }
-
-  function onWindowMouseMove(event) {
-    if (!state.edit.dragging || !state.edit.activeFrameKey) return;
-    const layout = getCurrentLayout();
-    const frame = getFrameByKey(layout, state.edit.activeFrameKey);
-    const image = frame ? state.imageCache[frame.key] : null;
-    if (!frame || !image || !state.edit.lastPoint) return;
-    const point = getCanvasPoint(event);
-    if (!point) return;
-    const dx = point.x - state.edit.lastPoint.x;
-    const dy = point.y - state.edit.lastPoint.y;
-    state.edit.lastPoint = point;
-    shiftFrameTransform(frame, image, dx, dy);
-    queueRender();
-  }
-
-  function onWindowMouseUp() {
-    if (!state.edit.dragging) return;
-    state.edit.dragging = false;
-    state.edit.lastPoint = null;
-    updateCanvasCursor();
-  }
-
-  function onWindowKeyDown(event) {
-    if (event.key !== "Escape" || !state.edit.activeFrameKey) return;
-    state.edit.activeFrameKey = "";
-    state.edit.dragging = false;
-    state.edit.lastPoint = null;
-    updateCanvasCursor();
-    queueRender();
-  }
-
-  function assignFileToSlot(file, slotKey) {
-    state.edit.selectedFrameKey = slotKey;
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      const dataUrl = String(e.target.result || "");
-      state.photos[slotKey] = dataUrl;
-      state.photoTransforms[`${state.selectedLayoutId}::${slotKey}`] = { x: 0, y: 0 };
-      loadImage(dataUrl).then(function (img) {
-        state.imageCache[slotKey] = img;
-        queueRender();
-      }).catch(function () {
-        delete state.imageCache[slotKey];
-        queueRender();
-      });
-    };
-    reader.readAsDataURL(file);
-  }
-
-  function shiftFrameTransform(frame, image, dx, dy) {
-    const drawArea = getFrameDrawArea(frame);
-    const boxRatio = drawArea.w / drawArea.h;
-    const imageRatio = image.width / image.height;
-    const tr = getPhotoTransform(frame);
-    if (imageRatio > boxRatio) {
-      const sh = image.height;
-      const sw = sh * boxRatio;
-      const excessX = image.width - sw;
-      if (excessX <= 0) return;
-      let sx = excessX / 2 + tr.x * (excessX / 2);
-      sx -= dx * (sw / drawArea.w);
-      tr.x = clamp((clamp(sx, 0, excessX) - excessX / 2) / (excessX / 2), -1, 1);
-      tr.y = 0;
-    } else {
-      const sw = image.width;
-      const sh = sw / boxRatio;
-      const excessY = image.height - sh;
-      if (excessY <= 0) return;
-      let sy = excessY / 2 + tr.y * (excessY / 2);
-      sy -= dy * (sh / drawArea.h);
-      tr.y = clamp((clamp(sy, 0, excessY) - excessY / 2) / (excessY / 2), -1, 1);
-      tr.x = 0;
-    }
-    state.photoTransforms[getTransformKey(frame)] = { x: tr.x, y: tr.y };
-  }
-
-  function getCanvasPoint(event) {
-    if (!event || typeof event.clientX !== "number" || typeof event.clientY !== "number") return null;
-    const rect = dom.canvas.getBoundingClientRect();
-    if (!rect.width || !rect.height) return null;
-    return {
-      x: (event.clientX - rect.left) * (dom.canvas.width / rect.width),
-      y: (event.clientY - rect.top) * (dom.canvas.height / rect.height)
-    };
-  }
-
-  function findFrameAtPoint(layout, x, y) {
-    const frames = (layout.photos || []).slice().reverse();
-    for (let i = 0; i < frames.length; i += 1) {
-      const area = getFrameDrawArea(frames[i]);
-      if (x >= area.x && x <= area.x + area.w && y >= area.y && y <= area.y + area.h) return frames[i];
-    }
-    return null;
-  }
-
-  function getCurrentLayout() {
-    return personalization.layouts.find(function (layout) { return layout.id === state.selectedLayoutId; }) || personalization.layouts[0];
-  }
-
-  function getCurrentTemplate() {
-    return backgroundTemplates.find(function (template) { return template.id === state.selectedTemplateId; }) || backgroundTemplates[0];
-  }
-
-  function ensureCurrentTemplate() {
-    state.selectedTemplateId = getCurrentTemplate().id;
-  }
-
-  function ensureCurrentLayout() {
-    const layout = getCurrentLayout();
-    state.selectedLayoutId = layout.id;
-    (layout.texts || []).forEach(function (txt) {
-      if (typeof state.texts[txt.key] !== "string") state.texts[txt.key] = "";
-    });
-    if (state.edit.activeFrameKey && !getFrameByKey(layout, state.edit.activeFrameKey)) state.edit.activeFrameKey = "";
-    if (state.edit.selectedFrameKey && !getFrameByKey(layout, state.edit.selectedFrameKey)) state.edit.selectedFrameKey = "";
-    if (!state.edit.selectedFrameKey && Array.isArray(layout.photos) && layout.photos.length) state.edit.selectedFrameKey = layout.photos[0].key;
-  }
-
-  function getFrameByKey(layout, key) {
-    return (layout.photos || []).find(function (frame) { return frame.key === key; }) || null;
-  }
-
-  function getFrameDrawArea(frame) {
-    return { x: Number(frame.x || 0), y: Number(frame.y || 0), w: Number(frame.w || 0), h: Number(frame.h || 0) + Number(frame.bleedBottom || 0) };
-  }
-
-  function shouldDrawFrameBorder(frame, layout) {
-    if (typeof frame.border === "boolean") return frame.border;
-    return layout.style !== "cover";
-  }
-
-  function getTransformKey(frame) {
-    return `${state.selectedLayoutId}::${frame.key}`;
-  }
-
-  function getPhotoTransform(frame) {
-    const key = getTransformKey(frame);
-    const existing = state.photoTransforms[key];
-    if (existing && typeof existing === "object") return { x: clamp(Number(existing.x || 0), -1, 1), y: clamp(Number(existing.y || 0), -1, 1) };
-    state.photoTransforms[key] = { x: 0, y: 0 };
-    return state.photoTransforms[key];
-  }
-
-  function updateCanvasCursor() {
-    if (state.edit.dragging) {
-      dom.canvas.style.cursor = "grabbing";
-      dom.canvasWrap.classList.add("is-editing-photo");
-      return;
-    }
-    if (state.edit.activeFrameKey) {
-      dom.canvas.style.cursor = state.edit.hoverFrameKey === state.edit.activeFrameKey ? "grab" : "crosshair";
-      dom.canvasWrap.classList.add("is-editing-photo");
-      return;
-    }
-    dom.canvas.style.cursor = state.edit.hoverFrameKey ? "pointer" : "default";
-    dom.canvasWrap.classList.remove("is-editing-photo");
-  }
-
-  function applyScale() {
-    dom.canvas.style.transform = `scale(${state.scale.toFixed(2)})`;
-    dom.zoomValue.textContent = `${Math.round(state.scale * 100)}%`;
-  }
-
-  function centerCanvasView() {
-    const wrap = dom.canvasWrap;
-    if (!wrap) return;
-    wrap.scrollLeft = Math.max(0, wrap.scrollWidth - wrap.clientWidth) / 2;
-    wrap.scrollTop = Math.max(0, wrap.scrollHeight - wrap.clientHeight) / 2;
-  }
-
-  function savePersonalization() {
-    const payload = {
-      productId: productId,
-      layoutId: state.selectedLayoutId,
-      templateId: state.selectedTemplateId,
-      photos: state.photos,
-      texts: state.texts,
-      photoTransforms: state.photoTransforms,
-      scale: state.scale,
-      canvas: print.canvas,
-      safeArea: print.safeArea,
-      previewPng: dom.canvas.toDataURL("image/png"),
-      updatedAt: new Date().toISOString()
-    };
-    localStorage.setItem(storageKey, JSON.stringify(payload));
-  }
-
-  function loadSavedState() {
-    try {
-      const raw = localStorage.getItem(storageKey);
-      return raw ? JSON.parse(raw) : null;
-    } catch (error) {
-      return null;
-    }
-  }
-
-  function loadImage(src) {
-    return new Promise(function (resolve, reject) {
-      const image = new Image();
-      image.onload = function () { resolve(image); };
-      image.onerror = function () { reject(new Error("Erro ao carregar imagem.")); };
-      image.src = src;
+  function renderPageNav() {
+    dom.pageNav.querySelectorAll('[data-page]').forEach(function (btn) {
+      var p = parseInt(btn.getAttribute('data-page'), 10);
+      btn.classList.toggle('is-active', p === state.activePage);
     });
   }
 
-  function getBackgroundTemplates(personalizationConfig) {
-    if (Array.isArray(personalizationConfig.templates) && personalizationConfig.templates.length) {
-      return personalizationConfig.templates.map(function (template, index) {
-        const id = template.id || `template-${index + 1}`;
-        return {
-          id: String(id),
-          name: template.name || `Template ${index + 1}`,
-          colors: Array.isArray(template.colors) && template.colors.length ? template.colors : ["#f6f1e7", "#eadfc9"],
-          src: template.src || "",
-          noise: template.noise !== false
-        };
+  function renderModelGrid() {
+    var page         = PAGES[state.activePage];
+    var activeModelId = curModelId();
+    dom.modelGrid.innerHTML = page.models.map(function (model) {
+      var active = model.id === activeModelId;
+      return '<button class="pz-model-card' + (active ? ' is-active' : '') + '"' +
+        ' data-model-id="' + esc(model.id) + '" type="button">' +
+        '<img src="' + esc(model.src) + '" alt="' + esc(model.name) + '" loading="lazy">' +
+        '<span>' + esc(model.name) + '</span>' +
+        '</button>';
+    }).join('');
+  }
+
+  function renderMoldura() {
+    var model = curModel();
+    dom.molduraLayer.innerHTML = '';
+    var img = document.createElement('img');
+    img.src = model.src;
+    img.alt = model.name || 'Moldura';
+    img.onerror = function () {
+      console.warn('[personalizar] Moldura não encontrada:', model.src);
+    };
+    dom.molduraLayer.appendChild(img);
+  }
+
+  function renderBgLayer() {
+    var page = PAGES[state.activePage];
+    dom.bgLayer.style.background = page.bgColor || 'transparent';
+  }
+
+  function renderSlots() {
+    var model      = curModel();
+    var activeSlotKey = state.activeSlot[state.activePage];
+    dom.slotsLayer.innerHTML = '';
+
+    (model.photos || []).forEach(function (slot) {
+      var slotEl = document.createElement('div');
+      slotEl.className = 'photo-slot' +
+        (slot.fade         ? ' slot-fade'     : '') +
+        (slot.key === activeSlotKey ? ' is-active-slot' : '');
+      slotEl.setAttribute('data-slot', slot.key);
+      slotEl.style.cssText =
+        'left:'   + slot.left   + '%;' +
+        'top:'    + slot.top    + '%;' +
+        'width:'  + slot.width  + '%;' +
+        'height:' + slot.height + '%;';
+
+      // Slots de moldura não exibem borda de seleção dourada
+      slotEl.classList.add('no-border');
+
+      // Inserir no DOM antes de aplicar a foto (precisamos das dimensões reais)
+      dom.slotsLayer.appendChild(slotEl);
+
+      // Restaurar foto se já existir no estado
+      var imgState = getImageState(state.activePage, curModelId(), slot.key);
+      if (imgState) {
+        renderPhotoInSlot(slotEl, slot.key, imgState);
+      }
+
+      bindSlotEvents(slotEl, slot.key);
+    });
+  }
+
+  function renderSlotSelect() {
+    var model      = curModel();
+    var photos     = model.photos || [];
+    var currentKey = state.activeSlot[state.activePage];
+
+    dom.slotSelect.innerHTML = photos.map(function (slot, index) {
+      return '<option value="' + esc(slot.key) + '">Quadro ' + (index + 1) + '</option>';
+    }).join('');
+
+    // Mostrar o seletor somente quando houver mais de 1 quadro
+    dom.slotSelectorWrap.hidden = photos.length <= 1;
+
+    if (photos.some(function (s) { return s.key === currentKey; })) {
+      dom.slotSelect.value = currentKey;
+    } else if (photos.length) {
+      dom.slotSelect.selectedIndex = 0;
+      state.activeSlot[state.activePage] = photos[0].key;
+    }
+  }
+
+  function renderLeftPanelVisibility() {
+    var model    = curModel();
+    var hasTexts = model.texts && model.texts.length > 0;
+    dom.sectionTexts.hidden = !hasTexts;
+  }
+
+  function renderEditorZoom() {
+    dom.editorWrap.style.transform = 'scale(' + state.editorZoom.toFixed(2) + ')';
+    dom.zoomVal.textContent = Math.round(state.editorZoom * 100) + '%';
+  }
+
+  // ── Textos no preview ──────────────────────────────────────
+
+  function renderTextsLayer() {
+    var model = curModel();
+    dom.textsLayer.innerHTML = '';
+
+    if (!model.texts || !model.texts.length) {
+      dom.textsLayer.hidden = true;
+      return;
+    }
+
+    dom.textsLayer.hidden = false;
+    var editorH = dom.editorWrap.offsetHeight || 1;
+
+    model.texts.forEach(function (txt) {
+      var el = document.createElement('div');
+      el.className = 'text-block';
+      el.setAttribute('data-text-key', txt.key);
+      el.style.cssText =
+        'left:'        + txt.left   + '%;' +
+        'top:'         + txt.top    + '%;' +
+        'width:'       + txt.width  + '%;' +
+        'height:'      + txt.height + '%;' +
+        'font-family:' + txt.fontFamily + ';' +
+        'text-align:'  + (txt.align || 'left') + ';' +
+        'font-style:'  + (txt.italic ? 'italic' : 'normal') + ';' +
+        'line-height:' + (txt.lineHeight || 1.2) + ';' +
+        'overflow:hidden;';
+
+      var content = state.texts[textStateKey(state.activePage, txt.key)] || '';
+      el.textContent = content;
+      dom.textsLayer.appendChild(el);
+
+      // Ajustar tamanho da fonte para caber no bloco
+      applyTextFontSize(el, txt, editorH);
+    });
+  }
+
+  function renderTextsForm() {
+    var model = curModel();
+    dom.textsForm.innerHTML = '';
+    if (!model.texts || !model.texts.length) return;
+
+    model.texts.forEach(function (txt) {
+      var value = state.texts[textStateKey(state.activePage, txt.key)] || '';
+
+      var label = document.createElement('label');
+      label.className = 'pz-label';
+      label.setAttribute('for', 'txt-' + txt.key);
+      label.textContent = txt.label;
+
+      var ta = document.createElement('textarea');
+      ta.id          = 'txt-' + txt.key;
+      ta.className   = 'pz-textarea';
+      ta.setAttribute('data-text-key', txt.key);
+      ta.maxLength   = txt.maxChars || 600;
+      ta.placeholder = txt.placeholder || '';
+      ta.value       = value;
+      ta.rows        = txt.key === 'bio' ? 5 : 2;
+
+      var counter = document.createElement('span');
+      counter.className   = 'pz-char-counter';
+      counter.textContent = value.length + ' / ' + (txt.maxChars || 600);
+
+      dom.textsForm.appendChild(label);
+      dom.textsForm.appendChild(ta);
+      dom.textsForm.appendChild(counter);
+
+      // Fechar sobre txtConfig, ta, counter
+      (function (txtConfig, textarea, cnt) {
+        textarea.addEventListener('input', function () {
+          var v = textarea.value;
+          state.texts[textStateKey(state.activePage, txtConfig.key)] = v;
+          cnt.textContent = v.length + ' / ' + (txtConfig.maxChars || 600);
+          updateTextBlockInPreview(txtConfig.key);
+        });
+      }(txt, ta, counter));
+    });
+  }
+
+  // ── Auto-fit de texto ──────────────────────────────────────
+
+  /**
+   * Aplica font-size no elemento de texto do preview.
+   * Começa no máximo e reduz gradualmente até o texto caber no bloco.
+   */
+  function applyTextFontSize(el, txtConf, editorH) {
+    var maxPx = editorH * (txtConf.fontSize    / 100);
+    var minPx = editorH * (txtConf.fontSizeMin / 100);
+    var size  = maxPx;
+    el.style.fontSize = size + 'px';
+
+    // Reduz até caber — limite mínimo para não quebrar o layout
+    while (size > minPx && el.scrollHeight > el.offsetHeight) {
+      size -= 0.5;
+      el.style.fontSize = size + 'px';
+    }
+  }
+
+  function updateTextBlockInPreview(textKey) {
+    var el = dom.textsLayer.querySelector('[data-text-key="' + textKey + '"]');
+    if (!el) return;
+
+    var value   = state.texts[textStateKey(state.activePage, textKey)] || '';
+    el.textContent = value;
+
+    var model   = curModel();
+    var txtConf = null;
+    for (var i = 0; i < model.texts.length; i++) {
+      if (model.texts[i].key === textKey) { txtConf = model.texts[i]; break; }
+    }
+    if (!txtConf) return;
+
+    var editorH = dom.editorWrap.offsetHeight || 1;
+    applyTextFontSize(el, txtConf, editorH);
+  }
+
+  // ============================================================
+  // FOTO: RENDERIZAÇÃO E TRANSFORM
+  // ============================================================
+
+  /**
+   * Cria ou atualiza o elemento <img> dentro do slot e aplica o transform.
+   * Se o slot ainda não tiver dimensões calculadas, adia via rAF.
+   */
+  function renderPhotoInSlot(slotEl, slotKey, imgState) {
+    var isFade = slotEl.classList.contains('slot-fade');
+    var imgEl  = slotEl.querySelector('.foto-img');
+    if (!imgEl) {
+      imgEl           = document.createElement('img');
+      imgEl.className = 'foto-img' + (isFade ? ' img-fade' : '');
+      imgEl.draggable = false;
+      slotEl.appendChild(imgEl);
+    }
+    imgEl.src = imgState.src;
+
+    if (slotEl.offsetWidth > 0 && slotEl.offsetHeight > 0) {
+      applyPhotoTransform(slotEl, imgEl, imgState);
+    } else {
+      // Layout ainda não calculado — aguardar próximo frame
+      requestAnimationFrame(function () {
+        applyPhotoTransform(slotEl, imgEl, imgState);
       });
     }
-    return [{ id: "template-fundo-branco", name: "Fundo Branco", colors: ["#ffffff"], src: "assets/templates/fundo-branco.png", noise: false }];
   }
 
-  function clamp(value, min, max) {
-    return Math.max(min, Math.min(max, value));
+  /**
+   * Calcula e aplica o posicionamento da imagem no slot.
+   * Usa cover-fit como base: a imagem sempre preenche o slot.
+   * O usuário pode aplicar zoom (scale) e offset via arraste.
+   */
+  function applyPhotoTransform(slotEl, imgEl, imgState) {
+    var slotW = slotEl.offsetWidth;
+    var slotH = slotEl.offsetHeight;
+    if (!slotW || !slotH || !imgState.naturalW || !imgState.naturalH) return;
+
+    // Cover-fit base: escala mínima para cobrir o slot
+    var baseScale  = Math.max(slotW / imgState.naturalW, slotH / imgState.naturalH);
+    var totalScale = baseScale * imgState.scale;
+
+    var imgW = imgState.naturalW * totalScale;
+    var imgH = imgState.naturalH * totalScale;
+
+    // Centralizar + offset do usuário
+    var x = (slotW - imgW) / 2 + imgState.offsetX;
+    var y = (slotH - imgH) / 2 + imgState.offsetY;
+
+    // Clamp: impede que a imagem deixe bordas vazias
+    x = Math.max(Math.min(x, 0), slotW - imgW);
+    y = Math.max(Math.min(y, 0), slotH - imgH);
+
+    // Salvar offset clampeado de volta
+    imgState.offsetX = x - (slotW - imgW) / 2;
+    imgState.offsetY = y - (slotH - imgH) / 2;
+
+    imgEl.style.left   = Math.round(x) + 'px';
+    imgEl.style.top    = Math.round(y) + 'px';
+    imgEl.style.width  = Math.round(imgW) + 'px';
+    imgEl.style.height = Math.round(imgH) + 'px';
   }
 
-  function escapeHtml(text) {
-    return String(text).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;").replace(/'/g, "&#39;");
+  // ── Ações sobre a foto ativa ───────────────────────────────
+
+  function getActiveImgState() {
+    var slotKey = state.activeSlot[state.activePage];
+    return slotKey ? getImageState(state.activePage, curModelId(), slotKey) : null;
   }
+
+  function centerActivePhoto() {
+    var imgState = getActiveImgState();
+    if (!imgState) return;
+    imgState.offsetX = 0;
+    imgState.offsetY = 0;
+    refreshActiveSlotTransform(imgState);
+  }
+
+  function fillActivePhoto() {
+    var imgState = getActiveImgState();
+    if (!imgState) return;
+    imgState.scale   = Math.min(imgState.scale * 1.25, 4.0);
+    imgState.offsetX = 0;
+    imgState.offsetY = 0;
+    refreshActiveSlotTransform(imgState);
+  }
+
+  function resetActivePhoto() {
+    var imgState = getActiveImgState();
+    if (!imgState) return;
+    imgState.scale   = 1.0;
+    imgState.offsetX = 0;
+    imgState.offsetY = 0;
+    refreshActiveSlotTransform(imgState);
+  }
+
+  function refreshActiveSlotTransform(imgState) {
+    var slotKey = state.activeSlot[state.activePage];
+    var slotEl  = findSlotEl(slotKey);
+    var imgEl   = slotEl && slotEl.querySelector('.foto-img');
+    if (slotEl && imgEl) applyPhotoTransform(slotEl, imgEl, imgState);
+  }
+
+  // ============================================================
+  // UPLOAD DE ARQUIVO
+  // ============================================================
+
+  function onFileChange(event) {
+    console.log('[upload] change disparado');
+
+    var file = event.target.files && event.target.files[0];
+    if (!file) { console.warn('[upload] Nenhum arquivo selecionado'); return; }
+    console.log('[upload] Arquivo:', file.name, Math.round(file.size / 1024) + 'KB');
+
+    // Capturar contexto ANTES de qualquer async ou reset do input
+    var pageId  = state.activePage;
+    var modelId = curModelId();
+    var model   = curModel();
+
+    // Garantir que há um quadro ativo — auto-selecionar o primeiro se necessário
+    var slotKey = state.activeSlot[pageId];
+    if (!slotKey && model.photos && model.photos.length) {
+      slotKey = model.photos[0].key;
+      state.activeSlot[pageId] = slotKey;
+      console.log('[upload] Auto-selecionado quadro:', slotKey);
+    }
+    if (!slotKey) {
+      console.warn('[upload] Nenhum quadro disponível na página', pageId);
+      return;
+    }
+    console.log('[upload] Quadro:', slotKey, '| Página:', pageId, '| Modelo:', modelId);
+
+    // Criar URL ANTES de limpar o input (evita invalidação em alguns browsers)
+    var objectUrl = URL.createObjectURL(file);
+    event.target.value = ''; // reset para permitir re-seleção do mesmo arquivo
+    console.log('[upload] URL criada:', objectUrl);
+
+    var tmpImg    = new Image();
+    tmpImg.onload = function () {
+      console.log('[upload] Imagem carregada:', tmpImg.naturalWidth + 'x' + tmpImg.naturalHeight);
+
+      var imgState = {
+        src:      objectUrl,
+        naturalW: tmpImg.naturalWidth,
+        naturalH: tmpImg.naturalHeight,
+        scale:    1.0,
+        offsetX:  0,
+        offsetY:  0
+      };
+
+      setImageState(pageId, modelId, slotKey, imgState);
+      console.log('[upload] Estado salvo — chave:', imageStateKey(pageId, modelId, slotKey));
+
+      var slotEl = findSlotEl(slotKey);
+      if (!slotEl) {
+        console.error('[upload] Slot não encontrado no DOM para key:', slotKey);
+        // Tentar re-renderizar os slots e aplicar de novo
+        renderSlots();
+        slotEl = findSlotEl(slotKey);
+        if (!slotEl) { toast('Erro: quadro não encontrado.', true); return; }
+      }
+
+      console.log('[upload] Aplicando foto no slot:', slotKey,
+        '| offsetWidth:', slotEl.offsetWidth, '| offsetHeight:', slotEl.offsetHeight);
+      renderPhotoInSlot(slotEl, slotKey, imgState);
+      if (dom.canvasHint) dom.canvasHint.hidden = false;
+    };
+
+    tmpImg.onerror = function () {
+      console.error('[upload] Falha ao carregar blob URL:', objectUrl);
+      URL.revokeObjectURL(objectUrl);
+      toast('Erro ao carregar imagem.', true);
+    };
+
+    tmpImg.src = objectUrl;
+  }
+
+  // ============================================================
+  // DRAG & ZOOM NOS SLOTS
+  // ============================================================
+
+  var DRAG_THRESHOLD = 5; // pixels mínimos para considerar como drag
+
+  function bindSlotEvents(slotEl, slotKey) {
+    // ── Mouse ──────────────────────────────────────────────
+    slotEl.addEventListener('mousedown', function (e) {
+      // Sempre resetar moved para que o click posterior funcione corretamente
+      state.drag.moved = false;
+      var imgState = getImageState(state.activePage, curModelId(), slotKey);
+      if (!imgState) return;
+      e.preventDefault();
+      state.drag.active       = true;
+      state.drag.slotKey      = slotKey;
+      state.drag.slotEl       = slotEl;
+      state.drag.imgEl        = slotEl.querySelector('.foto-img');
+      state.drag.startClientX = e.clientX;
+      state.drag.startClientY = e.clientY;
+      state.drag.startOffsetX = imgState.offsetX;
+      state.drag.startOffsetY = imgState.offsetY;
+    });
+
+    slotEl.addEventListener('click', function () {
+      // Não abrir file picker se foi um drag real
+      if (state.drag.moved) { state.drag.moved = false; return; }
+      setActiveSlot(slotKey);
+      dom.fotoInput.click();
+    });
+
+    // ── Wheel (zoom da foto) ───────────────────────────────
+    slotEl.addEventListener('wheel', function (e) {
+      e.preventDefault();
+      var imgState = getImageState(state.activePage, curModelId(), slotKey);
+      if (!imgState) return;
+      var delta        = e.deltaY > 0 ? -0.06 : 0.06;
+      imgState.scale   = Math.max(1.0, Math.min(4.0, imgState.scale + delta));
+      var imgEl        = slotEl.querySelector('.foto-img');
+      if (imgEl) applyPhotoTransform(slotEl, imgEl, imgState);
+    }, { passive: false });
+
+    // ── Touch ──────────────────────────────────────────────
+    slotEl.addEventListener('touchstart', function (e) {
+      if (e.touches.length !== 1) return;
+      state.drag.moved = false;
+      var imgState = getImageState(state.activePage, curModelId(), slotKey);
+      if (!imgState) return;
+      e.preventDefault();
+      var t = e.touches[0];
+      state.drag.active       = true;
+      state.drag.slotKey      = slotKey;
+      state.drag.slotEl       = slotEl;
+      state.drag.imgEl        = slotEl.querySelector('.foto-img');
+      state.drag.startClientX = t.clientX;
+      state.drag.startClientY = t.clientY;
+      state.drag.startOffsetX = imgState.offsetX;
+      state.drag.startOffsetY = imgState.offsetY;
+    }, { passive: false });
+
+    slotEl.addEventListener('touchmove', function (e) {
+      if (!state.drag.active || e.touches.length !== 1) return;
+      e.preventDefault();
+      var t = e.touches[0];
+      moveDrag(t.clientX, t.clientY);
+    }, { passive: false });
+
+    slotEl.addEventListener('touchend', function () {
+      state.drag.active = false;
+    });
+  }
+
+  function moveDrag(clientX, clientY) {
+    if (!state.drag.active || !state.drag.slotKey) return;
+
+    var dx = clientX - state.drag.startClientX;
+    var dy = clientY - state.drag.startClientY;
+
+    // Marcar como drag real se passou do threshold
+    if (!state.drag.moved && (Math.abs(dx) > DRAG_THRESHOLD || Math.abs(dy) > DRAG_THRESHOLD)) {
+      state.drag.moved = true;
+    }
+    if (!state.drag.moved) return;
+
+    var imgState = getImageState(state.activePage, curModelId(), state.drag.slotKey);
+    if (!imgState || !state.drag.imgEl) return;
+
+    imgState.offsetX = state.drag.startOffsetX + dx;
+    imgState.offsetY = state.drag.startOffsetY + dy;
+    applyPhotoTransform(state.drag.slotEl, state.drag.imgEl, imgState);
+  }
+
+  // ============================================================
+  // EVENTOS GLOBAIS
+  // ============================================================
+
+  function bindEvents() {
+    // Upload
+    dom.fotoInput.addEventListener('change', onFileChange);
+
+    // Grid de modelos
+    dom.modelGrid.addEventListener('click', function (e) {
+      var card = e.target.closest('[data-model-id]');
+      if (!card) return;
+      var newId = card.getAttribute('data-model-id');
+      if (newId === curModelId()) return;
+      state.activeModel[state.activePage] = newId;
+      var firstSlot = curModel().photos && curModel().photos[0];
+      state.activeSlot[state.activePage] = firstSlot ? firstSlot.key : 'foto1';
+      renderModelSwitch();
+    });
+
+    // Seletor de quadro
+    dom.slotSelect.addEventListener('change', function () {
+      setActiveSlot(dom.slotSelect.value);
+    });
+
+    // Navegação entre páginas
+    dom.pageNav.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-page]');
+      if (!btn) return;
+      var pageNum = parseInt(btn.getAttribute('data-page'), 10);
+      if (pageNum === state.activePage) return;
+      state.activePage = pageNum;
+      renderPageSwitch();
+    });
+
+    // Ações de foto
+    dom.btnCenter.addEventListener('click', centerActivePhoto);
+    dom.btnFill.addEventListener('click',   fillActivePhoto);
+    dom.btnReset.addEventListener('click',  resetActivePhoto);
+
+    // Zoom do editor
+    dom.btnZoomIn.addEventListener('click', function () {
+      state.editorZoom = Math.min(2.5, +(state.editorZoom + 0.1).toFixed(2));
+      renderEditorZoom();
+    });
+    dom.btnZoomOut.addEventListener('click', function () {
+      state.editorZoom = Math.max(0.3, +(state.editorZoom - 0.1).toFixed(2));
+      renderEditorZoom();
+    });
+    dom.btnZoomReset.addEventListener('click', function () {
+      state.editorZoom = 1;
+      renderEditorZoom();
+    });
+
+    // Salvar
+    dom.btnSalvar.addEventListener('click', function () {
+      toast('Personalização salva!');
+    });
+
+    // Avançar
+    dom.btnAvancar.addEventListener('click', function () {
+      var params = new URLSearchParams(window.location.search);
+      var productId = params.get('id') || '';
+      window.location.href = 'visualizar.html' + (productId ? '?id=' + encodeURIComponent(productId) : '');
+    });
+
+    // Mouse global: drag e release
+    document.addEventListener('mousemove', function (e) {
+      moveDrag(e.clientX, e.clientY);
+    });
+    document.addEventListener('mouseup', function () {
+      state.drag.active = false;
+    });
+
+    // Teclado: Esc sai do modo de ajuste
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && dom.canvasHint) {
+        dom.canvasHint.hidden = true;
+      }
+    });
+
+    // Resize: re-aplicar transforms e textos
+    window.addEventListener('resize', function () {
+      var model = curModel();
+      // Re-aplicar foto transforms
+      (model.photos || []).forEach(function (slot) {
+        var imgState = getImageState(state.activePage, curModelId(), slot.key);
+        if (!imgState) return;
+        var slotEl = findSlotEl(slot.key);
+        var imgEl  = slotEl && slotEl.querySelector('.foto-img');
+        if (slotEl && imgEl) applyPhotoTransform(slotEl, imgEl, imgState);
+      });
+      // Re-aplicar tamanhos de texto
+      if (!dom.textsLayer.hidden) {
+        var editorH = dom.editorWrap.offsetHeight || 1;
+        dom.textsLayer.querySelectorAll('.text-block').forEach(function (el) {
+          var key     = el.getAttribute('data-text-key');
+          var txtConf = null;
+          for (var i = 0; i < model.texts.length; i++) {
+            if (model.texts[i].key === key) { txtConf = model.texts[i]; break; }
+          }
+          if (txtConf) applyTextFontSize(el, txtConf, editorH);
+        });
+      }
+    });
+  }
+
+  // ============================================================
+  // HELPERS
+  // ============================================================
+
+  function curModelId() {
+    return state.activeModel[state.activePage];
+  }
+
+  function curModel() {
+    var page = PAGES[state.activePage];
+    var id   = curModelId();
+    for (var i = 0; i < page.models.length; i++) {
+      if (page.models[i].id === id) return page.models[i];
+    }
+    return page.models[0];
+  }
+
+  function findSlotEl(slotKey) {
+    return dom.slotsLayer.querySelector('[data-slot="' + slotKey + '"]');
+  }
+
+  function setActiveSlot(slotKey) {
+    state.activeSlot[state.activePage] = slotKey;
+    dom.slotsLayer.querySelectorAll('.photo-slot').forEach(function (el) {
+      el.classList.toggle('is-active-slot', el.getAttribute('data-slot') === slotKey);
+    });
+    dom.slotSelect.value = slotKey;
+  }
+
+  function imageStateKey(pageId, modelId, slotKey) {
+    return pageId + ':' + modelId + ':' + slotKey;
+  }
+
+  function textStateKey(pageId, textKey) {
+    return pageId + ':' + textKey;
+  }
+
+  function getImageState(pageId, modelId, slotKey) {
+    return state.images[imageStateKey(pageId, modelId, slotKey)] || null;
+  }
+
+  function setImageState(pageId, modelId, slotKey, imgState) {
+    state.images[imageStateKey(pageId, modelId, slotKey)] = imgState;
+  }
+
+  function esc(text) {
+    return String(text)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function toast(message, isError) {
+    if (!dom.toastArea) return;
+    var el       = document.createElement('div');
+    el.className = 'pz-toast' + (isError ? ' is-error' : '');
+    el.textContent = message;
+    dom.toastArea.appendChild(el);
+    setTimeout(function () { el.remove(); }, 2200);
+  }
+
+  // ============================================================
+  init();
 })();

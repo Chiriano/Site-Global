@@ -21,178 +21,48 @@ window.productConfigs = {
       ],
       layouts: [
         {
-          id: "layout-cover",
-          name: "Capa premium",
-          canvas: { w: 3000, h: 2200 },
-          style: "cover",
+          id: "moldura-1",
+          name: "Moldura 1",
+          style: "moldura",
+          molduraSrc: "assets/molduras-de-foto/modelo-1/1.png",
           photos: [
-            {
-              key: "foto1",
-              x: 90,
-              y: 90,
-              w: 2820,
-              h: 2020,
-              radius: 18,
-              border: false,
-              overlayGradient: {
-                direction: "to-bottom",
-                stops: [
-                  { at: 0, color: "rgba(255,255,255,0.95)" },
-                  { at: 0.4, color: "rgba(255,255,255,0.75)" },
-                  { at: 0.7, color: "rgba(255,255,255,0.45)" },
-                  { at: 1, color: "rgba(255,255,255,0.15)" }
-                ]
-              }
-            }
+            { key: "foto1", left:  3.0, top: 7.7, width: 44.2, height: 84.5 },
+            { key: "foto2", left: 52.8, top: 7.7, width: 44.2, height: 84.5 }
           ],
-          texts: [
-            { key: "titulo", x: 1500, y: 380, maxW: 2600, font: "122px Georgia", color: "#7f5f22", align: "center" },
-            { key: "subtitulo", x: 1500, y: 520, maxW: 2200, font: "56px 'Trebuchet MS'", color: "#4d3f2d", align: "center" }
-          ]
+          texts: []
         },
         {
-          id: "layout-texto-foto-classico",
-          name: "Texto + foto (moldura)",
-          canvas: { w: 3000, h: 2200 },
-          style: "text-photo-framed",
+          id: "moldura-2",
+          name: "Moldura 2",
+          style: "moldura",
+          molduraSrc: "assets/molduras-de-foto/modelo-1/2.png",
           photos: [
-            { key: "foto1", x: 1620, y: 200, w: 1260, h: 1800, radius: 28, border: true }
+            { key: "foto1", left: 3.0, top: 7.7, width: 94.0, height: 84.5 }
           ],
-          texts: [
-            { key: "titulo", x: 750, y: 600, maxW: 1300, font: "116px Georgia", color: "#7f5f22", align: "center" },
-            { key: "subtitulo", x: 750, y: 740, maxW: 1200, font: "56px 'Trebuchet MS'", color: "#4d3f2d", align: "center" },
-            { key: "mensagem", x: 750, y: 920, maxW: 1100, font: "50px 'Trebuchet MS'", color: "#5b4b35", align: "center" }
-          ]
+          texts: []
         },
         {
-          id: "layout-texto-foto-livre",
-          name: "Texto + foto (livre)",
-          canvas: { w: 3000, h: 2200 },
-          style: "text-photo-free",
+          id: "moldura-3",
+          name: "Moldura 3",
+          style: "moldura",
+          molduraSrc: "assets/molduras-de-foto/modelo-1/3.png",
           photos: [
-            {
-              key: "foto1",
-              x: 1580,
-              y: 180,
-              w: 1300,
-              h: 1840,
-              radius: 30,
-              free: true,
-              bleedBottom: 180,
-              shadow: true,
-              border: false
-            }
+            { key: "foto1", left: 3.0, top: 7.7, width: 94.0, height: 84.5 }
           ],
-          texts: [
-            { key: "titulo", x: 750, y: 600, maxW: 1300, font: "116px Georgia", color: "#7f5f22", align: "center" },
-            { key: "subtitulo", x: 750, y: 740, maxW: 1200, font: "56px 'Trebuchet MS'", color: "#4d3f2d", align: "center" },
-            { key: "mensagem", x: 750, y: 920, maxW: 1100, font: "50px 'Trebuchet MS'", color: "#5b4b35", align: "center" }
-          ]
+          texts: []
         },
         {
-          id: "layout-album-1",
-          name: "Album 1 foto grande",
-          canvas: { w: 3000, h: 2200 },
-          style: "album",
+          id: "moldura-4",
+          name: "Moldura 4",
+          style: "moldura",
+          molduraSrc: "assets/molduras-de-foto/modelo-1/4.png",
           photos: [
-            { key: "foto1", x: 120, y: 560, w: 2760, h: 1540, radius: 26 }
+            { key: "foto1", left:  7.4, top: 13.2, width: 39.0, height: 37.8 },
+            { key: "foto2", left: 47.7, top: 13.2, width: 39.0, height: 37.8 },
+            { key: "foto3", left:  7.4, top: 52.5, width: 39.0, height: 37.8 },
+            { key: "foto4", left: 47.7, top: 52.5, width: 39.0, height: 37.8 }
           ],
-          texts: [
-            { key: "titulo", x: 1500, y: 200, maxW: 2600, font: "108px Georgia", color: "#7f5f22", align: "center" },
-            { key: "subtitulo", x: 1500, y: 360, maxW: 2200, font: "56px 'Trebuchet MS'", color: "#4d3f2d", align: "center" }
-          ]
-        },
-        {
-          id: "layout-album-2-side",
-          name: "Album 2 lado a lado",
-          canvas: { w: 3000, h: 2200 },
-          style: "album",
-          photos: [
-            { key: "foto1", x: 120, y: 560, w: 1300, h: 1540, radius: 24 },
-            { key: "foto2", x: 1580, y: 560, w: 1300, h: 1540, radius: 24 }
-          ],
-          texts: [
-            { key: "titulo", x: 1500, y: 200, maxW: 2600, font: "108px Georgia", color: "#7f5f22", align: "center" },
-            { key: "subtitulo", x: 1500, y: 360, maxW: 2200, font: "56px 'Trebuchet MS'", color: "#4d3f2d", align: "center" }
-          ]
-        },
-        {
-          id: "layout-album-4",
-          name: "Album 4 fotos",
-          canvas: { w: 3000, h: 2200 },
-          style: "album",
-          photos: [
-            { key: "foto1", x: 120, y: 560, w: 1300, h: 730, radius: 22 },
-            { key: "foto2", x: 1580, y: 560, w: 1300, h: 730, radius: 22 },
-            { key: "foto3", x: 120, y: 1400, w: 1300, h: 730, radius: 22 },
-            { key: "foto4", x: 1580, y: 1400, w: 1300, h: 730, radius: 22 }
-          ],
-          texts: [
-            { key: "titulo", x: 1500, y: 200, maxW: 2600, font: "108px Georgia", color: "#7f5f22", align: "center" },
-            { key: "subtitulo", x: 1500, y: 360, maxW: 2200, font: "56px 'Trebuchet MS'", color: "#4d3f2d", align: "center" }
-          ]
-        },
-        {
-          id: "layout-album-1-2",
-          name: "Album 1 grande + 2 pequenas",
-          canvas: { w: 3000, h: 2200 },
-          style: "album",
-          photos: [
-            { key: "foto1", x: 120, y: 560, w: 1700, h: 1540, radius: 28 },
-            { key: "foto2", x: 1980, y: 560, w: 900, h: 730, radius: 24 },
-            { key: "foto3", x: 1980, y: 1400, w: 900, h: 730, radius: 24 }
-          ],
-          texts: [
-            { key: "titulo", x: 1500, y: 200, maxW: 2600, font: "108px Georgia", color: "#7f5f22", align: "center" },
-            { key: "subtitulo", x: 1500, y: 360, maxW: 2200, font: "56px 'Trebuchet MS'", color: "#4d3f2d", align: "center" }
-          ]
-        },
-        {
-          id: "layout-album-2-top-1-bottom",
-          name: "Album 2 em cima + 1 embaixo",
-          canvas: { w: 3000, h: 2200 },
-          style: "album",
-          photos: [
-            { key: "foto1", x: 120, y: 560, w: 1300, h: 730, radius: 22 },
-            { key: "foto2", x: 1580, y: 560, w: 1300, h: 730, radius: 22 },
-            { key: "foto3", x: 120, y: 1400, w: 2760, h: 730, radius: 22 }
-          ],
-          texts: [
-            { key: "titulo", x: 1500, y: 200, maxW: 2600, font: "108px Georgia", color: "#7f5f22", align: "center" },
-            { key: "subtitulo", x: 1500, y: 360, maxW: 2200, font: "56px 'Trebuchet MS'", color: "#4d3f2d", align: "center" }
-          ]
-        },
-        {
-          id: "layout-album-vertical-3",
-          name: "Album faixa vertical 3 fotos",
-          canvas: { w: 3000, h: 2200 },
-          style: "album",
-          photos: [
-            { key: "foto1", x: 120, y: 560, w: 860, h: 1540, radius: 24 },
-            { key: "foto2", x: 1070, y: 560, w: 860, h: 1540, radius: 24 },
-            { key: "foto3", x: 2020, y: 560, w: 860, h: 1540, radius: 24 }
-          ],
-          texts: [
-            { key: "titulo", x: 1500, y: 200, maxW: 2600, font: "108px Georgia", color: "#7f5f22", align: "center" },
-            { key: "subtitulo", x: 1500, y: 360, maxW: 2200, font: "56px 'Trebuchet MS'", color: "#4d3f2d", align: "center" }
-          ]
-        },
-        {
-          id: "layout-album-mosaico",
-          name: "Album mosaico",
-          canvas: { w: 3000, h: 2200 },
-          style: "album",
-          photos: [
-            { key: "foto1", x: 120, y: 560, w: 1300, h: 730, radius: 22 },
-            { key: "foto2", x: 1580, y: 560, w: 1300, h: 730, radius: 22 },
-            { key: "foto3", x: 120, y: 1400, w: 840, h: 730, radius: 22 },
-            { key: "foto4", x: 1080, y: 1400, w: 840, h: 730, radius: 22 },
-            { key: "foto5", x: 2040, y: 1400, w: 840, h: 730, radius: 22 }
-          ],
-          texts: [
-            { key: "titulo", x: 1500, y: 200, maxW: 2600, font: "108px Georgia", color: "#7f5f22", align: "center" },
-            { key: "subtitulo", x: 1500, y: 360, maxW: 2200, font: "56px 'Trebuchet MS'", color: "#4d3f2d", align: "center" }
-          ]
+          texts: []
         }
       ]
     },
