@@ -231,7 +231,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 22px;
   padding: 18px 10px;
   background: #0b0f14;
@@ -1240,6 +1240,26 @@ body {
   background: rgba(255, 255, 255, 0.1);
   margin: 0 4px;
   flex-shrink: 0;
+}
+
+/* Drag handle — área de arrastar a toolbar */
+.ttb-drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 28px;
+  margin-right: 4px;
+  color: rgba(255, 255, 255, 0.30);
+  cursor: move;
+  flex-shrink: 0;
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+}
+
+.ttb-drag-handle:hover {
+  color: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.07);
 }
 
 /* Base toolbar button */

@@ -29,6 +29,15 @@
     subtitulo: { min: 12, max: 30 }
   };
 
+  // ---- Área segura para arrastar caixas de texto (canvas 1181×866 px) ----
+  // Para ajustar os limites de movimentação, edite os valores abaixo.
+  var TEXT_SAFE_AREA = {
+    left:   60,   // x mínimo (margem esquerda com borda decorativa)
+    top:    40,   // y mínimo (margem superior)
+    right:  585,  // x máximo (antes da área de foto, que começa em ~600 px)
+    bottom: 826   // y máximo (CANVAS_H − 40)
+  };
+
   var PANEL_SECTIONS = {
     upload: {
       title: 'Upload',
@@ -74,6 +83,8 @@
   // Timer for debounced font-size recalculation during body text input
   var _bodyFitTimer = null;
   var BODY_CHAR_LIMIT = 0;
+  // Flag: true quando o usuário arrastou a toolbar manualmente
+  var _toolbarDragged = false;
 
   function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
@@ -235,6 +246,7 @@
 
   function positionTextToolbar(obj) {
     if (!el.textToolbar || !state.canvas) return;
+    if (_toolbarDragged) return; // usuário posicionou manualmente; não reposicionar
     var canvasEl = state.canvas.getElement();
     var canvasRect = canvasEl.getBoundingClientRect();
     var bound = obj.getBoundingRect(true, true);
@@ -1094,6 +1106,37 @@
 
     if (el.ttbUndo) el.ttbUndo.addEventListener('click', undoEdit);
     if (el.ttbRedo) el.ttbRedo.addEventListener('click', redoEdit);
+
+    // ---- Drag handle: arrastar a toolbar ----
+    if (el.ttbDragHandle && el.textToolbar) {
+      el.ttbDragHandle.addEventListener('mousedown', function (evt) {
+        evt.preventDefault();
+
+        var toolbar   = el.textToolbar;
+        var startX    = evt.clientX;
+        var startY    = evt.clientY;
+        var rect      = toolbar.getBoundingClientRect();
+        var startLeft = rect.left;
+        var startTop  = rect.top;
+
+        _toolbarDragged = true;
+
+        function onMove(e) {
+          var newLeft = Math.max(0, Math.min(window.innerWidth  - toolbar.offsetWidth,  startLeft + (e.clientX - startX)));
+          var newTop  = Math.max(0, Math.min(window.innerHeight - toolbar.offsetHeight, startTop  + (e.clientY - startY)));
+          toolbar.style.left = newLeft + 'px';
+          toolbar.style.top  = newTop  + 'px';
+        }
+
+        function onUp() {
+          document.removeEventListener('mousemove', onMove);
+          document.removeEventListener('mouseup',   onUp);
+        }
+
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup',   onUp);
+      });
+    }
   }
 
   function bindPanelEvents() {
@@ -1393,17 +1436,51 @@
       var slot;
       var shared;
 
-      if (!target || !target.photoSlotImage || !target.slotId || !target.cropMode) return;
+      // Movimento de foto em modo de recorte
+      if (target && target.photoSlotImage && target.slotId && target.cropMode) {
+        page = getActivePage();
+        slot = page ? getSlotState(page.id, target.slotId) : null;
+        shared = getShared();
+        if (!page || !slot || !shared.clampSlotImage || !shared.syncSlotCropFromImage) return;
+        shared.clampSlotImage(target, target.frameRect);
+        shared.syncSlotCropFromImage(slot, target, target.frameRect);
+        state.canvas.requestRenderAll();
+        return;
+      }
 
-      page = getActivePage();
-      slot = page ? getSlotState(page.id, target.slotId) : null;
-      shared = getShared();
+      // Movimento de caixa de texto (página 1)
+      if (target && target.pageId === 'page1' && target.dataKey) {
+        var safe    = TEXT_SAFE_AREA;
+        var maxLeft = Math.max(safe.left, safe.right  - (target.width || 0));
+        var maxTop  = Math.max(safe.top,  safe.bottom - target.getScaledHeight());
 
-      if (!page || !slot || !shared.clampSlotImage || !shared.syncSlotCropFromImage) return;
+        target.left = clamp(target.left, safe.left, maxLeft);
+        target.top  = clamp(target.top,  safe.top,  maxTop);
 
-      shared.clampSlotImage(target, target.frameRect);
-      shared.syncSlotCropFromImage(slot, target, target.frameRect);
-      state.canvas.requestRenderAll();
+        // Mover o clipPath junto com o texto
+        if (target.clipPath) {
+          target.clipPath.left = target.left;
+          target.clipPath.top  = target.top;
+        }
+
+        // Salvar offset no estado para reaplícar após rebuild da página
+        page = getPage('page1');
+        if (page && page.data) {
+          if (!page.data.textOffsets) page.data.textOffsets = {};
+          if (!page.data.textOffsets[target.dataKey]) {
+            page.data.textOffsets[target.dataKey] = { x: 0, y: 0 };
+          }
+          page.data.textOffsets[target.dataKey].x = target.left - (target._baseLeft || 0);
+          page.data.textOffsets[target.dataKey].y = target.top  - (target._baseTop  || 0);
+        }
+      }
+    });
+
+    state.canvas.on('object:modified', function (evt) {
+      var target = evt.target;
+      if (target && target.pageId === 'page1' && target.dataKey) {
+        updateSingleThumbnail('page1');
+      }
     });
 
     state.canvas.on('mouse:down', function (evt) {
@@ -1490,6 +1567,7 @@
     el.panelSections = document.querySelectorAll('[data-panel-section]');
     // Toolbar
     el.textToolbar    = document.getElementById('text-toolbar');
+    el.ttbDragHandle  = document.getElementById('ttb-drag-handle');
     el.ttbFontDec     = document.getElementById('ttb-font-dec');
     el.ttbFontSize    = document.getElementById('ttb-font-size');
     el.ttbFontInc     = document.getElementById('ttb-font-inc');

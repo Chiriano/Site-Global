@@ -100,15 +100,14 @@
     var slotCrop = slot.crop || {};
     var isSelected = api.selectedSlotId === cfg.id;
     var isCropping = !!slotCrop.isCropping;
-    var borderColor = isCropping ? 'rgba(184,18,27,0.95)' : (isSelected ? 'rgba(184,18,27,0.85)' : 'rgba(184,18,27,0.12)');
     var frame = new fabric.Rect({
       left: cfg.left,
       top: cfg.top,
       width: cfg.width,
       height: cfg.height,
       fill: 'rgba(255,255,255,0.001)',
-      stroke: borderColor,
-      strokeWidth: isCropping ? 2.6 : (isSelected ? 2 : 1),
+      stroke: 'transparent',
+      strokeWidth: 0,
       selectable: false,
       evented: true,
       rx: cfg.radius || 0,
@@ -150,9 +149,12 @@
         },
         name: 'photo-' + cfg.id
       });
-      var scale = getSlotBaseScale(slot.element, cfg) * (slotCrop.zoom || 1);
-      var centeredLeft = cfg.left + (cfg.width - image.width * scale) / 2;
-      var centeredTop = cfg.top + (cfg.height - image.height * scale) / 2;
+      var imgW = slot.element.naturalWidth  || slot.element.width  || image.width  || 1;
+      var imgH = slot.element.naturalHeight || slot.element.height || image.height || 1;
+      var baseScale = Math.max((cfg.width + 2) / imgW, (cfg.height + 2) / imgH);
+      var scale = baseScale * (slotCrop.zoom || 1);
+      var centeredLeft = cfg.left + (cfg.width  - imgW * scale) / 2;
+      var centeredTop  = cfg.top  + (cfg.height - imgH * scale) / 2;
       image.set({
         scaleX: scale,
         scaleY: scale,
@@ -175,7 +177,7 @@
       fontFamily: 'Sora, sans-serif',
       fontWeight: '600',
       textAlign: 'center',
-      fill: '#b8121b',
+      fill: 'transparent',
       selectable: false,
       evented: true,
       slotId: cfg.id,
