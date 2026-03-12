@@ -1,9 +1,14 @@
 window.productConfigs = {
   1: {
-    title: "Convites Capa Dura",
+    title: "MEDICINA – UNIVERSIDADE DO PARÁ",
     group: null, groupLabel: "Convites",
-    sub: "convites-capa-dura", subLabel: "Convites Capa Dura",
-    images: ["assets/Produtos/Convites/Convites Capa Dura/Convites Capa Dura.png"],
+    sub: "medicina-ufpa", subLabel: "MEDICINA – UNIVERSIDADE DO PARÁ",
+    images: [
+      "assets/produtos-convites/Cursos/MEDICINA/MEDICINA – UNIVERSIDADE DO PARÁ/MEDICINA – UNIVERSIDADE DO PARÁ.png",
+      "assets/produtos-convites/Cursos/MEDICINA/MEDICINA – UNIVERSIDADE DO PARÁ/MEDICINA – UNIVERSIDADE DO PARÁ - 1.png",
+      "assets/produtos-convites/Cursos/MEDICINA/MEDICINA – UNIVERSIDADE DO PARÁ/MEDICINA – UNIVERSIDADE DO PARÁ - 2.png",
+      "assets/produtos-convites/Cursos/MEDICINA/MEDICINA – UNIVERSIDADE DO PARÁ/MEDICINA – UNIVERSIDADE DO PARÁ - 3.png"
+    ],
     personalizacao: {
       print: {
         mm: { w: 300, h: 220, sangria: 5 },

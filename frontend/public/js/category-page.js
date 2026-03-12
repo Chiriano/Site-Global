@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ── Dados ───────────────────────────────────────────────────────────────────
   const mockProducts = [
-    { id: 1, name: 'Convites Capa Dura', price: 0, category: 'convites', group: null, item: null, image: 'assets/Produtos/Convites/Convites Capa Dura/Convites Capa Dura.png' },
+    { id: 1, name: 'MEDICINA – UNIVERSIDADE DO PARÁ', price: 0, category: 'convites', group: null, item: null, image: 'assets/produtos-convites/Cursos/MEDICINA/MEDICINA – UNIVERSIDADE DO PARÁ/MEDICINA – UNIVERSIDADE DO PARÁ-Card.png' },
 
     // ── ORIENTAL › Combinado ────────────────────────────────────────────────
     { id: 101, name: 'Caixa para Combinado Especial',                    price: 42.9, category: 'embalagens', group: 'oriental', item: 'combinado', type: 'combinado', model: 'especial',     image: 'assets/Produtos/Oriental/Combinado/Especial/Caixa para Combinado Especial/Caixa para Combinado Especial.png' },
@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ? `convite-product.html?id=${product.id}`
       : `product.html?id=${product.id}&group=${encodeURIComponent(product.group || '')}`;
     return `
-      <article class="produto" data-price="${product.price}">
+      <article class="produto${product.category === 'convites' ? ' produto--convite' : ''}" data-price="${product.price}">
         <a href="${productUrl}">
           <div class="produto-img-wrap">
             <img src="${product.image}" alt="${product.name}" onerror="this.src='https://placehold.co/220x180/fafafa/999?text=Produto'">

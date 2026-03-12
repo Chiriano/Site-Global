@@ -26,7 +26,7 @@
   --shadow-panel: 0 24px 80px rgba(0, 0, 0, 0.45);
   --shadow-card: 0 18px 30px rgba(0, 0, 0, 0.22);
   --shadow-canvas: 0 30px 70px rgba(17, 19, 24, 0.22);
-  --header-h: 62px;
+  --header-h: 80px;
   --icon-rail-w: 64px;
   --panel-drawer-w: 300px;
   --panel-w: var(--icon-rail-w);
@@ -61,29 +61,39 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 0 18px 0 16px;
-  background: rgba(7, 8, 11, 0.92);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04);
+  padding: 0 32px 0 24px;
+  background: linear-gradient(180deg, #13161d 0%, #0d1018 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.0);
+  box-shadow: 0 2px 0 rgba(183, 18, 27, 0.55), 0 4px 32px rgba(0, 0, 0, 0.6);
   position: relative;
   z-index: 20;
+}
+
+.editor-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 50% 120% at 0% 50%, rgba(183, 18, 27, 0.13) 0%, transparent 65%),
+    radial-gradient(ellipse 30% 100% at 100% 50%, rgba(30, 40, 70, 0.18) 0%, transparent 70%);
+  pointer-events: none;
 }
 
 .editor-header::after {
   content: '';
   position: absolute;
   left: 0;
-  bottom: 0;
-  width: 180px;
-  height: 2px;
-  background: linear-gradient(90deg, var(--accent-strong), transparent);
+  bottom: -1px;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent-strong) 0%, rgba(215, 25, 35, 0.4) 25%, rgba(255,255,255,0.05) 60%, transparent 100%);
 }
 
 .editor-header__left,
 .editor-header__right {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 18px;
 }
 
 .editor-header__left { min-width: 0; }
@@ -110,47 +120,55 @@ body {
 }
 
 .header-logo {
-  height: 34px;
+  height: 46px;
   width: auto;
   object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
 }
 
 .header-sep {
   width: 1px;
-  height: 28px;
-  background: rgba(255, 255, 255, 0.1);
+  height: 36px;
+  background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.18) 25%, rgba(255,255,255,0.18) 75%, transparent 100%);
+  flex-shrink: 0;
 }
 
 .header-title-group {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 4px;
   min-width: 0;
 }
 
 .header-title {
   margin: 0;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
-  color: #fff;
+  letter-spacing: -0.01em;
+  color: #ffffff;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.4);
 }
 
 .header-subtitle {
   font-size: 11px;
-  color: var(--text-muted);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(183, 18, 27, 0.9);
 }
 
 .header-status {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 7px 12px;
+  padding: 7px 14px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border);
+  background: rgba(34, 197, 94, 0.06);
+  border: 1px solid rgba(34, 197, 94, 0.18);
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.06);
 }
 
 .status-dot {
@@ -168,8 +186,10 @@ body {
 }
 
 .status-label {
-  font-size: 12px;
-  color: var(--text-secondary);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  color: rgba(34, 197, 94, 0.85);
   white-space: nowrap;
 }
 
@@ -192,15 +212,27 @@ body {
 }
 
 .btn-header-primary {
-  padding: 9px 18px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+  padding: 11px 24px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  background: linear-gradient(160deg, #e0181f 0%, #9e0d13 100%);
   color: #fff;
-  box-shadow: 0 14px 28px rgba(183, 18, 27, 0.28);
+  border: 1px solid rgba(255, 80, 80, 0.2);
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,0.3),
+    0 4px 16px rgba(183, 18, 27, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
 .btn-header-primary:hover {
-  box-shadow: 0 18px 34px rgba(183, 18, 27, 0.36);
+  background: linear-gradient(160deg, #f01920 0%, #b81019 100%);
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,0.3),
+    0 6px 24px rgba(183, 18, 27, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  transform: translateY(-1px);
 }
 
 .editor-layout {
