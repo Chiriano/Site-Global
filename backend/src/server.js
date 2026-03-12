@@ -7,7 +7,7 @@ require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') });
 const productRoutes = require('../routes/products');
 const adminProductRoutes = require('../routes/adminProducts');
 const orderRoutes = require('../routes/orders');
-const authRoutes = require('./routes/authRoutes');
+const authRoutes  = require('./routes/authRoutes');
 const moduleRoutes = require('../modules');
 const adminPanelRoutes = require('../modules/admin-panel/routes');
 const { bootstrapModulesSchema } = require('../modules/common/bootstrap');
@@ -23,7 +23,7 @@ app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 app.use('/api/products', productRoutes);
 app.use('/api/admin/products', authenticateToken, requireAdmin, adminProductRoutes);
 app.use('/api/orders', orderRoutes);
-app.use('/api/auth', authRoutes);
+app.use('/api/auth',  authRoutes);
 app.use('/api/modules', moduleRoutes);
 app.use('/api/modules/admin-panel', authenticateToken, requireAdmin, adminPanelRoutes);
 

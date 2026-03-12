@@ -1,0 +1,21 @@
+{
+  "name": "alpha-convites-editor",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Editor de convites embutido — Alpha Convites (Polotno SDK)",
+  "scripts": {
+    "build": "node build.js",
+    "build:dev": "node build.js --dev",
+    "watch": "node build.js --watch"
+  },
+  "dependencies": {
+    "polotno": "^0.30.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "mobx": "^6.13.1",
+    "mobx-react-lite": "^4.0.7"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0"
+  }
+}
