@@ -29,14 +29,6 @@
     subtitulo: { min: 12, max: 30 }
   };
 
-  // ---- Área segura para arrastar caixas de texto (canvas 1181×866 px) ----
-  // Para ajustar os limites de movimentação, edite os valores abaixo.
-  var TEXT_SAFE_AREA = {
-    left:   60,   // x mínimo (margem esquerda com borda decorativa)
-    top:    40,   // y mínimo (margem superior)
-    right:  585,  // x máximo (antes da área de foto, que começa em ~600 px)
-    bottom: 826   // y máximo (CANVAS_H − 40)
-  };
 
   var PANEL_SECTIONS = {
     upload: {
@@ -63,8 +55,13 @@
     pageOrder: [],
     activePageId: INITIAL_PAGE_ID,
     cropSession: null,
-    activePanelSection: null
+    activePanelSection: null,
+    userZoom: 1
   };
+
+  var ZOOM_STEP = 1.2;
+  var ZOOM_MIN  = 0.25;
+  var ZOOM_MAX  = 4;
 
   var el = {};
 
@@ -565,7 +562,7 @@
     var usableWidth = Math.max(bounds.width - (STAGE_FIT.paddingX * 2), 160);
     var usableHeight = Math.max(bounds.height - (STAGE_FIT.paddingY * 2), 160);
     var fitZoom = Math.min(usableWidth / CANVAS_W, usableHeight / CANVAS_H);
-    var zoom = fitZoom * pageScale;
+    var zoom = fitZoom * pageScale * state.userZoom;
     var scaledWidth = CANVAS_W * zoom;
     var scaledHeight = CANVAS_H * zoom;
     var offsetX = Math.round((bounds.width - scaledWidth) / 2 + STAGE_FIT.offsetX);
@@ -580,6 +577,21 @@
     state.canvas.setViewportTransform([zoom, 0, 0, zoom, offsetX, offsetY]);
     state.canvas.calcOffset();
     state.canvas.requestRenderAll();
+  }
+
+  function applyUserZoom(newZoom) {
+    state.userZoom = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, newZoom));
+    if (state.activePageId) applyStageViewport(state.activePageId);
+    updateZoomLabel();
+  }
+
+  function zoomIn()    { applyUserZoom(state.userZoom * ZOOM_STEP); }
+  function zoomOut()   { applyUserZoom(state.userZoom / ZOOM_STEP); }
+  function zoomReset() { applyUserZoom(1); }
+
+  function updateZoomLabel() {
+    var label = document.getElementById('zoom-level-label');
+    if (label) label.textContent = Math.round(state.userZoom * 100) + '%';
   }
 
   function getEditablePage1ObjectMap() {
@@ -1005,7 +1017,6 @@
       var previewImg = document.createElement('img');
       var meta = document.createElement('span');
       var title = document.createElement('strong');
-      var subtitle = document.createElement('small');
 
       button.type = 'button';
       button.className = 'page-thumb' + (pageId === state.activePageId ? ' is-active' : '');
@@ -1021,9 +1032,7 @@
 
       meta.className = 'page-thumb__meta';
       title.textContent = 'Página ' + (index + 1);
-      subtitle.textContent = page.template.thumbLabel;
       meta.appendChild(title);
-      meta.appendChild(subtitle);
 
       button.appendChild(preview);
       button.appendChild(meta);
@@ -1037,22 +1046,37 @@
     if (node) node.src = renderPageImage(pageId, 0.22);
   }
 
+  var PDF_SIZES = {
+    '300x220': { w: 300, h: 220 },
+    '280x198': { w: 280, h: 198 },
+    '240x167': { w: 240, h: 167 },
+    '150x220': { w: 150, h: 220 }
+  };
+
+  function getSelectedPdfSize() {
+    var checked = document.querySelector('input[name="pdf-size"]:checked');
+    var key = checked ? checked.value : '300x220';
+    return PDF_SIZES[key] || PDF_SIZES['300x220'];
+  }
+
   function exportPDF() {
     var jsPDF = window.jspdf && window.jspdf.jsPDF;
+    var size = getSelectedPdfSize();
+    var orientation = size.w >= size.h ? 'landscape' : 'portrait';
     var doc;
 
     if (!jsPDF) return;
 
     doc = new jsPDF({
-      orientation: 'landscape',
-      unit: 'px',
-      format: [CANVAS_W, CANVAS_H]
+      orientation: orientation,
+      unit: 'mm',
+      format: [size.w, size.h]
     });
 
     state.pageOrder.forEach(function (pageId, index) {
-      var image = renderPageImage(pageId, 1);
-      if (index > 0) doc.addPage([CANVAS_W, CANVAS_H], 'landscape');
-      doc.addImage(image, 'PNG', 0, 0, CANVAS_W, CANVAS_H);
+      var image = renderPageImage(pageId, 2);
+      if (index > 0) doc.addPage([size.w, size.h], orientation);
+      doc.addImage(image, 'PNG', 0, 0, size.w, size.h);
     });
 
     doc.save('alpha-convite.pdf');
@@ -1448,32 +1472,6 @@
         return;
       }
 
-      // Movimento de caixa de texto (página 1)
-      if (target && target.pageId === 'page1' && target.dataKey) {
-        var safe    = TEXT_SAFE_AREA;
-        var maxLeft = Math.max(safe.left, safe.right  - (target.width || 0));
-        var maxTop  = Math.max(safe.top,  safe.bottom - target.getScaledHeight());
-
-        target.left = clamp(target.left, safe.left, maxLeft);
-        target.top  = clamp(target.top,  safe.top,  maxTop);
-
-        // Mover o clipPath junto com o texto
-        if (target.clipPath) {
-          target.clipPath.left = target.left;
-          target.clipPath.top  = target.top;
-        }
-
-        // Salvar offset no estado para reaplícar após rebuild da página
-        page = getPage('page1');
-        if (page && page.data) {
-          if (!page.data.textOffsets) page.data.textOffsets = {};
-          if (!page.data.textOffsets[target.dataKey]) {
-            page.data.textOffsets[target.dataKey] = { x: 0, y: 0 };
-          }
-          page.data.textOffsets[target.dataKey].x = target.left - (target._baseLeft || 0);
-          page.data.textOffsets[target.dataKey].y = target.top  - (target._baseTop  || 0);
-        }
-      }
     });
 
     state.canvas.on('object:modified', function (evt) {
@@ -1593,7 +1591,8 @@
       width: bounds.width,
       height: bounds.height,
       preserveObjectStacking: true,
-      selection: false
+      selection: false,
+      enableRetinaScaling: true
     });
   }
 
@@ -1602,6 +1601,15 @@
       if (!state.canvas || !state.activePageId) return;
       applyStageViewport(state.activePageId);
     });
+  }
+
+  function bindZoomControls() {
+    var btnIn  = document.getElementById('zoom-in-btn');
+    var btnOut = document.getElementById('zoom-out-btn');
+    var btnFit = document.getElementById('zoom-fit-btn');
+    if (btnIn)  btnIn.addEventListener('click',  function () { zoomIn(); });
+    if (btnOut) btnOut.addEventListener('click', function () { zoomOut(); });
+    if (btnFit) btnFit.addEventListener('click', function () { zoomReset(); });
   }
 
   function init() {
@@ -1621,8 +1629,10 @@
     bindCanvasEvents();
     bindToolbarEvents();
     bindViewportEvents();
+    bindZoomControls();
     renderActivePage();
     renderThumbnailStrip();
+    updateZoomLabel();
     pushEditHistory(); // initial snapshot so undo never goes below baseline
   }
 

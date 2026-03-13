@@ -20,21 +20,36 @@
       width: 0.443648, // (7701-4110)/8092
       height: 0.870553 // (5618-390)/6004
     });
-    // Offsets de posição salvos pelo usuário ao arrastar as caixas
-    var textOffsets = state.textOffsets || {};
-    var offTitle    = textOffsets.title    || { x: 0, y: 0 };
-    var offSubtitle = textOffsets.subtitle || { x: 0, y: 0 };
-    var offParents  = textOffsets.parents  || { x: 0, y: 0 };
-    var offBody     = textOffsets.body     || { x: 0, y: 0 };
     var layout = {
-      title:    { left: 120, top: 88,  width: 420 },
-      subtitle: { left: 120, top: 176, width: 430 },
-      // Bloco exclusivo para nomes dos pais (acima da mensagem)
+      title:    { left: 120, top: 88,  width: 420, height: 88 },
+      subtitle: { left: 120, top: 176, width: 430, height: 56 },
       parents:  { left: 120, top: 244, width: 418, height: 70 },
-      // Mensagem principal: começa abaixo dos pais e ocupa toda a altura útil restante
       body:     { left: 120, top: 326, width: 418, height: 508 },
       photo: photoRect
     };
+
+    var fittedTitle = api.fitTextToBox({
+      text: state.title,
+      width: layout.title.width,
+      height: layout.title.height,
+      maxFontSize: api.clamp(state.titleFontSize, 12, 60),
+      minFontSize: 12,
+      lineHeight: 1.2,
+      fontFamily: '"Great Vibes", Georgia, serif',
+      fontWeight: '400'
+    });
+
+    var fittedParents = api.fitTextToBox({
+      text: state.parents,
+      width: layout.parents.width,
+      height: layout.parents.height,
+      maxFontSize: api.clamp(state.parentsFontSize, 12, 30),
+      minFontSize: 12,
+      lineHeight: 1.2,
+      fontFamily: 'Georgia, serif',
+      fontWeight: '400'
+    });
+
     var fittedBody = api.fitTextToBox({
       text: state.body,
       width: layout.body.width,
@@ -48,11 +63,11 @@
 
     shared.addTemplateBackground(api, state.templateBackground);
 
-    shared.add(canvas, new fabric.Textbox(state.title || 'Nome Destaque', {
-      left: layout.title.left + offTitle.x,
-      top: layout.title.top + offTitle.y,
+    shared.add(canvas, new fabric.Textbox(fittedTitle.text || 'Nome Destaque', {
+      left: layout.title.left,
+      top: layout.title.top,
       width: layout.title.width,
-      fontSize: api.clamp(state.titleFontSize, 12, 60),
+      fontSize: fittedTitle.fontSize,
       fontFamily: '"Great Vibes", Georgia, serif',
       fill: '#a97924',
       textAlign: 'left',
@@ -61,25 +76,25 @@
       splitByGrapheme: true,
       hasControls: false,
       hasBorders: true,
-      hoverCursor: 'move',
-      _baseLeft: layout.title.left,
-      _baseTop: layout.title.top,
+      lockMovementX: true,
+      lockMovementY: true,
+      hoverCursor: 'text',
       dataKey: 'title',
       pageId: 'page1',
       name: 'page1-title'
     }), refs, 'title');
 
     refs.title.clipPath = new fabric.Rect({
-      left: layout.title.left + offTitle.x,
-      top: layout.title.top + offTitle.y,
+      left: layout.title.left,
+      top: layout.title.top,
       width: layout.title.width,
-      height: 88,
+      height: layout.title.height,
       absolutePositioned: true
     });
 
     shared.add(canvas, new fabric.Textbox(state.subtitle || 'Curso · Data de Formatura', {
-      left: layout.subtitle.left + offSubtitle.x,
-      top: layout.subtitle.top + offSubtitle.y,
+      left: layout.subtitle.left,
+      top: layout.subtitle.top,
       width: layout.subtitle.width,
       fontSize: 18,
       fontFamily: 'Georgia, serif',
@@ -91,28 +106,28 @@
       splitByGrapheme: true,
       hasControls: false,
       hasBorders: true,
-      hoverCursor: 'move',
-      _baseLeft: layout.subtitle.left,
-      _baseTop: layout.subtitle.top,
+      lockMovementX: true,
+      lockMovementY: true,
+      hoverCursor: 'text',
       dataKey: 'subtitle',
       pageId: 'page1',
       name: 'page1-subtitle'
     }), refs, 'subtitle');
 
     refs.subtitle.clipPath = new fabric.Rect({
-      left: layout.subtitle.left + offSubtitle.x,
-      top: layout.subtitle.top + offSubtitle.y,
+      left: layout.subtitle.left,
+      top: layout.subtitle.top,
       width: layout.subtitle.width,
-      height: 56,
+      height: layout.subtitle.height,
       absolutePositioned: true
     });
 
     // ---- Bloco dos pais ----
-    shared.add(canvas, new fabric.Textbox(state.parents || 'Nome do Pai\nNome da Mãe', {
-      left: layout.parents.left + offParents.x,
-      top: layout.parents.top + offParents.y,
+    shared.add(canvas, new fabric.Textbox(fittedParents.text || 'Nome do Pai\nNome da Mãe', {
+      left: layout.parents.left,
+      top: layout.parents.top,
       width: layout.parents.width,
-      fontSize: api.clamp(state.parentsFontSize, 12, 30),
+      fontSize: fittedParents.fontSize,
       lineHeight: 1.2,
       fontFamily: 'Georgia, serif',
       fontWeight: '400',
@@ -123,17 +138,17 @@
       splitByGrapheme: true,
       hasControls: false,
       hasBorders: true,
-      hoverCursor: 'move',
-      _baseLeft: layout.parents.left,
-      _baseTop: layout.parents.top,
+      lockMovementX: true,
+      lockMovementY: true,
+      hoverCursor: 'text',
       dataKey: 'parents',
       pageId: 'page1',
       name: 'page1-parents'
     }), refs, 'parents');
 
     refs.parents.clipPath = new fabric.Rect({
-      left: layout.parents.left + offParents.x,
-      top: layout.parents.top + offParents.y,
+      left: layout.parents.left,
+      top: layout.parents.top,
       width: layout.parents.width,
       height: layout.parents.height,
       absolutePositioned: true
@@ -141,8 +156,8 @@
 
     // ---- Mensagem principal ----
     shared.add(canvas, new fabric.Textbox(fittedBody.text, {
-      left: layout.body.left + offBody.x,
-      top: layout.body.top + offBody.y,
+      left: layout.body.left,
+      top: layout.body.top,
       width: layout.body.width,
       fontSize: fittedBody.fontSize,
       lineHeight: 1.2,
@@ -156,17 +171,17 @@
       lockScalingY: true,
       hasControls: false,
       hasBorders: true,
-      hoverCursor: 'move',
-      _baseLeft: layout.body.left,
-      _baseTop: layout.body.top,
+      lockMovementX: true,
+      lockMovementY: true,
+      hoverCursor: 'text',
       dataKey: 'body',
       pageId: 'page1',
       name: 'page1-body'
     }), refs, 'body');
 
     refs.body.clipPath = new fabric.Rect({
-      left: layout.body.left + offBody.x,
-      top: layout.body.top + offBody.y,
+      left: layout.body.left,
+      top: layout.body.top,
       width: layout.body.width,
       height: layout.body.height,
       absolutePositioned: true
@@ -205,13 +220,6 @@
         titleFontSize: 45,
         parentsFontSize: 18,
         bodyFontSize: 45,
-        // Posições arrastadas pelo usuário (em pixels relativos à posição original)
-        textOffsets: {
-          title:    { x: 0, y: 0 },
-          subtitle: { x: 0, y: 0 },
-          parents:  { x: 0, y: 0 },
-          body:     { x: 0, y: 0 }
-        },
         selectedSlotId: 'main-photo',
         photoSlots: {
           'main-photo': {

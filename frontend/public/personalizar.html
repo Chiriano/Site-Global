@@ -200,6 +200,29 @@
               </div>
             </div>
 
+            <div class="export-size-block">
+              <p class="export-size-label">Tamanho do PDF</p>
+              <div class="export-size-options">
+                <label class="export-size-opt">
+                  <input type="radio" name="pdf-size" value="300x220" checked>
+                  <span class="export-size-pill">300 × 220 mm</span>
+                </label>
+                <label class="export-size-opt">
+                  <input type="radio" name="pdf-size" value="280x198">
+                  <span class="export-size-pill">280 × 198 mm</span>
+                </label>
+                <label class="export-size-opt">
+                  <input type="radio" name="pdf-size" value="240x167">
+                  <span class="export-size-pill">240 × 167 mm</span>
+                </label>
+                <label class="export-size-opt">
+                  <input type="radio" name="pdf-size" value="150x220">
+                  <span class="export-size-pill">150 × 220 mm</span>
+                </label>
+              </div>
+              <p class="export-size-hint">Tamanho aplicado apenas na exportação do PDF.</p>
+            </div>
+
             <button class="btn-action btn-action--primary btn-action--wide" id="btn-download" type="button">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
@@ -219,14 +242,34 @@
           <span class="workspace-dot" aria-hidden="true"></span>
           <span class="workspace-label">Área de edição</span>
         </div>
-        <div class="workspace-bar__right">
-          <span class="canvas-dims" id="canvas-dims">1100 × 800 px</span>
-        </div>
+        <div class="workspace-bar__right"></div>
       </div>
 
       <div class="canvas-area" id="canvas-area">
         <div class="canvas-wrapper" id="canvas-wrapper">
           <canvas id="editor-canvas"></canvas>
+        </div>
+
+        <div class="zoom-controls">
+          <button class="zoom-btn" id="zoom-fit-btn" title="Ajustar página">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 6V2h4M15 6V2h-4M1 10v4h4M15 10v4h-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="zoom-divider"></div>
+          <button class="zoom-btn" id="zoom-out-btn" title="Zoom −">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="7" cy="7" r="5.2" stroke="currentColor" stroke-width="1.6"/>
+              <path d="M4.5 7h5M11 11l2.5 2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <span class="zoom-label" id="zoom-level-label">100%</span>
+          <button class="zoom-btn" id="zoom-in-btn" title="Zoom +">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="7" cy="7" r="5.2" stroke="currentColor" stroke-width="1.6"/>
+              <path d="M7 4.5v5M4.5 7h5M11 11l2.5 2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </button>
         </div>
       </div>
     </section>
@@ -234,16 +277,6 @@
 
   <section class="editor-pages-carousel" aria-label="Miniaturas das páginas">
     <div class="page-strip">
-      <div class="page-strip__head">
-        <div>
-          <span class="page-strip__eyebrow">Modelos</span>
-          <strong class="page-strip__title">Páginas do convite</strong>
-        </div>
-        <div class="page-strip__status">
-          <span id="page-status">Página 1 ativa</span>
-          <span id="slot-status">Upload direcionado para main-photo</span>
-        </div>
-      </div>
       <div class="page-strip__list" id="page-strip-list"></div>
     </div>
   </section>
