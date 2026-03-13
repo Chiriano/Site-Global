@@ -51,8 +51,8 @@
     var qty      = Number(item.quantity) || 1;
 
     var imgHtml = imgSrc
-      ? '<img src="' + escapeHtml(imgSrc) + '" alt="' + escapeHtml(item.name) + '" loading="lazy" onerror="this.parentElement.innerHTML=\'<span class=\\'ci__no-img\\'><i class=\\'fas fa-image fa-2x\\'></i></span>\'">'
-      : '<span class="ci__no-img"><i class="fas fa-image fa-2x"></i><br>Sem imagem</span>';
+      ? '<img src="' + escapeHtml(imgSrc) + '" alt="' + escapeHtml(item.name) + '" loading="lazy" class="ci__img">'
+      : '<span class="ci__no-img"><i class="fas fa-image fa-2x"></i></span>';
 
     return [
       '<div class="ci" data-id="' + item.id + '">',
@@ -129,6 +129,13 @@
     });
 
     container.innerHTML = html;
+
+    // Image error fallback — replace broken images with placeholder icon
+    container.querySelectorAll('img.ci__img').forEach(function (img) {
+      img.addEventListener('error', function () {
+        this.parentElement.innerHTML = '<span class="ci__no-img"><i class="fas fa-image fa-2x"></i></span>';
+      });
+    });
   }
 
   function renderSummary(cart) {
