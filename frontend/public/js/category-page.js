@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ── FAST FOOD › Porção ──────────────────────────────────────────────────
     { id: 218, name: 'Caixa para Porções Liso',                  price: 32.9, category: 'embalagens', group: 'fastfood', item: 'porcao', image: 'assets/Produtos/Fast Food/Porção/Liso/Caixa para Porções Liso/Caixa para Porções Liso.png' },
     { id: 219, name: 'Embalagem Porção Balcão Liso',             price: 32.9, category: 'embalagens', group: 'fastfood', item: 'porcao', image: 'assets/Produtos/Fast Food/Porção/Liso/Embalagem Porção Balcão Liso/Embalagem Porção Balcão Liso.png' },
-    { id: 220, name: 'Caixa Personalizada para Porção Delivery', price: 32.9, category: 'embalagens', group: 'fastfood', item: 'porcao', image: 'assets/Produtos/Fast Food/Porção/Personalizar/Caixa Personalizada para Porção Delivery/Caixa Personalizada para Porção Delivery.png' },
+
 
     // ── DOCES › Bolo Fatia ──────────────────────────────────────────────────
     { id: 301, name: 'Caixa para Bolo Fatia Liso',         price: 34.9, category: 'embalagens', group: 'doces', item: 'bolo-fatia', image: 'assets/Produtos/Doces/Bolo Fatia/Liso/Caixa para Bolo Fatia Liso/Caixa para Bolo Fatia Liso.png' },

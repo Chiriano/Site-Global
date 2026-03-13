@@ -505,15 +505,6 @@ window.productConfigs = {
       { label: "Modelo 4", images: ["assets/Produtos/Fast Food/Porção/Liso/Embalagem Porção Balcão Liso - Modelo 4/Embalagem Porção Balcão Liso - Modelo 4.png","assets/Produtos/Fast Food/Porção/Liso/Embalagem Porção Balcão Liso - Modelo 4/Embalagem Porção Balcão Liso - 01 - Modelo 4.png"] },
     ],
   },
-  220: {
-    title: "Caixa Personalizada para Porção Delivery",
-    group: "fastfood", groupLabel: "Fast Food",
-    sub: "porcao", subLabel: "Porção",
-    models: [
-      { label: 'Base', images: ["assets/Produtos/Fast Food/Porção/Personalizar/Caixa Personalizada para Porção Delivery/Caixa Personalizada para Porção Delivery.png"] },
-      { label: "Modelo", images: ["assets/Produtos/Fast Food/Porção/Personalizar/Caixa Personalizada para Porção Delivery - Modelo/Caixa Personalizada para Porção Delivery - Modelo.png"] },
-    ],
-  },
   301: {
     title: "Caixa para Bolo Fatia Liso",
     group: "doces", groupLabel: "Doces",
