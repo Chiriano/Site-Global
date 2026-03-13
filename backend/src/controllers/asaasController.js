@@ -31,7 +31,7 @@ function validatePayload(body) {
 
   if (!items || !Array.isArray(items) || items.length === 0) errors.push('Itens do pedido ausentes.');
   if (!total || isNaN(Number(total)) || Number(total) <= 0) errors.push('Valor total inválido.');
-  if (!['PIX', 'BOLETO'].includes(billingType)) errors.push('Forma de pagamento inválida.');
+  if (!['PIX', 'CREDIT_CARD'].includes(billingType)) errors.push('Forma de pagamento inválida.');
 
   return errors;
 }
@@ -42,7 +42,7 @@ async function createPayment(req, res) {
     return res.status(400).json({ success: false, errors });
   }
 
-  const { customer, items, total, billingType } = req.body;
+  const { customer, items, total, billingType, creditCard, creditCardHolderInfo } = req.body;
 
   try {
     const asaasCustomer = await asaas.createOrFindCustomer({
@@ -52,7 +52,7 @@ async function createPayment(req, res) {
       mobilePhone: stripNonDigits(customer.phone),
     });
 
-    const dueDate = billingType === 'BOLETO' ? dueDateFromNow(3) : dueDateFromNow(1);
+    const dueDate = dueDateFromNow(1);
     const description = `Alpha Convites — ${items.length} item(s)`;
 
     const payment = await asaas.createPayment({
@@ -61,6 +61,8 @@ async function createPayment(req, res) {
       billingType,
       dueDate,
       description,
+      creditCard: billingType === 'CREDIT_CARD' ? creditCard : undefined,
+      creditCardHolderInfo: billingType === 'CREDIT_CARD' ? creditCardHolderInfo : undefined,
     });
 
     let pixData = null;

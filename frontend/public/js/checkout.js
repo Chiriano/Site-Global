@@ -51,6 +51,16 @@
     return v.replace(/(\d{5})(\d{0,3})/, '$1-$2').replace(/-$/, '');
   }
 
+  function maskCardNumber(value) {
+    return digits(value).slice(0, 16).replace(/(\d{4})(?=\d)/g, '$1 ');
+  }
+
+  function maskCardExpiry(value) {
+    var v = digits(value).slice(0, 4);
+    if (v.length >= 3) return v.slice(0, 2) + '/' + v.slice(2);
+    return v;
+  }
+
   /* =============================================
      VALIDAÇÃO DE CPF/CNPJ
      ============================================= */
@@ -205,6 +215,30 @@
     setFieldError('fg-state', !stateOk);
     if (!stateOk) valid = false;
 
+    // Validação dos campos do cartão (só quando CREDIT_CARD selecionado)
+    if (getSelectedBillingType() === 'CREDIT_CARD') {
+      var cardNumber = digits(document.getElementById('ck-card-number').value);
+      var cardNumOk = cardNumber.length === 16;
+      setFieldError('fg-card-number', !cardNumOk);
+      if (!cardNumOk) valid = false;
+
+      var cardName = document.getElementById('ck-card-name').value.trim();
+      var cardNameOk = cardName.length >= 3 && cardName.indexOf(' ') > 0;
+      setFieldError('fg-card-name', !cardNameOk);
+      if (!cardNameOk) valid = false;
+
+      var cardExpiry = document.getElementById('ck-card-expiry').value;
+      var expiryDigits = digits(cardExpiry);
+      var expiryOk = expiryDigits.length === 4 && parseInt(expiryDigits.slice(0,2)) >= 1 && parseInt(expiryDigits.slice(0,2)) <= 12;
+      setFieldError('fg-card-expiry', !expiryOk);
+      if (!expiryOk) valid = false;
+
+      var cvv = digits(document.getElementById('ck-card-cvv').value);
+      var cvvOk = cvv.length >= 3 && cvv.length <= 4;
+      setFieldError('fg-card-cvv', !cvvOk);
+      if (!cvvOk) valid = false;
+    }
+
     return valid;
   }
 
@@ -263,6 +297,27 @@
         });
       });
     }
+  }
+
+  function showCreditCardResult(payment) {
+    var resultEl = document.getElementById('payment-result');
+    var approved = payment.status === 'CONFIRMED' || payment.status === 'RECEIVED';
+    resultEl.innerHTML =
+      '<div class="result-card ' + (approved ? 'success' : 'error') + '">' +
+        '<div class="result-icon"><i class="fas fa-' + (approved ? 'check-circle' : 'times-circle') + '"></i></div>' +
+        '<div class="result-title">' + (approved ? 'Pagamento aprovado!' : 'Pagamento não aprovado') + '</div>' +
+        '<div class="result-subtitle">' + (approved ? 'Seu pedido foi confirmado com sucesso.' : 'Verifique os dados do cartão e tente novamente.') + '</div>' +
+        '<div style="font-size:13px;color:#6b7280;margin-bottom:16px;">' +
+          'ID do pedido: <strong>' + payment.id + '</strong>' +
+        '</div>' +
+        '<div class="result-actions">' +
+          (approved
+            ? '<a href="index.html" class="btn-back"><i class="fas fa-store"></i> Continuar comprando</a>'
+            : '<button class="btn-back" onclick="document.getElementById(\'payment-result\').style.display=\'none\'">Tentar novamente</button>') +
+        '</div>' +
+      '</div>';
+    resultEl.style.display = 'block';
+    resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   function showBoletoResult(payment) {
@@ -368,6 +423,25 @@
       billingType: billingType,
     };
 
+    if (billingType === 'CREDIT_CARD') {
+      var expiryDigits = digits(document.getElementById('ck-card-expiry').value);
+      payload.creditCard = {
+        holderName:  document.getElementById('ck-card-name').value.trim().toUpperCase(),
+        number:      digits(document.getElementById('ck-card-number').value),
+        expiryMonth: expiryDigits.slice(0, 2),
+        expiryYear:  '20' + expiryDigits.slice(2, 4),
+        ccv:         digits(document.getElementById('ck-card-cvv').value),
+      };
+      payload.creditCardHolderInfo = {
+        name:          payload.customer.name,
+        email:         payload.customer.email,
+        cpfCnpj:       payload.customer.cpfCnpj,
+        postalCode:    payload.customer.cep,
+        addressNumber: payload.customer.addressNumber,
+        phone:         payload.customer.phone,
+      };
+    }
+
     setLoading(true);
     document.getElementById('payment-result').style.display = 'none';
 
@@ -383,9 +457,13 @@
           showErrorResult(data.error || (data.errors && data.errors.join(' ')) || 'Erro desconhecido.');
           return;
         }
-        window.CartStore.clearCart();
+        if (data.payment.billingType !== 'CREDIT_CARD' || data.payment.status === 'CONFIRMED' || data.payment.status === 'RECEIVED') {
+          window.CartStore.clearCart();
+        }
         if (data.payment.billingType === 'PIX') {
           showPixResult(data.payment);
+        } else if (data.payment.billingType === 'CREDIT_CARD') {
+          showCreditCardResult(data.payment);
         } else {
           showBoletoResult(data.payment);
         }
@@ -434,6 +512,24 @@
 
     cepEl.addEventListener('blur', function () {
       fetchCep(this.value);
+    });
+
+    // Cartão — máscaras e toggle de visibilidade
+    var cardNumberEl = document.getElementById('ck-card-number');
+    var cardExpiryEl = document.getElementById('ck-card-expiry');
+    var cardCvvEl    = document.getElementById('ck-card-cvv');
+    var cardNameEl   = document.getElementById('ck-card-name');
+    var cardFields   = document.getElementById('card-fields');
+
+    if (cardNumberEl) cardNumberEl.addEventListener('input', function () { this.value = maskCardNumber(this.value); });
+    if (cardExpiryEl) cardExpiryEl.addEventListener('input', function () { this.value = maskCardExpiry(this.value); });
+    if (cardCvvEl)    cardCvvEl.addEventListener('input',    function () { this.value = digits(this.value).slice(0, 4); });
+    if (cardNameEl)   cardNameEl.addEventListener('input',   function () { this.value = this.value.toUpperCase(); });
+
+    document.querySelectorAll('input[name="billingType"]').forEach(function (radio) {
+      radio.addEventListener('change', function () {
+        if (cardFields) cardFields.style.display = this.value === 'CREDIT_CARD' ? 'block' : 'none';
+      });
     });
 
     // Botão pagar

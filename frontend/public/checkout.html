@@ -698,13 +698,43 @@
               </div>
             </label>
             <label class="payment-opt">
-              <input type="radio" name="billingType" value="BOLETO">
-              <span class="payment-opt__icon">🏦</span>
+              <input type="radio" name="billingType" value="CREDIT_CARD">
+              <span class="payment-opt__icon">💳</span>
               <div>
-                <div class="payment-opt__label">Boleto</div>
-                <div class="payment-opt__sub">Vence em 3 dias</div>
+                <div class="payment-opt__label">Cartão de Crédito</div>
+                <div class="payment-opt__sub">Aprovação imediata</div>
               </div>
             </label>
+          </div>
+
+          <!-- Campos do cartão — visíveis só quando CREDIT_CARD selecionado -->
+          <div id="card-fields" style="display:none;margin-bottom:20px;">
+            <div class="form-row full" style="margin-bottom:14px;">
+              <div class="form-group" id="fg-card-number">
+                <label for="ck-card-number">Número do Cartão *</label>
+                <input type="text" id="ck-card-number" placeholder="0000 0000 0000 0000" maxlength="19" autocomplete="cc-number" inputmode="numeric">
+                <span class="form-error" id="err-card-number">Número do cartão inválido.</span>
+              </div>
+            </div>
+            <div class="form-row full" style="margin-bottom:14px;">
+              <div class="form-group" id="fg-card-name">
+                <label for="ck-card-name">Nome no Cartão *</label>
+                <input type="text" id="ck-card-name" placeholder="Como está impresso no cartão" autocomplete="cc-name" style="text-transform:uppercase;">
+                <span class="form-error" id="err-card-name">Informe o nome do titular.</span>
+              </div>
+            </div>
+            <div class="form-row" style="margin-bottom:0;">
+              <div class="form-group" id="fg-card-expiry">
+                <label for="ck-card-expiry">Validade *</label>
+                <input type="text" id="ck-card-expiry" placeholder="MM/AA" maxlength="5" autocomplete="cc-exp" inputmode="numeric">
+                <span class="form-error" id="err-card-expiry">Data inválida.</span>
+              </div>
+              <div class="form-group" id="fg-card-cvv">
+                <label for="ck-card-cvv">CVV *</label>
+                <input type="text" id="ck-card-cvv" placeholder="000" maxlength="4" autocomplete="cc-csc" inputmode="numeric">
+                <span class="form-error" id="err-card-cvv">CVV inválido.</span>
+              </div>
+            </div>
           </div>
 
           <div class="ck-loader" id="ck-loader">

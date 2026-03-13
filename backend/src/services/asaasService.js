@@ -6,10 +6,19 @@ const ASAAS_BASE_URL =
     : 'https://sandbox.asaas.com/api/v3';
 
 function getApi() {
+  const key = (process.env.ASAAS_API_KEY || '').trim();
+  if (!key || key === 'SUA_CHAVE_ASAAS_AQUI') {
+    console.error('[Asaas] ERRO: ASAAS_API_KEY não configurada no .env');
+    console.error('[Asaas] Caminho do .env esperado: backend/.env');
+    console.error('[Asaas] Variáveis carregadas:', Object.keys(process.env).filter(k => k.startsWith('ASAAS')));
+  } else {
+    console.log('[Asaas] API Key carregada:', key.slice(0, 12) + '...');
+    console.log('[Asaas] Ambiente:', ASAAS_BASE_URL);
+  }
   return axios.create({
     baseURL: ASAAS_BASE_URL,
     headers: {
-      access_token: process.env.ASAAS_API_KEY,
+      access_token: key,
       'Content-Type': 'application/json',
     },
     timeout: 15000,
@@ -33,15 +42,14 @@ async function createOrFindCustomer({ name, cpfCnpj, email, mobilePhone }) {
   return data;
 }
 
-async function createPayment({ customerId, value, billingType, dueDate, description }) {
+async function createPayment({ customerId, value, billingType, dueDate, description, creditCard, creditCardHolderInfo }) {
   const api = getApi();
-  const { data } = await api.post('/payments', {
-    customer: customerId,
-    billingType,
-    value,
-    dueDate,
-    description,
-  });
+  const body = { customer: customerId, billingType, value, dueDate, description };
+  if (billingType === 'CREDIT_CARD' && creditCard) {
+    body.creditCard = creditCard;
+    body.creditCardHolderInfo = creditCardHolderInfo;
+  }
+  const { data } = await api.post('/payments', body);
   return data;
 }
 
