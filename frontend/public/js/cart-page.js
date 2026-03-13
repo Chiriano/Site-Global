@@ -102,45 +102,13 @@ function handleRemoveClick(event) {
   renderCart();
 }
 
-async function finalizeOrder() {
+function finalizeOrder() {
   const cart = window.CartStore.getCart();
   if (!cart.length) {
     setStatus('Carrinho vazio. Adicione produtos antes de finalizar.', 'error');
     return;
   }
-
-  const payload = {
-    items: cart.map((item) => ({
-      product_id: Number(item.id),
-      quantity: Number(item.quantity),
-      price: Number(item.price),
-    })),
-    total: Number(window.CartStore.calculateTotal(cart).toFixed(2)),
-  };
-
-  checkoutButton.disabled = true;
-  setStatus('Finalizando pedido...', 'info');
-
-  try {
-    const response = await fetch(ORDER_API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    });
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.error || 'Erro ao finalizar pedido.');
-    }
-
-    window.CartStore.clearCart();
-    renderCart();
-    setStatus(`Pedido #${data.order_id} finalizado com sucesso.`, 'success');
-  } catch (error) {
-    checkoutButton.disabled = false;
-    setStatus(error.message, 'error');
-  }
+  window.location.href = 'checkout.html';
 }
 
 document.addEventListener('DOMContentLoaded', () => {

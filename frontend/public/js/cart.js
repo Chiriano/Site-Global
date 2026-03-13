@@ -40,7 +40,7 @@
         id: Number(product.id),
         name: product.name || 'Produto',
         price: Number(product.price) || 0,
-        image_url: product.image_url || null,
+        image_url: product.image_url || product.image || null,
         quantity: 1,
       });
     }

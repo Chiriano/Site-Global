@@ -625,6 +625,33 @@
         qty++; qtyVal.textContent = qty;
       });
 
+      // ── Botão Comprar → Carrinho ─────────────────────────────────────────────
+      const buyBtn = document.querySelector('.cp-buy-btn');
+      if (buyBtn) {
+        buyBtn.addEventListener('click', () => {
+          if (!window.CartStore) return;
+          const productForCart = {
+            id:        productId,
+            name:      config.title || 'Convite',
+            price:     config.priceCurrent || 0,
+            image_url: images[0] || '',
+          };
+          for (let i = 0; i < qty; i++) window.CartStore.addToCart(productForCart);
+          document.querySelectorAll('.cart-count').forEach(el => {
+            el.textContent = '(' + window.CartStore.countItems() + ')';
+          });
+          const original = buyBtn.textContent;
+          buyBtn.textContent = '✓ Adicionado ao Carrinho!';
+          buyBtn.style.background = '#16a34a';
+          buyBtn.disabled = true;
+          setTimeout(() => {
+            buyBtn.textContent = original;
+            buyBtn.style.background = '';
+            buyBtn.disabled = false;
+          }, 1800);
+        });
+      }
+
       // ── Simular Frete ───────────────────────────────────────────────────────
       const cepInp = document.getElementById('cp-cep');
       const cepRes = document.getElementById('cp-frete-result');

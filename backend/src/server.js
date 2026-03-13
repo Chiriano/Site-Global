@@ -8,6 +8,7 @@ const productRoutes = require('../routes/products');
 const adminProductRoutes = require('../routes/adminProducts');
 const orderRoutes = require('../routes/orders');
 const authRoutes  = require('./routes/authRoutes');
+const asaasRoutes = require('./routes/asaasRoutes');
 const moduleRoutes = require('../modules');
 const adminPanelRoutes = require('../modules/admin-panel/routes');
 const { bootstrapModulesSchema } = require('../modules/common/bootstrap');
@@ -24,6 +25,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/admin/products', authenticateToken, requireAdmin, adminProductRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/auth',  authRoutes);
+app.use('/api/asaas', asaasRoutes);
 app.use('/api/modules', moduleRoutes);
 app.use('/api/modules/admin-panel', authenticateToken, requireAdmin, adminPanelRoutes);
 

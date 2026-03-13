@@ -220,7 +220,16 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="produto-old-price">R$ 59,90</div>
           <div class="produto-price">${product.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
           <div class="produto-parcel">ou 2x de ${(product.price / 2).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
-          <a href="${productUrl}" class="btn btn-hollow produto-btn">COMPRAR</a>
+          <div class="produto-btn-group">
+            <a href="${productUrl}" class="btn btn-hollow produto-btn">Ver Produto</a>
+            <button class="btn btn-primary produto-btn-cart" type="button"
+              data-cart-id="${product.id}"
+              data-cart-name="${product.name.replace(/'/g, '&#39;')}"
+              data-cart-price="${product.price}"
+              data-cart-image="${product.image}">
+              <i class="fas fa-cart-plus"></i>
+            </button>
+          </div>
         </div>
       </article>`;
   }
@@ -252,6 +261,33 @@ document.addEventListener('DOMContentLoaded', () => {
         const added = window.WishlistStore.toggle(product);
         this.classList.toggle('wl-active', added);
         this.setAttribute('aria-label', added ? 'Remover dos favoritos' : 'Adicionar aos favoritos');
+      });
+    });
+
+    // Botões "Adicionar ao Carrinho" nos cards
+    grid.querySelectorAll('.produto-btn-cart').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!window.CartStore) return;
+        window.CartStore.addToCart({
+          id:        this.dataset.cartId,
+          name:      this.dataset.cartName,
+          price:     Number(this.dataset.cartPrice),
+          image_url: this.dataset.cartImage,
+        });
+        // Atualizar todos os contadores do carrinho na página
+        document.querySelectorAll('.cart-count').forEach(el => {
+          el.textContent = '(' + window.CartStore.countItems() + ')';
+        });
+        // Feedback visual
+        const icon = this.querySelector('i');
+        if (icon) { icon.className = 'fas fa-check'; }
+        this.style.background = '#16a34a';
+        setTimeout(() => {
+          if (icon) icon.className = 'fas fa-cart-plus';
+          this.style.background = '';
+        }, 1200);
       });
     });
   }

@@ -666,6 +666,32 @@
       // Initial render
       updateSummary();
 
+      // -- Add to cart --------------------------------------------------------
+      const buyBtn = document.getElementById('buy-btn');
+      if (buyBtn && window.CartStore) {
+        buyBtn.addEventListener('click', () => {
+          const activeBtn = document.querySelector('.qty-btn.active');
+          if (!activeBtn) return;
+          const price = Number(activeBtn.dataset.price) || 0;
+          const units = Number(activeBtn.dataset.units) || 1;
+          const image = (config.models && config.models[0] && config.models[0].images && config.models[0].images[0])
+                     || (config.images && config.images[0])
+                     || null;
+
+          const name = units > 1 ? `${config.title} (${units.toLocaleString('pt-BR')} un.)` : config.title;
+          window.CartStore.addToCart({ id: productId, name, price, image_url: image });
+
+          document.querySelectorAll('.cart-count').forEach(el => {
+            el.textContent = window.CartStore.countItems();
+          });
+
+          const originalText = buyBtn.innerHTML;
+          buyBtn.innerHTML = '<i class="fas fa-check"></i> Adicionado';
+          buyBtn.disabled = true;
+          setTimeout(() => { buyBtn.innerHTML = originalText; buyBtn.disabled = false; }, 1500);
+        });
+      }
+
       // -- Frete simulation ---------------------------------------------------
       const cepInput   = document.getElementById('cep-input');
       const freteBtn   = document.getElementById('frete-btn');
