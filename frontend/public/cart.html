@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -8,124 +8,529 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    .cart-page {
-      max-width: 1200px;
-      margin: 30px auto 60px;
-      padding: 0 20px;
+    /* ════════════════════════════════════════════════
+       CART PAGE — professional e-commerce layout
+    ════════════════════════════════════════════════ */
+
+    /* ── Page wrapper ─────────────────────────────── */
+    .cp {
+      max-width: 1240px;
+      margin: 0 auto 80px;
+      padding: 32px 20px 0;
     }
-    .cart-title {
-      font-size: 28px;
-      margin-bottom: 18px;
-      color: #1f2937;
-    }
-    .cart-header-row,
-    .cart-row {
-      display: grid;
-      grid-template-columns: 110px 1.3fr 150px 120px 160px 120px;
-      align-items: center;
+
+    /* ── Page header ──────────────────────────────── */
+    .cp__head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
       gap: 12px;
-      padding: 12px 10px;
-      border-bottom: 1px solid #e5e7eb;
     }
-    .cart-header-row {
-      font-size: 12px;
-      color: #6b7280;
-      text-transform: uppercase;
+    .cp__head-title {
+      font-size: 24px;
       font-weight: 700;
-      background: #f8fafc;
-      border-radius: 8px 8px 0 0;
+      color: #1f2937;
+      margin: 0;
+      line-height: 1.2;
     }
-    .cart-row {
+    .cp__head-count {
+      font-size: 15px;
+      color: #9ca3af;
+      font-weight: 400;
+      margin-left: 8px;
+    }
+    .cp__continue-link {
+      font-size: 14px;
+      color: #e31b23;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity .15s;
+    }
+    .cp__continue-link:hover { opacity: .75; text-decoration: underline; }
+
+    /* ── Two-column body ──────────────────────────── */
+    .cp__body {
+      display: grid;
+      grid-template-columns: 1fr 368px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* ════════════════════════════════════════════════
+       CART ITEMS COLUMN
+    ════════════════════════════════════════════════ */
+    .cp__items {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* ── Seller header (grouping) ─────────────────── */
+    .cp__seller-bar {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px 12px 0 0;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 0;
+    }
+    .cp__seller-bar i { color: #e31b23; font-size: 14px; }
+    .cp__seller-bar span { font-size: 13px; font-weight: 600; color: #374151; }
+
+    /* ── Cart item card ───────────────────────────── */
+    .ci {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      padding: 20px 20px 20px 20px;
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+      border-top: 0;
+      transition: background .12s;
+    }
+    .ci:last-child {
+      border-radius: 0 0 12px 12px;
+    }
+    .ci + .ci {
+      border-top: 1px solid #f3f4f6;
+    }
+    .ci:hover { background: #fafafa; }
+
+    /* Image */
+    .ci__img-wrap {
+      flex-shrink: 0;
+      width: 108px;
+      height: 108px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #ececec;
+      background: #f8f8f8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ci__img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .ci__no-img {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: #d1d5db;
+      font-size: 10px;
+      text-align: center;
+    }
+
+    /* Body */
+    .ci__body {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .ci__name {
+      font-size: 15px;
+      font-weight: 600;
+      color: #111827;
+      line-height: 1.4;
+    }
+    .ci__unit-price {
+      font-size: 13px;
+      color: #9ca3af;
+      margin-bottom: 4px;
+    }
+
+    /* Bottom row: controls + subtotal */
+    .ci__bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 12px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .ci__controls {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    /* Quantity stepper */
+    .qty-step {
+      display: flex;
+      align-items: center;
+      border: 1.5px solid #d1d5db;
+      border-radius: 8px;
+      overflow: hidden;
+      height: 38px;
       background: #fff;
     }
-    .cart-image {
-      width: 80px;
-      height: 80px;
-      object-fit: cover;
-      border-radius: 8px;
-      border: 1px solid #e5e7eb;
-    }
-    .no-image {
-      color: #6b7280;
-      font-size: 12px;
-    }
-    .qty-input {
-      width: 80px;
-      height: 36px;
-      padding: 0 8px;
-      border: 1px solid #d1d5db;
-      border-radius: 6px;
-      font-size: 14px;
-    }
-    .remove-btn {
-      background: #ef4444;
-      color: #fff;
+    .qty-step__btn {
+      width: 38px;
+      height: 38px;
+      background: #f9fafb;
       border: 0;
-      border-radius: 6px;
-      padding: 8px 10px;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 600;
+      color: #374151;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .12s, color .12s;
+      flex-shrink: 0;
+      line-height: 1;
+      user-select: none;
+    }
+    .qty-step__btn:hover:not(:disabled) { background: #f3f4f6; color: #111827; }
+    .qty-step__btn:disabled { opacity: .35; cursor: not-allowed; }
+    .qty-step__val {
+      width: 44px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: #1f2937;
+      border: 0;
+      border-left: 1.5px solid #e5e7eb;
+      border-right: 1.5px solid #e5e7eb;
+      height: 38px;
+      outline: none;
+      background: #fff;
+      pointer-events: none;
+    }
+    .qty-step__val::-webkit-outer-spin-button,
+    .qty-step__val::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .qty-step__val[type=number] { -moz-appearance: textfield; }
+
+    /* Remove button */
+    .ci__remove-btn {
+      background: none;
+      border: 0;
+      color: #9ca3af;
       cursor: pointer;
       font-size: 13px;
-      font-weight: 600;
-    }
-    .cart-summary {
-      margin-top: 20px;
-      display: flex;
-      justify-content: space-between;
+      font-weight: 500;
+      display: inline-flex;
       align-items: center;
+      gap: 5px;
+      padding: 4px 2px;
+      transition: color .15s;
+      white-space: nowrap;
+    }
+    .ci__remove-btn:hover { color: #e31b23; }
+
+    /* Subtotal */
+    .ci__subtotal {
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .ci__subtotal-label {
+      font-size: 11px;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      margin-bottom: 2px;
+    }
+    .ci__subtotal-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1f2937;
+    }
+
+    /* ════════════════════════════════════════════════
+       EMPTY STATE
+    ════════════════════════════════════════════════ */
+    .cart-empty-state {
       background: #fff;
       border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      padding: 16px;
+      border-radius: 16px;
+      padding: 80px 40px;
+      text-align: center;
     }
-    .total-text {
+    .cart-empty-state__icon {
+      width: 96px;
+      height: 96px;
+      background: linear-gradient(135deg, #fff1f2 0%, #fde8e9 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 28px;
+    }
+    .cart-empty-state__icon i {
+      font-size: 40px;
+      color: #e31b23;
+      opacity: .7;
+    }
+    .cart-empty-state__title {
       font-size: 22px;
       font-weight: 700;
-      color: #111827;
+      color: #1f2937;
+      margin-bottom: 10px;
     }
-    .checkout-btn {
+    .cart-empty-state__text {
+      font-size: 15px;
+      color: #9ca3af;
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+    .cart-empty-state__btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
       background: #e31b23;
       color: #fff;
       border: 0;
-      border-radius: 8px;
-      padding: 12px 20px;
+      border-radius: 10px;
+      padding: 14px 32px;
       font-size: 15px;
       font-weight: 700;
       cursor: pointer;
+      text-decoration: none;
+      transition: background .15s, transform .1s;
     }
-    .checkout-btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-    .empty-cart {
+    .cart-empty-state__btn:hover { background: #c41920; }
+    .cart-empty-state__btn:active { transform: scale(.98); }
+
+    /* ════════════════════════════════════════════════
+       ORDER SUMMARY SIDEBAR
+    ════════════════════════════════════════════════ */
+    .order-summary {
       background: #fff;
-      border: 1px dashed #d1d5db;
-      border-radius: 8px;
-      padding: 30px;
-      text-align: center;
-      color: #6b7280;
-      margin-top: 10px;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 24px;
+      position: sticky;
+      top: 20px;
     }
-    .cart-status {
-      margin-top: 14px;
+    .order-summary__title {
+      font-size: 17px;
       font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #f3f4f6;
     }
-    .cart-status.success { color: #0f9d58; }
-    .cart-status.error   { color: #d93025; }
-    .cart-status.info    { color: #2563eb; }
-    @media (max-width: 980px) {
-      .cart-header-row { display: none; }
-      .cart-row {
+    .os-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      color: #374151;
+      margin-bottom: 12px;
+    }
+    .os-row__label { color: #6b7280; }
+    .os-row--total {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1f2937;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 2px solid #f3f4f6;
+      margin-bottom: 0;
+    }
+    .os-total-value {
+      font-size: 26px;
+      font-weight: 800;
+      color: #e31b23;
+    }
+    .os-shipping-tag {
+      background: #dcfce7;
+      color: #15803d;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 20px;
+      padding: 3px 10px;
+    }
+    .os-discount-value { color: #16a34a; font-weight: 600; }
+
+    /* ── Coupon block ─────────────────────────────── */
+    .coupon-block {
+      margin: 20px 0;
+      padding: 16px;
+      background: #f9fafb;
+      border-radius: 10px;
+      border: 1px dashed #d1d5db;
+    }
+    .coupon-block__label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .coupon-block__label i { color: #e31b23; }
+    .coupon-block__form {
+      display: flex;
+      gap: 8px;
+    }
+    .coupon-input {
+      flex: 1;
+      height: 38px;
+      border: 1.5px solid #d1d5db;
+      border-radius: 8px;
+      padding: 0 12px;
+      font-size: 13px;
+      outline: none;
+      background: #fff;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 600;
+      color: #1f2937;
+      transition: border-color .15s;
+    }
+    .coupon-input:focus { border-color: #e31b23; }
+    .coupon-apply-btn {
+      height: 38px;
+      padding: 0 14px;
+      background: #1f2937;
+      color: #fff;
+      border: 0;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background .15s;
+    }
+    .coupon-apply-btn:hover { background: #374151; }
+    .coupon-msg { font-size: 12px; margin-top: 8px; min-height: 16px; }
+    .coupon-msg.ok { color: #16a34a; }
+    .coupon-msg.err { color: #dc2626; }
+
+    /* ── CTA ──────────────────────────────────────── */
+    .os-checkout-btn {
+      width: 100%;
+      height: 54px;
+      background: linear-gradient(135deg, #e31b23 0%, #c41920 100%);
+      color: #fff;
+      border: 0;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+      box-shadow: 0 4px 14px rgba(227,27,35,.35);
+      transition: box-shadow .15s, transform .1s, background .15s;
+      letter-spacing: .3px;
+    }
+    .os-checkout-btn:hover:not(:disabled) {
+      box-shadow: 0 6px 20px rgba(227,27,35,.45);
+      background: linear-gradient(135deg, #d01820 0%, #b81720 100%);
+    }
+    .os-checkout-btn:active:not(:disabled) { transform: scale(.98); }
+    .os-checkout-btn:disabled {
+      background: #e5e7eb;
+      color: #9ca3af;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+    .os-checkout-btn i { font-size: 15px; }
+
+    /* ── Trust badges ─────────────────────────────── */
+    .trust-badges {
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1px solid #f3f4f6;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .trust-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: #6b7280;
+    }
+    .trust-badge i {
+      width: 20px;
+      text-align: center;
+      color: #16a34a;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    /* ── Payment methods ──────────────────────────── */
+    .os-payment-methods {
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .os-payment-methods span {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-right: 4px;
+    }
+    .pay-badge {
+      background: #f3f4f6;
+      border-radius: 4px;
+      padding: 3px 8px;
+      font-size: 10px;
+      font-weight: 700;
+      color: #374151;
+      letter-spacing: .5px;
+    }
+
+    /* ════════════════════════════════════════════════
+       RESPONSIVE
+    ════════════════════════════════════════════════ */
+    @media (max-width: 940px) {
+      .cp__body {
         grid-template-columns: 1fr;
-        gap: 8px;
-        border: 1px solid #e5e7eb;
-        border-radius: 8px;
-        margin-bottom: 12px;
       }
-      .cart-summary {
+      .order-summary {
+        position: static;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .cp { padding: 16px 12px 0; }
+      .cp__head { margin-bottom: 20px; }
+      .cp__head-title { font-size: 20px; }
+
+      .ci {
         flex-direction: column;
-        gap: 12px;
+        gap: 14px;
+      }
+      .ci__img-wrap {
+        width: 100%;
+        height: 200px;
+        border-radius: 10px;
+      }
+      .ci__bottom {
+        flex-direction: column;
         align-items: flex-start;
       }
+      .ci__subtotal {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 12px;
+        border-top: 1px solid #f3f4f6;
+      }
+      .ci__subtotal-value { font-size: 18px; }
     }
   </style>
 </head>
@@ -196,9 +601,7 @@
           <button class="menu-btn" id="all-products-btn" type="button">
             <i class="fas fa-bars"></i> Todas as Categorias
           </button>
-          <!-- Mega Menu Premium -->
           <div class="mega-menu" id="mega-menu">
-            <!-- Ícones horizontais no topo -->
             <div class="catalog-icons-row">
               <button class="catalog-icon-btn" data-cat="convites" type="button">
                 <div class="catalog-icon-circle">
@@ -213,7 +616,6 @@
                 <span>Embalagens</span>
               </button>
             </div>
-            <!-- 3 painéis abaixo -->
             <div class="catalog-grid">
               <div class="catalog-col-left"></div>
               <div class="catalog-col-mid"></div>
@@ -254,26 +656,113 @@
     </div>
   </div>
 
-  <!-- Cart Page -->
-  <main class="cart-page">
-    <h1 class="cart-title">Seu Carrinho</h1>
+  <!-- ══════════════════════════════════════════════
+       CART PAGE
+  ══════════════════════════════════════════════ -->
+  <main class="cp">
 
-    <div class="cart-header-row">
-      <div>Imagem</div>
-      <div>Produto</div>
-      <div>Preço Unitário</div>
-      <div>Quantidade</div>
-      <div>Subtotal</div>
-      <div>Ação</div>
+    <!-- Page header -->
+    <div class="cp__head">
+      <h1 class="cp__head-title">
+        Seu Carrinho
+        <span class="cp__head-count" id="cp-item-count"></span>
+      </h1>
+      <a href="index.html" class="cp__continue-link">
+        <i class="fas fa-arrow-left"></i> Continuar comprando
+      </a>
     </div>
 
-    <div id="cart-items"></div>
+    <div class="cp__body">
 
-    <div class="cart-summary">
-      <div class="total-text">Total: <span id="cart-total">R$ 0,00</span></div>
-      <button id="checkout-btn" class="checkout-btn">Finalizar Compra</button>
+      <!-- ── Left: Items ───────────────────────── -->
+      <div id="cp-items" class="cp__items">
+        <!-- Rendered by cart-page.js -->
+      </div>
+
+      <!-- ── Right: Order Summary ──────────────── -->
+      <aside class="order-summary" aria-label="Resumo do pedido">
+
+        <div class="order-summary__title">
+          <i class="fas fa-receipt" style="color:#e31b23;margin-right:8px;font-size:15px"></i>
+          Resumo do Pedido
+        </div>
+
+        <!-- Rows -->
+        <div class="os-row">
+          <span class="os-row__label">Subtotal dos produtos</span>
+          <span id="os-subtotal">R$ 0,00</span>
+        </div>
+
+        <div class="os-row" id="os-discount-row" style="display:none">
+          <span class="os-row__label" style="color:#16a34a">
+            <i class="fas fa-tag" style="font-size:11px"></i> Desconto aplicado
+          </span>
+          <span class="os-discount-value" id="os-discount"></span>
+        </div>
+
+        <div class="os-row">
+          <span class="os-row__label">Frete</span>
+          <span class="os-shipping-tag">A calcular</span>
+        </div>
+
+        <!-- Total -->
+        <div class="os-row os-row--total">
+          <span>Total</span>
+          <span class="os-total-value" id="os-total">R$ 0,00</span>
+        </div>
+
+        <!-- Coupon -->
+        <div class="coupon-block">
+          <div class="coupon-block__label">
+            <i class="fas fa-tag"></i> Cupom de desconto
+          </div>
+          <div class="coupon-block__form">
+            <input
+              type="text"
+              id="coupon-input"
+              class="coupon-input"
+              placeholder="Código do cupom"
+              maxlength="20"
+              autocomplete="off"
+            >
+            <button id="coupon-apply-btn" class="coupon-apply-btn" type="button">
+              Aplicar
+            </button>
+          </div>
+          <div id="coupon-msg" class="coupon-msg"></div>
+        </div>
+
+        <!-- CTA -->
+        <button id="os-checkout-btn" class="os-checkout-btn" type="button" disabled>
+          <i class="fas fa-lock"></i> Finalizar Compra
+        </button>
+
+        <!-- Payment methods -->
+        <div class="os-payment-methods">
+          <span>Pagamos com:</span>
+          <span class="pay-badge">PIX</span>
+          <span class="pay-badge">BOLETO</span>
+        </div>
+
+        <!-- Trust badges -->
+        <div class="trust-badges">
+          <div class="trust-badge">
+            <i class="fas fa-shield-alt"></i>
+            <span>Compra 100% segura e protegida</span>
+          </div>
+          <div class="trust-badge">
+            <i class="fas fa-lock"></i>
+            <span>Dados criptografados com SSL</span>
+          </div>
+          <div class="trust-badge">
+            <i class="fas fa-undo-alt"></i>
+            <span>Satisfação garantida</span>
+          </div>
+        </div>
+
+      </aside>
     </div>
-    <div id="cart-status" class="cart-status"></div>
+
   </main>
 
   <!-- Footer -->
@@ -367,4 +856,3 @@
   </script>
 </body>
 </html>
-
